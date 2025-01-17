@@ -31,9 +31,10 @@ flutter:
     - assets/App Logo/
     - assets/Arrows/
     - assets/Bottom Navigation/Chat/
-    - assets/Bottom Navigation/Category/
+    - assets/Bottom Navigation/AI Assistants/
     - assets/Bottom Navigation/History/
     - assets/Bottom Navigation/Account/
+    - assets/Others/
 
   # Fonts
   # fonts:

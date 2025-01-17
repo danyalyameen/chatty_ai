@@ -34,11 +34,8 @@ class ChatView extends StackedView<ChatViewModel> {
           ),
         ),
       ),
-      // Main UI of Screen
-      body: _MainUI(
-        width: width,
-        height: height,
-      ),
+      // Display UIs on Screen
+      body: ChatUI(),
       // Bottom Navigation Bar
       bottomNavigationBar: _BottomNavigation(
         width: width,
@@ -51,9 +48,8 @@ class ChatView extends StackedView<ChatViewModel> {
   ChatViewModel viewModelBuilder(BuildContext context) => ChatViewModel();
 }
 
-class _MainUI extends StatelessWidget {
-  final double width, height;
-  const _MainUI({required this.width, required this.height});
+class ChatUI extends StatelessWidget {
+  const ChatUI({super.key});
 
   // Const Texts
   final String title = 'Welcome to';
@@ -64,6 +60,8 @@ class _MainUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -131,23 +129,7 @@ class _MainUI extends StatelessWidget {
 
 class _BottomNavigation extends ViewModelWidget<ChatViewModel> {
   final double width, height;
-  _BottomNavigation({required this.width, required this.height});
-  // List of Bottom Navigation Outline Icons
-  final List<String> iconsOutline = [
-    IconsPath.chatOutline,
-    IconsPath.categoryOutline,
-    IconsPath.historyOutline,
-    IconsPath.accountOutline,
-  ];
-  // List of Bottom Navigation Fill Icons
-  final List<String> iconsFill = [
-    IconsPath.chatFill,
-    IconsPath.categoryFill,
-    IconsPath.historyOutline,
-    IconsPath.accountFill,
-  ];
-  // List of Bottom Navigation Titles
-  final List<String> titles = ['Chat', 'Category', 'History', 'Account'];
+  const _BottomNavigation({required this.width, required this.height});
 
   @override
   Widget build(BuildContext context, ChatViewModel viewModel) {
@@ -159,12 +141,14 @@ class _BottomNavigation extends ViewModelWidget<ChatViewModel> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(
-          iconsFill.length,
+          viewModel.iconsFill.length,
           (index) {
             return InkWell(
               borderRadius: BorderRadius.circular(width),
               onTap: () {
                 viewModel.updateCurrentIndex(index);
+                viewModel.navigationService
+                    .navigateToView(viewModel.navigaitonViews[index]);
               },
               child: Column(
                 children: [
@@ -172,8 +156,8 @@ class _BottomNavigation extends ViewModelWidget<ChatViewModel> {
                   Center(
                     child: SvgPicture.asset(
                       viewModel.currentIndex == index
-                          ? iconsFill[index]
-                          : iconsOutline[index],
+                          ? viewModel.iconsFill[index]
+                          : viewModel.iconsOutline[index],
                       width: width * 0.06,
                       height: width * 0.06,
                       colorFilter: ColorFilter.mode(
@@ -189,7 +173,7 @@ class _BottomNavigation extends ViewModelWidget<ChatViewModel> {
                     height: height * 0.005,
                   ),
                   Text(
-                    titles[index],
+                    viewModel.titles[index],
                     style: TextStyle(
                       color: viewModel.currentIndex == index
                           ? AppColors.primary
