@@ -2,6 +2,7 @@ import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/History/Views/history_view_model.dart';
+import 'package:chatty_ai/Widgets/custom_bottom_sheet.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,7 +41,7 @@ class HistoryView extends StackedView<HistoryViewModel> {
           InkWell(
             borderRadius: BorderRadius.circular(width),
             onTap: () {
-              viewModel.bottomSheet(
+              CustomBottomSheet.bottomSheet(
                 context: context,
                 title: bottomSheetTitle,
                 description: bottomSheetDescription,

@@ -2,6 +2,7 @@ import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Constants/images_path.dart';
 import 'package:chatty_ai/Features/Account/View/account_view_model.dart';
+import 'package:chatty_ai/Widgets/custom_bottom_sheet.dart';
 import 'package:chatty_ai/Widgets/custom_switch_tile.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -50,49 +51,94 @@ class _Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.02),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // User Image
-          CircleAvatar(
-            radius: width * 0.09,
-            backgroundImage: const AssetImage(ImagesPath.userImage),
+      padding: EdgeInsets.only(top: height * 0.01),
+      child: InkWell(
+        child: Container(
+          width: width * 0.9,
+          height: height * 0.12,
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(width * 0.04),
           ),
-          // User Name and Email
-          Padding(
-            padding: EdgeInsets.only(left: width * 0.035, right: width * 0.12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // User Name
-                Text(
-                  userName,
-                  style: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontSize: width * 0.055,
-                    fontWeight: FontWeight.bold,
-                  ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // User Image
+              Padding(
+                padding: EdgeInsets.only(left: width * 0.04),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // White Background
+                    Container(
+                      width: width * 0.21,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primaryLight,
+                      ),
+                    ),
+                    // Make Outline Transparent
+                    Container(
+                      width: width * 0.195,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    // user Image
+                    CircleAvatar(
+                      radius: width * 0.09,
+                      backgroundImage: const AssetImage(ImagesPath.userImage),
+                    ),
+                  ],
                 ),
-                // For Spacing
-                SizedBox(
-                  height: height * 0.005,
+              ),
+              // User Name and Email
+              Padding(
+                padding:
+                    EdgeInsets.only(left: width * 0.03, right: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // User Name
+                    Text(
+                      userName,
+                      style: TextStyle(
+                        color: AppColors.grey,
+                        fontSize: width * 0.055,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // For Spacing
+                    SizedBox(
+                      height: height * 0.005,
+                    ),
+                    // User Email
+                    Text(
+                      userEmail,
+                      style: TextStyle(
+                        color: AppColors.grey,
+                        fontSize: width * 0.04,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  ],
                 ),
-                // User Email
-                Text(
-                  userEmail,
-                  style: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontSize: width * 0.04,
-                    fontWeight: FontWeight.w300,
-                  ),
-                )
-              ],
-            ),
+              ),
+              // Right Arrow
+              SvgPicture.asset(
+                IconsPath.rightArrow,
+                colorFilter:
+                    ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
+              ),
+              SizedBox(
+                width: width * 0.02,
+              ),
+            ],
           ),
-          // Right Arrow
-          SvgPicture.asset(IconsPath.rightArrow),
-        ],
+        ),
       ),
     );
   }
@@ -109,6 +155,10 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
   ];
   final List<String> titles = ["Personal Info", "Security"];
   final String logoutTitle = "Logout";
+  final String bottomSheetTitle = "Logout";
+  final String bottomSheetDescription = "Are you sure you want to log out?";
+  final String cancelButtonText = "Cancel";
+  final String confirmButtonText = "Yes, Logout";
 
   @override
   Widget build(BuildContext context, AccountViewModel viewModel) {
@@ -192,30 +242,48 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
             ),
           ),
           // Logout
-          Padding(
-            padding: EdgeInsets.all(width * 0.02),
-            child: Row(
-              children: [
-                Center(
-                  child: SvgPicture.asset(
-                    IconsPath.logout,
-                    width: width * 0.074,
-                    colorFilter:
-                        ColorFilter.mode(AppColors.primaryRed, BlendMode.srcIn),
+          InkWell(
+            borderRadius: BorderRadius.circular(width * 0.04),
+            onTap: () {
+              CustomBottomSheet.bottomSheet(
+                context: context,
+                title: bottomSheetTitle,
+                description: bottomSheetDescription,
+                cancelTitle: cancelButtonText,
+                confirmTitle: confirmButtonText,
+                sheetHeight: height * 0.28,
+                titleStyle: TextStyle(
+                  fontSize: width * 0.055,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryRed,
+                ),
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.all(width * 0.02),
+              child: Row(
+                children: [
+                  Center(
+                    child: SvgPicture.asset(
+                      IconsPath.logout,
+                      width: width * 0.074,
+                      colorFilter: ColorFilter.mode(
+                          AppColors.primaryRed, BlendMode.srcIn),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: width * 0.05,
-                ),
-                Text(
-                  logoutTitle,
-                  style: TextStyle(
-                    color: AppColors.primaryRed,
-                    fontSize: width * 0.045,
-                    fontWeight: FontWeight.w700,
+                  SizedBox(
+                    width: width * 0.05,
                   ),
-                ),
-              ],
+                  Text(
+                    logoutTitle,
+                    style: TextStyle(
+                      color: AppColors.primaryRed,
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],

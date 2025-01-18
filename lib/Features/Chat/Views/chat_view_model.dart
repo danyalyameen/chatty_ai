@@ -1,7 +1,10 @@
 import 'package:chatty_ai/Constants/custom_view_model.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/AI%20Assistants/Views/ai_assistants_view.dart';
+import 'package:chatty_ai/Features/Account/View/account_view.dart';
 import 'package:chatty_ai/Features/Chat/Views/chat_view.dart';
+import 'package:chatty_ai/Features/History/Views/history_view.dart';
+import 'package:flutter/material.dart';
 
 class ChatViewModel extends ViewModel {
   int _currentIndex = 0;
@@ -24,11 +27,11 @@ class ChatViewModel extends ViewModel {
   final List<String> titles = ['Chat', 'Category', 'History', 'Account'];
 
   // List of Bottom Navigaiton Views
-  final List navigaitonViews = [
+  final List<Widget> navigationViews = [
     ChatUI(),
     AIAssistantsView(),
-    ChatUI(),
-    AIAssistantsView(),
+    HistoryView(),
+    AccountView(),
   ];
 
   // To Change the Current Index of Bottom Navigation Bar
