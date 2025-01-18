@@ -17,4 +17,7 @@ class IconsPath {
       "assets/Bottom Navigation/Account/account_fill.svg";
   static const String search = "assets/Others/search.svg";
   static const String delete = "assets/Others/delete.svg";
+  static const String security = "assets/Profile/security.svg";
+  static const String darkMode = "assets/Profile/dark_mode.svg";
+  static const String logout = "assets/Profile/logout.svg";
 }

@@ -35,6 +35,8 @@ flutter:
     - assets/Bottom Navigation/History/
     - assets/Bottom Navigation/Account/
     - assets/Others/
+    - assets/Images/User Image/
+    - assets/Profile/
 
   # Fonts
   # fonts:
