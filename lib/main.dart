@@ -1,6 +1,6 @@
 import 'package:chatty_ai/App/app.locator.dart';
 import 'package:chatty_ai/App/app.router.dart';
-import 'package:chatty_ai/Features/AI%20Assistants/Views/ai_assistants_view.dart';
+import 'package:chatty_ai/Features/History/Views/history_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
-      home: AIAssistantsView(),
+      home: HistoryView(),
     );
   }
 }

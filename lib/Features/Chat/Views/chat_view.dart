@@ -23,16 +23,7 @@ class ChatView extends StackedView<ChatViewModel> {
       appBar: whiteAppBar(
         title: title,
         width: width,
-        leading: Padding(
-          padding: EdgeInsets.only(left: width * 0.03),
-          child: Center(
-            child: SvgPicture.asset(
-              IconsPath.appLogo,
-              width: width * 0.09,
-              height: width * 0.09,
-            ),
-          ),
-        ),
+        backArrow: false,
       ),
       // Display UIs on Screen
       body: ChatUI(),

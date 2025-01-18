@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 PreferredSizeWidget whiteAppBar({
   List<Widget>? actions,
-  Widget? leading,
+  required bool backArrow,
   required String title,
   required double width,
 }) {
@@ -21,13 +21,23 @@ PreferredSizeWidget whiteAppBar({
     actions: actions,
     centerTitle: true,
     backgroundColor: AppColors.primaryLight,
-    leading: leading ??
-        Center(
-          child: SvgPicture.asset(
-            IconsPath.backArrow,
-            width: width * 0.09,
-            height: width * 0.09,
+    leading: backArrow
+        ? Center(
+            child: SvgPicture.asset(
+              IconsPath.backArrow,
+              width: width * 0.09,
+              height: width * 0.09,
+            ),
+          )
+        : Padding(
+            padding: EdgeInsets.only(left: width * 0.03),
+            child: Center(
+              child: SvgPicture.asset(
+                IconsPath.appLogo,
+                width: width * 0.09,
+                height: width * 0.09,
+              ),
+            ),
           ),
-        ),
   );
 }

@@ -4,4 +4,5 @@ import 'package:stacked_services/stacked_services.dart';
 
 class ViewModel extends BaseViewModel {
   NavigationService navigationService = locator<NavigationService>();
+  BottomSheetService bottomSheetService = locator<BottomSheetService>();
 }

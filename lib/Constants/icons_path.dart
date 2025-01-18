@@ -1,6 +1,7 @@
 class IconsPath {
   static const String appLogo = "assets/App Logo/app_logo.svg";
   static const String backArrow = "assets/Arrows/back_arrow.svg";
+  static const String rightArrow = "assets/Arrows/right_arrow.svg";
   static const String chatOutline =
       "assets/Bottom Navigation/Chat/chat_outline.svg";
   static const String chatFill = "assets/Bottom Navigation/Chat/chat_fill.svg";
@@ -14,8 +15,6 @@ class IconsPath {
       "assets/Bottom Navigation/Account/account_outline.svg";
   static const String accountFill =
       "assets/Bottom Navigation/Account/account_fill.svg";
-  static const String search =
-      "assets/Others/search.svg";
-  static const String delete =
-      "assets/Others/delete.svg";
+  static const String search = "assets/Others/search.svg";
+  static const String delete = "assets/Others/delete.svg";
 }
