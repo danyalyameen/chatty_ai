@@ -14,7 +14,6 @@ import 'package:stacked_services/stacked_services.dart';
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
-    LazySingleton(classType: BottomSheetService),
   ],
 )
 class App {}

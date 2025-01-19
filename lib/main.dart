@@ -1,6 +1,6 @@
 import 'package:chatty_ai/App/app.locator.dart';
 import 'package:chatty_ai/App/app.router.dart';
-import 'package:chatty_ai/Features/Authentication/Log%20in/Views/login_view.dart';
+import 'package:chatty_ai/Features/Authentication/Forgot%20Password/Views/forgot_password_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
-      home: LoginView(),
+      home: ForgotPasswordView(),
     );
   }
 }

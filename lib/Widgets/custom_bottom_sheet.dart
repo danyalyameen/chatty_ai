@@ -2,7 +2,7 @@ import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomSheet {
-    // Bottom Sheet of Clear All History
+  // Bottom Sheet of Clear All History
   static void bottomSheet({
     required BuildContext context,
     required String title,
@@ -26,10 +26,11 @@ class CustomBottomSheet {
               // Title
               Text(
                 title,
-                style: titleStyle ?? TextStyle(
-                  fontSize: width * 0.055,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: titleStyle ??
+                    TextStyle(
+                      fontSize: width * 0.055,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
               // For Spacing
               SizedBox(
