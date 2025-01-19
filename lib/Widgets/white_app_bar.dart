@@ -2,12 +2,14 @@ import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 PreferredSizeWidget whiteAppBar({
   List<Widget>? actions,
   required bool backArrow,
   required String title,
   required double width,
+  NavigationService? navigationService,
 }) {
   return AppBar(
     title: Text(
@@ -22,11 +24,17 @@ PreferredSizeWidget whiteAppBar({
     centerTitle: true,
     backgroundColor: AppColors.primaryLight,
     leading: backArrow
-        ? Center(
-            child: SvgPicture.asset(
-              IconsPath.backArrow,
-              width: width * 0.09,
-              height: width * 0.09,
+        ? InkWell(
+            borderRadius: BorderRadius.circular(width),
+            onTap: () {
+              navigationService?.back();
+            },
+            child: Center(
+              child: SvgPicture.asset(
+                IconsPath.backArrow,
+                width: width * 0.09,
+                height: width * 0.09,
+              ),
             ),
           )
         : Padding(
