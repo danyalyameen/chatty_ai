@@ -20,4 +20,6 @@ class IconsPath {
   static const String security = "assets/Profile/security.svg";
   static const String darkMode = "assets/Profile/dark_mode.svg";
   static const String logout = "assets/Profile/logout.svg";
+  static const String google = "assets/Social/google.svg";
+  static const String facebook = "assets/Social/facebook.svg";
 }
