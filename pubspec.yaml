@@ -39,6 +39,7 @@ flutter:
     - assets/Images/User Image/
     - assets/Profile/
     - assets/Social/
+    - assets/Auth Icons/
 
   # Fonts
   # fonts:

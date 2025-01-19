@@ -22,4 +22,6 @@ class IconsPath {
   static const String logout = "assets/Profile/logout.svg";
   static const String google = "assets/Social/google.svg";
   static const String facebook = "assets/Social/facebook.svg";
+  static const String email = "assets/Auth Icons/email.svg";
+  static const String unshow = "assets/Auth Icons/unshow.svg";
 }
