@@ -24,4 +24,5 @@ class IconsPath {
   static const String facebook = "assets/Social/facebook.svg";
   static const String email = "assets/Auth Icons/email.svg";
   static const String unshow = "assets/Auth Icons/unshow.svg";
+  static const String send = "assets/Arrows/send.svg";
 }

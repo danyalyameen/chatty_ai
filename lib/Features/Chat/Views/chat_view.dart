@@ -1,6 +1,7 @@
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Chat/Views/chat_view_model.dart';
+import 'package:chatty_ai/Widgets/custom_chat_view.dart';
 import 'package:chatty_ai/Widgets/custom_elevated_button.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,8 @@ class ChatView extends StackedView<ChatViewModel> {
   ChatViewModel viewModelBuilder(BuildContext context) => ChatViewModel();
 }
 
-class ChatUI extends StatelessWidget {
-  const ChatUI({super.key});
+class ChatUI extends ViewModelWidget<ChatViewModel> {
+  ChatUI({super.key});
 
   // Const Texts
   final String title = 'Welcome to';
@@ -44,9 +45,25 @@ class ChatUI extends StatelessWidget {
   final String subTitle1 = 'Start chatting with ChattyAI Now.';
   final String subTitle2 = 'You can ask me anything.';
   final String buttonText = 'Start Chat';
+  final String chatViewTitle = "Chatty AI";
+  final String capabilitesTitle = "Capabilites";
+  final List<Map<String, String>> capabilites = [
+    {
+      "sentence_first": "Asnwer all your questions.",
+      "sentence_second": "Just ask me anything you like!",
+    },
+    {
+      "sentence_first": "Generate all the text you want.",
+      "sentence_second": "(essays, articles, reports, stories, & more)",
+    },
+    {
+      "sentence_first": "Conversational AI.",
+      "sentence_second": "(I can talk to you like a natural human)",
+    },
+  ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ChatViewModel viewModel) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -117,6 +134,20 @@ class ChatUI extends StatelessWidget {
             height: height,
             text: buttonText,
             elevation: true,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustomChatView(
+                    title: title,
+                    showIcon: true,
+                    capabilites: capabilites,
+                    capabilitiesTitle: capabilitesTitle,
+                    navigationService: viewModel.navigationService,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
