@@ -147,6 +147,7 @@ class _AuthFields extends ViewModelWidget<LoginViewModel> {
           hintText: emailText,
           icon: IconsPath.email,
           iconSize: width * 0.06,
+          showIcon: true,
           onPressed: () {},
         ),
         // For Spacing
@@ -158,6 +159,7 @@ class _AuthFields extends ViewModelWidget<LoginViewModel> {
           title: passwordText,
           hintText: passwordText,
           obscureText: !viewModel.isShow,
+          showIcon: true,
           icon: viewModel.isShow ? IconsPath.darkMode : IconsPath.unshow,
           iconSize: viewModel.isShow ? width * 0.09 : width * 0.06,
           onPressed: () {

@@ -1,26 +1,30 @@
 import 'package:chatty_ai/Constants/app_colors.dart';
+import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  final String title, hintText, icon;
+  final String title, hintText;
+  final String? icon;
   final VoidCallback? onPressed;
   final Color? iconColor;
   final TextEditingController? controller;
   final String? Function(String? value)? validate;
   final double? iconSize;
   final bool? obscureText;
+  final bool showIcon;
   const CustomTextFormField(
       {super.key,
       required this.title,
       required this.hintText,
-      required this.icon,
+      this.icon,
       this.onPressed,
       this.iconColor,
       this.controller,
       this.validate,
       this.iconSize,
-      this.obscureText});
+      this.obscureText,
+      required this.showIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -73,20 +77,22 @@ class CustomTextFormField extends StatelessWidget {
                   width: width * 0.005,
                 ),
               ),
-              suffixIcon: UnconstrainedBox(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(width),
-                  onTap: onPressed,
-                  child: SvgPicture.asset(
-                    icon,
-                    colorFilter: ColorFilter.mode(
-                      iconColor ?? AppColors.primary,
-                      BlendMode.srcIn,
-                    ),
-                    width: iconSize ?? width * 0.09,
-                  ),
-                ),
-              ),
+              suffixIcon: showIcon
+                  ? UnconstrainedBox(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(width),
+                        onTap: onPressed,
+                        child: SvgPicture.asset(
+                          icon ?? IconsPath.darkMode,
+                          colorFilter: ColorFilter.mode(
+                            iconColor ?? AppColors.primary,
+                            BlendMode.srcIn,
+                          ),
+                          width: iconSize ?? width * 0.09,
+                        ),
+                      ),
+                    )
+                  : const Spacer(),
             ),
             validator: (value) {
               return validate != null ? validate!(value) : null;

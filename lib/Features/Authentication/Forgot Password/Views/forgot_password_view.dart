@@ -117,6 +117,7 @@ class _AuthFields extends ViewModelWidget<ForgotPasswordViewModel> {
       hintText: emailText,
       icon: IconsPath.email,
       iconSize: width * 0.06,
+      showIcon: true,
       onPressed: () {},
     );
   }
