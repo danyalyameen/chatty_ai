@@ -26,4 +26,6 @@ class IconsPath {
   static const String unshow = "assets/Auth Icons/unshow.svg";
   static const String send = "assets/Arrows/send.svg";
   static const String downArrow = "assets/Arrows/down_arrow.svg";
+  static const String camera = "assets/Others/camera.svg";
+  static const String gallery = "assets/Others/gallery.svg";
 }

@@ -56,6 +56,11 @@ class CustomDropDown extends StatelessWidget {
             ),
           ),
           inputDecorationTheme: InputDecorationTheme(
+            hintStyle: TextStyle(
+              color: AppColors.black60,
+              fontSize: width * 0.045,
+              fontWeight: FontWeight.w700,
+            ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.primary,

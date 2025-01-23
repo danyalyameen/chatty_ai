@@ -5,13 +5,13 @@ import 'package:flutter_svg/svg.dart';
 
 class CustomDatePicker extends StatefulWidget {
   final double width, height;
-  final String title, hintText;
-  const CustomDatePicker(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.title,
-      required this.hintText});
+  final String title;
+  const CustomDatePicker({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.title,
+  });
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -53,7 +53,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${date ?? widget.hintText}",
+                      "${date?.month ?? "MM"}/${date?.day ?? "DD"}/${date?.year ?? "YYYY"} ",
                       style: TextStyle(
                         color: date != null
                             ? AppColors.primaryBlack

@@ -3,6 +3,7 @@ import 'package:chatty_ai/Features/Authentication/Complete%20Profile/complete_pr
 import 'package:chatty_ai/Widgets/custom_date_picker.dart';
 import 'package:chatty_ai/Widgets/custom_drop_down.dart';
 import 'package:chatty_ai/Widgets/custom_elevated_button.dart';
+import 'package:chatty_ai/Widgets/custom_image_picker.dart';
 import 'package:chatty_ai/Widgets/custom_text_form_field.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
   const CompleteProfileView({super.key});
 
   final String title = "Complete Profile";
+  final String continueText = "Continue";
 
   @override
   Widget builder(
@@ -19,36 +21,44 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
     final double width = MediaQuery.sizeOf(context).width;
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.primaryLight,
       appBar: whiteAppBar(backArrow: true, title: title, width: width),
       body: Column(
         children: [
+          // Main Headings
           _Titles(
             width: width,
             height: height,
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.02,
           ),
+          // User Image
           _UserImage(
             width: width,
             height: height,
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.04,
           ),
+          // User Input Fields like Drop Dwn
           _InputFields(
             width: width,
             height: height,
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.04,
           ),
+          // Button
           CustomElevatedButton(
             width: width * 0.94,
-            text: "Continue",
             height: height,
             elevation: true,
+            text: continueText,
           ),
         ],
       ),
@@ -75,6 +85,7 @@ class _Titles extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Main Title
           Text(
             title,
             style: TextStyle(
@@ -83,9 +94,11 @@ class _Titles extends StatelessWidget {
               fontWeight: FontWeight.w900,
             ),
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.015,
           ),
+          // Main Description
           Text(
             description,
             style: TextStyle(
@@ -106,45 +119,58 @@ class _UserImage extends ViewModelWidget<CompleteProfileViewModel> {
   @override
   Widget build(BuildContext context, CompleteProfileViewModel viewModel) {
     return UnconstrainedBox(
-      child: SizedBox(
-        width: width * 0.35,
-        height: width * 0.35,
-        child: Stack(
-          children: [
-            Center(
-              child: CircleAvatar(
-                radius: width * 0.18,
-                backgroundColor: AppColors.grey60,
-                child: Padding(
-                  padding: EdgeInsets.only(top: height * 0.026),
-                  child: ClipOval(
-                    child: Icon(
-                      Icons.person,
-                      size: width * 0.35,
-                      color: AppColors.grey80,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(width),
+        onTap: () {
+          // Show Bottom Sheet for pick Image
+          ShowBottomSheetForImportImages.bottomSheet(
+            context: context,
+            width: width,
+            height: height,
+          );
+        },
+        child: SizedBox(
+          width: width * 0.35,
+          height: width * 0.35,
+          child: Stack(
+            children: [
+              // Circle Background
+              Center(
+                child: CircleAvatar(
+                  radius: width * 0.18,
+                  backgroundColor: AppColors.grey60,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: height * 0.026),
+                    child: ClipOval(
+                      child: Icon(
+                        Icons.person,
+                        size: width * 0.35,
+                        color: AppColors.grey80,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: height * 0.005,
-              right: width * 0.02,
-              child: Container(
-                width: width * 0.07,
-                height: width * 0.07,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(width * 0.03),
-                  color: AppColors.primary,
-                ),
-                child: Icon(
-                  Icons.edit,
-                  size: width * 0.05,
-                  color: AppColors.primaryLight,
+              // User Image
+              Positioned(
+                bottom: height * 0.005,
+                right: width * 0.02,
+                child: Container(
+                  width: width * 0.07,
+                  height: width * 0.07,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(width * 0.03),
+                    color: AppColors.primary,
+                  ),
+                  child: Icon(
+                    Icons.edit,
+                    size: width * 0.05,
+                    color: AppColors.primaryLight,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -156,36 +182,42 @@ class _InputFields extends ViewModelWidget<CompleteProfileViewModel> {
   _InputFields({required this.width, required this.height});
 
   final String textFieldText = "Full Name";
+  final String dropDownText = "Gender";
+  final String datePickerTitle = "Date of Birth";
   final List<String> items = ["Male", "Female"];
 
   @override
   Widget build(BuildContext context, CompleteProfileViewModel viewModel) {
     return Column(
       children: [
+        // Name Text Field
         CustomTextFormField(
+          showIcon: false,
           title: textFieldText,
           hintText: textFieldText,
-          showIcon: false,
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.04,
         ),
+        // Drop Down
         CustomDropDown(
           width: width,
           height: height,
-          title: "Gender",
-          hintText: "Gender",
+          title: dropDownText,
+          hintText: dropDownText,
           controller: viewModel.genderController,
           items: items,
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.04,
         ),
+        // Date Picker for Date of Birth
         CustomDatePicker(
           width: width,
           height: height,
-          title: "Date of Birth",
-          hintText: "MM/DD/YYYY",
+          title: datePickerTitle,
         ),
       ],
     );
