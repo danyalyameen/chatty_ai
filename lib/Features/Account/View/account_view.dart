@@ -1,6 +1,9 @@
+import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Constants/images_path.dart';
+import 'package:chatty_ai/Features/Account/Attach%20Views/Profile%20Info/Views/profile_info.dart';
+import 'package:chatty_ai/Features/Account/Attach%20Views/Security/Views/security_view.dart';
 import 'package:chatty_ai/Features/Account/View/account_view_model.dart';
 import 'package:chatty_ai/Widgets/custom_bottom_sheet.dart';
 import 'package:chatty_ai/Widgets/custom_switch_tile.dart';
@@ -41,7 +44,7 @@ class AccountView extends StackedView<AccountViewModel> {
   AccountViewModel viewModelBuilder(BuildContext context) => AccountViewModel();
 }
 
-class _Profile extends StatelessWidget {
+class _Profile extends ViewModelWidget<AccountViewModel> {
   final double width, height;
   const _Profile({required this.width, required this.height});
 
@@ -49,10 +52,11 @@ class _Profile extends StatelessWidget {
   final String userEmail = "andrewainslay@gmail.com";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, AccountViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(top: height * 0.01),
       child: InkWell(
+        onTap: () => viewModel.navigationService.navigateToProfileInfo(),
         child: Container(
           width: width * 0.9,
           height: height * 0.12,
@@ -153,6 +157,10 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
     IconsPath.accountOutline,
     IconsPath.security,
   ];
+  final List navigationViews = [
+    ProfileInfo(),
+    SecurityView(),
+  ];
   final List<String> titles = ["Personal Info", "Security"];
   final String logoutTitle = "Logout";
   final String bottomSheetTitle = "Logout";
@@ -197,33 +205,37 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
             child: ListView.builder(
               itemCount: icons.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.all(width * 0.02),
-                  child: Row(
-                    children: [
-                      // Icon
-                      Center(
-                        child:
-                            SvgPicture.asset(icons[index], width: width * 0.06),
-                      ),
-                      // For Spacing
-                      SizedBox(
-                        width: width * 0.05,
-                      ),
-                      // Title
-                      Text(
-                        titles[index],
-                        style: TextStyle(
-                          color: AppColors.primaryBlack,
-                          fontSize: width * 0.045,
-                          fontWeight: FontWeight.w700,
+                return InkWell(
+                  onTap: () => viewModel.navigationService
+                      .navigateToView(navigationViews[index]),
+                  child: Padding(
+                    padding: EdgeInsets.all(width * 0.02),
+                    child: Row(
+                      children: [
+                        // Icon
+                        Center(
+                          child: SvgPicture.asset(icons[index],
+                              width: width * 0.06),
                         ),
-                      ),
-                      // For Spacing
-                      const Spacer(),
-                      // Right Arrow
-                      SvgPicture.asset(IconsPath.rightArrow),
-                    ],
+                        // For Spacing
+                        SizedBox(
+                          width: width * 0.05,
+                        ),
+                        // Title
+                        Text(
+                          titles[index],
+                          style: TextStyle(
+                            color: AppColors.primaryBlack,
+                            fontSize: width * 0.045,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        // For Spacing
+                        const Spacer(),
+                        // Right Arrow
+                        SvgPicture.asset(IconsPath.rightArrow),
+                      ],
+                    ),
                   ),
                 );
               },

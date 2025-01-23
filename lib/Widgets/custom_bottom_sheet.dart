@@ -73,7 +73,7 @@ class CustomBottomSheet {
                     width: width * 0.25,
                     height: height * 0.06,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.pop(context),
                       style: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(
                           AppColors.primary20,

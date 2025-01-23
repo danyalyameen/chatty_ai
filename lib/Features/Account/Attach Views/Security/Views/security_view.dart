@@ -1,3 +1,4 @@
+import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Features/Account/Attach%20Views/Security/Views/security_view_model.dart';
 import 'package:chatty_ai/Widgets/custom_elevated_button.dart';
@@ -69,6 +70,8 @@ class SecurityView extends StackedView<SecurityViewModel> {
               elevation: false,
               textColor: AppColors.primary,
               backgroundColor: AppColors.primary20,
+              onPressed: () =>
+                  viewModel.navigationService.navigateToForgotPasswordView(title: "Reset Password"),
             ),
           ],
         ),

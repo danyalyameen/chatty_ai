@@ -1,3 +1,4 @@
+import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Authentication/Sign%20up/Views/sign_up_view_model.dart';
@@ -22,7 +23,12 @@ class SignUpView extends StackedView<SignUpViewModel> {
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
-      appBar: whiteAppBar(backArrow: true, title: title, width: width),
+      appBar: whiteAppBar(
+        backArrow: true,
+        title: title,
+        width: width,
+        navigationService: viewModel.navigationService,
+      ),
       body: Padding(
         padding: EdgeInsets.only(
             left: width * 0.05, top: height * 0.02, right: width * 0.05),
@@ -80,6 +86,8 @@ class SignUpView extends StackedView<SignUpViewModel> {
               text: buttonText,
               height: height,
               elevation: true,
+              onPressed: () =>
+                  viewModel.navigationService.replaceWithCompleteProfileView(),
             ),
           ],
         ),
@@ -232,7 +240,7 @@ class _PrivacyPolicy extends ViewModelWidget<SignUpViewModel> {
   }
 }
 
-class _AlreadyAccount extends StatelessWidget {
+class _AlreadyAccount extends ViewModelWidget<SignUpViewModel> {
   final double width, height;
   const _AlreadyAccount({required this.width, required this.height});
 
@@ -240,7 +248,7 @@ class _AlreadyAccount extends StatelessWidget {
   final String loginText = "Log in";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, SignUpViewModel viewModel) {
     return Column(
       children: [
         // Line
@@ -268,7 +276,7 @@ class _AlreadyAccount extends StatelessWidget {
             ),
             // Login Text
             InkWell(
-              onTap: () {},
+              onTap: () => viewModel.navigationService.navigateToLoginView(),
               child: Text(
                 loginText,
                 style: TextStyle(

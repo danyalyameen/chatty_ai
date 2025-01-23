@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class ForgotPasswordView extends StackedView<ForgotPasswordViewModel> {
-  const ForgotPasswordView({super.key});
+  final String title;
+  const ForgotPasswordView({required this.title, super.key});
 
-  final String title = "Forgot Password";
   final String buttonText = "Continue";
 
   @override
@@ -21,7 +21,12 @@ class ForgotPasswordView extends StackedView<ForgotPasswordViewModel> {
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
-      appBar: whiteAppBar(backArrow: true, title: title, width: width),
+      appBar: whiteAppBar(
+        backArrow: true,
+        title: title,
+        width: width,
+        navigationService: viewModel.navigationService,
+      ),
       body: Padding(
         padding: EdgeInsets.only(
             left: width * 0.05, top: height * 0.04, right: width * 0.05),
@@ -52,6 +57,7 @@ class ForgotPasswordView extends StackedView<ForgotPasswordViewModel> {
               text: buttonText,
               height: height,
               elevation: true,
+              onPressed: () => viewModel.navigationService.back(),
             ),
           ],
         ),

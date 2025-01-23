@@ -1,3 +1,4 @@
+import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Authentication/Log%20in/Views/login_view_model.dart';
@@ -22,7 +23,12 @@ class LoginView extends StackedView<LoginViewModel> {
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
-      appBar: whiteAppBar(backArrow: true, title: title, width: width),
+      appBar: whiteAppBar(
+        backArrow: true,
+        title: title,
+        width: width,
+        navigationService: viewModel.navigationService,
+      ),
       body: Padding(
         padding: EdgeInsets.only(
             left: width * 0.05, top: height * 0.02, right: width * 0.05),
@@ -80,6 +86,8 @@ class LoginView extends StackedView<LoginViewModel> {
               text: buttonText,
               height: height,
               elevation: true,
+              onPressed: () =>
+                  viewModel.navigationService.replaceWithChatView(),
             ),
           ],
         ),
@@ -212,15 +220,16 @@ class _RememberMe extends ViewModelWidget<LoginViewModel> {
   }
 }
 
-class _NoHaveAccount extends StatelessWidget {
+class _NoHaveAccount extends ViewModelWidget<LoginViewModel> {
   final double width, height;
   const _NoHaveAccount({required this.width, required this.height});
 
+  final String forgotPasswordText = "Forgot Password?";
   final String title = "Don't have an account? ";
   final String signUpText = "Sign up";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, LoginViewModel viewModel) {
     return Column(
       children: [
         // Line
@@ -231,7 +240,23 @@ class _NoHaveAccount extends StatelessWidget {
         ),
         // For Spacing
         SizedBox(
-          height: height * 0.03,
+          height: height * 0.02,
+        ),
+        InkWell(
+          onTap: () =>
+              viewModel.navigationService.navigateToForgotPasswordView(title: "Forgot Password"),
+          child: Text(
+            forgotPasswordText,
+            style: TextStyle(
+              color: AppColors.primary,
+              fontSize: width * 0.045,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+        // For Spacing
+        SizedBox(
+          height: height * 0.02,
         ),
         // Texts
         Row(
@@ -248,7 +273,7 @@ class _NoHaveAccount extends StatelessWidget {
             ),
             // Login Text
             InkWell(
-              onTap: () {},
+              onTap: () => viewModel.navigationService.navigateToSignUpView(),
               child: Text(
                 signUpText,
                 style: TextStyle(

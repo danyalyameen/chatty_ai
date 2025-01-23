@@ -222,8 +222,8 @@ class _InputFieldState extends State<_InputField> {
                   scale: widget.width * 0.007,
                   child: Padding(
                     padding: EdgeInsets.only(
-                        bottom: widget.height * 0.0008,
-                        left: widget.width * 0.008),
+                      left: widget.width * 0.008,
+                    ),
                     child: SvgPicture.asset(
                       IconsPath.send,
                       width: widget.width * 0.08,

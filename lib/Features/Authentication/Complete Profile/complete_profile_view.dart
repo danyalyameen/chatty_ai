@@ -1,3 +1,4 @@
+import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Features/Authentication/Complete%20Profile/complete_profile_view_model.dart';
 import 'package:chatty_ai/Widgets/custom_date_picker.dart';
@@ -59,6 +60,7 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
             height: height,
             elevation: true,
             text: continueText,
+            onPressed: () => viewModel.navigationService.replaceWithChatView(),
           ),
         ],
       ),
@@ -151,7 +153,7 @@ class _UserImage extends ViewModelWidget<CompleteProfileViewModel> {
                   ),
                 ),
               ),
-              // User Image
+              // Edit Icon
               Positioned(
                 bottom: height * 0.005,
                 right: width * 0.02,

@@ -18,7 +18,7 @@ class SplashView extends StackedView<SplashViewModel> {
     // Timer
     await Future.delayed(const Duration(seconds: 3));
     // Navigation
-    viewModel.navigationService.replaceWithChatView();
+    viewModel.navigationService.replaceWithChooseAuthView();
   }
 
   @override

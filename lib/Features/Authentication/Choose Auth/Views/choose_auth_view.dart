@@ -1,3 +1,4 @@
+import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Authentication/Choose%20Auth/Views/choose_auth_view_model.dart';
@@ -52,7 +53,7 @@ class ChooseAuthView extends StackedView<ChooseAuthViewModel> {
       ChooseAuthViewModel();
 }
 
-class _AuthMethods extends StatelessWidget {
+class _AuthMethods extends ViewModelWidget<ChooseAuthViewModel> {
   final double width, height;
   const _AuthMethods({required this.width, required this.height});
 
@@ -62,7 +63,7 @@ class _AuthMethods extends StatelessWidget {
   final String signUp = "Sign up";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ChooseAuthViewModel viewModel) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -102,6 +103,7 @@ class _AuthMethods extends StatelessWidget {
           text: login,
           height: height,
           elevation: false,
+          onPressed: () => viewModel.navigationService.navigateToLoginView(),
         ),
         // For Spacing
         SizedBox(
@@ -115,6 +117,7 @@ class _AuthMethods extends StatelessWidget {
           elevation: false,
           backgroundColor: AppColors.primary60,
           textColor: AppColors.primary,
+          onPressed: () => viewModel.navigationService.navigateToSignUpView(),
         ),
       ],
     );
