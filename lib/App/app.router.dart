@@ -24,11 +24,12 @@ import 'package:chatty_ai/Features/Authentication/Sign%20up/Views/sign_up_view.d
     as _i6;
 import 'package:chatty_ai/Features/Authentication/Splash/Views/splash_view.dart'
     as _i2;
+import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view.dart'
+    as _i9;
 import 'package:chatty_ai/Features/Chat/Views/chat_view.dart' as _i8;
 import 'package:chatty_ai/Features/History/Attach%20Views/Search/Views/search_view.dart'
     as _i12;
 import 'package:chatty_ai/Features/History/Views/history_view.dart' as _i11;
-import 'package:chatty_ai/Widgets/custom_chat_view.dart' as _i9;
 import 'package:flutter/material.dart' as _i16;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
@@ -192,10 +193,9 @@ class StackedRouter extends _i1.RouterBase {
         builder: (context) => _i9.CustomChatView(
             key: args.key,
             title: args.title,
-            navigationService: args.navigationService,
             capabilitiesTitle: args.capabilitiesTitle,
             capabilites: args.capabilites,
-            showIcon: args.showIcon),
+            showLogo: args.showLogo),
         settings: data,
       );
     },
@@ -275,27 +275,24 @@ class CustomChatViewArguments {
   const CustomChatViewArguments({
     this.key,
     required this.title,
-    required this.navigationService,
     required this.capabilitiesTitle,
     required this.capabilites,
-    required this.showIcon,
+    required this.showLogo,
   });
 
   final _i16.Key? key;
 
   final String title;
 
-  final _i17.NavigationService navigationService;
-
   final String capabilitiesTitle;
 
   final List<Map<String, String>> capabilites;
 
-  final bool showIcon;
+  final bool showLogo;
 
   @override
   String toString() {
-    return '{"key": "$key", "title": "$title", "navigationService": "$navigationService", "capabilitiesTitle": "$capabilitiesTitle", "capabilites": "$capabilites", "showIcon": "$showIcon"}';
+    return '{"key": "$key", "title": "$title", "capabilitiesTitle": "$capabilitiesTitle", "capabilites": "$capabilites", "showLogo": "$showLogo"}';
   }
 
   @override
@@ -303,20 +300,18 @@ class CustomChatViewArguments {
     if (identical(this, other)) return true;
     return other.key == key &&
         other.title == title &&
-        other.navigationService == navigationService &&
         other.capabilitiesTitle == capabilitiesTitle &&
         other.capabilites == capabilites &&
-        other.showIcon == showIcon;
+        other.showLogo == showLogo;
   }
 
   @override
   int get hashCode {
     return key.hashCode ^
         title.hashCode ^
-        navigationService.hashCode ^
         capabilitiesTitle.hashCode ^
         capabilites.hashCode ^
-        showIcon.hashCode;
+        showLogo.hashCode;
   }
 }
 
@@ -425,10 +420,9 @@ extension NavigatorStateExtension on _i17.NavigationService {
   Future<dynamic> navigateToCustomChatView({
     _i16.Key? key,
     required String title,
-    required _i17.NavigationService navigationService,
     required String capabilitiesTitle,
     required List<Map<String, String>> capabilites,
-    required bool showIcon,
+    required bool showLogo,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -439,10 +433,9 @@ extension NavigatorStateExtension on _i17.NavigationService {
         arguments: CustomChatViewArguments(
             key: key,
             title: title,
-            navigationService: navigationService,
             capabilitiesTitle: capabilitiesTitle,
             capabilites: capabilites,
-            showIcon: showIcon),
+            showLogo: showLogo),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -637,10 +630,9 @@ extension NavigatorStateExtension on _i17.NavigationService {
   Future<dynamic> replaceWithCustomChatView({
     _i16.Key? key,
     required String title,
-    required _i17.NavigationService navigationService,
     required String capabilitiesTitle,
     required List<Map<String, String>> capabilites,
-    required bool showIcon,
+    required bool showLogo,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -651,10 +643,9 @@ extension NavigatorStateExtension on _i17.NavigationService {
         arguments: CustomChatViewArguments(
             key: key,
             title: title,
-            navigationService: navigationService,
             capabilitiesTitle: capabilitiesTitle,
             capabilites: capabilites,
-            showIcon: showIcon),
+            showLogo: showLogo),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

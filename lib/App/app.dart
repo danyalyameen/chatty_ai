@@ -8,10 +8,11 @@ import 'package:chatty_ai/Features/Authentication/Forgot%20Password/Views/forgot
 import 'package:chatty_ai/Features/Authentication/Log%20in/Views/login_view.dart';
 import 'package:chatty_ai/Features/Authentication/Sign%20up/Views/sign_up_view.dart';
 import 'package:chatty_ai/Features/Authentication/Splash/Views/splash_view.dart';
+import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view.dart';
 import 'package:chatty_ai/Features/Chat/Views/chat_view.dart';
 import 'package:chatty_ai/Features/History/Attach%20Views/Search/Views/search_view.dart';
 import 'package:chatty_ai/Features/History/Views/history_view.dart';
-import 'package:chatty_ai/Widgets/custom_chat_view.dart';
+import 'package:chatty_ai/Services/API%20Service/api_service.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -34,6 +35,7 @@ import 'package:stacked_services/stacked_services.dart';
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
+    LazySingleton(classType: ApiService),
   ],
 )
 class App {}

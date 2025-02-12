@@ -243,8 +243,8 @@ class _NoHaveAccount extends ViewModelWidget<LoginViewModel> {
           height: height * 0.02,
         ),
         InkWell(
-          onTap: () =>
-              viewModel.navigationService.navigateToForgotPasswordView(title: "Forgot Password"),
+          onTap: () => viewModel.navigationService
+              .navigateToForgotPasswordView(title: "Forgot Password"),
           child: Text(
             forgotPasswordText,
             style: TextStyle(

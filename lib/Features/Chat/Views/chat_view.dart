@@ -1,7 +1,7 @@
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
+import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view.dart';
 import 'package:chatty_ai/Features/Chat/Views/chat_view_model.dart';
-import 'package:chatty_ai/Widgets/custom_chat_view.dart';
 import 'package:chatty_ai/Widgets/custom_elevated_button.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -134,16 +134,15 @@ class ChatUI extends ViewModelWidget<ChatViewModel> {
             height: height,
             text: buttonText,
             elevation: true,
-            onPressed: () {
+            onPressed: () async {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => CustomChatView(
                     title: title,
-                    showIcon: true,
+                    showLogo: true,
                     capabilites: capabilites,
                     capabilitiesTitle: capabilitesTitle,
-                    navigationService: viewModel.navigationService,
                   ),
                 ),
               );

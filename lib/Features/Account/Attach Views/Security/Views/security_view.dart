@@ -70,8 +70,8 @@ class SecurityView extends StackedView<SecurityViewModel> {
               elevation: false,
               textColor: AppColors.primary,
               backgroundColor: AppColors.primary20,
-              onPressed: () =>
-                  viewModel.navigationService.navigateToForgotPasswordView(title: "Reset Password"),
+              onPressed: () => viewModel.navigationService
+                  .navigateToForgotPasswordView(title: "Reset Password"),
             ),
           ],
         ),
