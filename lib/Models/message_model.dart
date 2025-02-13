@@ -1,18 +1,18 @@
 class MessageModel {
-  String? prompt;
-  String? answer;
+  String? text;
+  bool? isUser;
 
-  MessageModel({this.prompt, this.answer});
+  MessageModel({this.text, this.isUser});
 
   MessageModel.store(Map<String, dynamic> json) {
-    prompt = json['prompt'];
-    answer = json['answer'];
+    text = json['text'];
+    isUser = json['isUser'];
   }
 
   Map<String, dynamic> receive() {
     final Map<String, dynamic> data = {};
-    data['prompt'] = prompt;
-    data['answer'] = answer;
+    data['text'] = text;
+    data['isUser'] = isUser;
     return data;
   }
 }

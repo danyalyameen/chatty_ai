@@ -5,17 +5,25 @@ import 'package:flutter/material.dart';
 
 class CustomChatViewModel extends ViewModel {
   // Final Fields
-  final TextEditingController _chatController = TextEditingController();
-  // Get Final Fields
-  TextEditingController get chatController => _chatController;
+  ValueNotifier<TextEditingController> chatController =
+      ValueNotifier(TextEditingController());
   // Non Final Fields
   List<MessageModel> messages = [];
+  bool askPrompt = false;
+  String prompt = "";
 
-  Future<String> startChat() async {
-    ApiModel apiModel =
-        await apiService.askQuestion(prompt: _chatController.text);
-    _chatController.clear();
-    notifyListeners();
-    return apiModel.choices![0].message!.content!;
+  void startChat()async {
+    if (chatController.value.text.isNotEmpty) {
+      prompt = chatController.value.text;
+      askPrompt = true;
+      chatController.value.clear();
+      messages.add(MessageModel(
+        text: chatController.value.text,
+        isUser: true,
+      ),);
+      notifyListeners();
+          ApiModel chat = await apiService.askQuestion(prompt: prompt);
+      messages.add(MessageModel(text: chat.choices![0].message!.content, isUser: false,));
+    }
   }
 }
