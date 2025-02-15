@@ -12,19 +12,22 @@ import 'package:stacked/stacked.dart';
 class LoginView extends StackedView<LoginViewModel> {
   const LoginView({super.key});
 
+  // Variables
   final String title = "Login";
   final String buttonText = "Continue";
 
   @override
   Widget builder(
       BuildContext context, LoginViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
       appBar: whiteAppBar(
-        backArrow: true,
+        backArrow: false,
+        showLogo: false,
         title: title,
         width: width,
         navigationService: viewModel.navigationService,
@@ -51,15 +54,6 @@ class LoginView extends StackedView<LoginViewModel> {
             ),
             // For Spacing
             SizedBox(
-              height: height * 0.02,
-            ),
-            // Privacy Policies
-            _RememberMe(
-              width: width,
-              height: height,
-            ),
-            // For Spacing
-            SizedBox(
               height: height * 0.04,
             ),
             // Log in Navigation
@@ -75,6 +69,7 @@ class LoginView extends StackedView<LoginViewModel> {
             _OtherAuthMethods(
               width: width,
               height: height,
+              googleAuth: () => viewModel.authService.googleAuth(),
             ),
             // For Spacing
             SizedBox(
@@ -84,10 +79,10 @@ class LoginView extends StackedView<LoginViewModel> {
             CustomElevatedButton(
               width: width,
               text: buttonText,
+              isLoading: viewModel.showLoading,
               height: height,
               elevation: true,
-              onPressed: () =>
-                  viewModel.navigationService.replaceWithChatView(),
+              onPressed: () => viewModel.continueButtonFunction(),
             ),
           ],
         ),
@@ -103,6 +98,7 @@ class _LoginTexts extends StatelessWidget {
   final double width, height;
   const _LoginTexts({required this.width, required this.height});
 
+  // Variables
   final String title = "Welcome back 👋";
   final String description = "Please enter your email & password to log in.";
 
@@ -142,80 +138,47 @@ class _AuthFields extends ViewModelWidget<LoginViewModel> {
   final double width, height;
   const _AuthFields({required this.width, required this.height});
 
+  // Variables
   final String emailText = "Email";
   final String passwordText = "Password";
 
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) {
-    return Column(
-      children: [
-        // Email
-        CustomTextFormField(
-          title: emailText,
-          hintText: emailText,
-          icon: IconsPath.email,
-          iconSize: width * 0.06,
-          showIcon: true,
-          onPressed: () {},
-        ),
-        // For Spacing
-        SizedBox(
-          height: height * 0.03,
-        ),
-        // Password
-        CustomTextFormField(
-          title: passwordText,
-          hintText: passwordText,
-          obscureText: !viewModel.isShow,
-          showIcon: true,
-          icon: viewModel.isShow ? IconsPath.darkMode : IconsPath.unshow,
-          iconSize: viewModel.isShow ? width * 0.09 : width * 0.06,
-          onPressed: () {
-            viewModel.iconToggle();
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _RememberMe extends ViewModelWidget<LoginViewModel> {
-  final double width, height;
-  const _RememberMe({required this.width, required this.height});
-
-  final title = "Remember me";
-
-  @override
-  Widget build(BuildContext context, LoginViewModel viewModel) {
-    return Row(
-      children: [
-        // To Adjust Size of Check Box
-        Transform.scale(
-          scale: width * 0.0035,
-          alignment: Alignment.centerRight,
-          child: Checkbox(
-            value: viewModel.isCheck,
-            onChanged: (value) => viewModel.checkToggle(value),
-            activeColor: AppColors.primary,
-            side: BorderSide(
-              color: AppColors.primary,
-              width: width * 0.004,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(width * 0.013),
-            ),
+    return Form(
+      key: viewModel.formKey,
+      child: Column(
+        children: [
+          // Email
+          CustomTextFormField(
+            controller: viewModel.emailController,
+            title: emailText,
+            hintText: emailText,
+            icon: IconsPath.email,
+            iconSize: width * 0.06,
+            showIcon: true,
+            onPressed: () {},
+            validate: (value) => viewModel.validateEmail(value),
           ),
-        ),
-        // Remember Me Text
-        Text(
-          title,
-          style: TextStyle(
-            color: AppColors.primaryBlack,
-            fontSize: width * 0.04,
-            fontWeight: FontWeight.w600,
+          // For Spacing
+          SizedBox(
+            height: height * 0.03,
           ),
-        ),
-      ],
+          // Password
+          CustomTextFormField(
+            controller: viewModel.passwordController,
+            title: passwordText,
+            hintText: passwordText,
+            obscureText: !viewModel.isShow,
+            showIcon: true,
+            icon: viewModel.isShow ? IconsPath.darkMode : IconsPath.unshow,
+            iconSize: viewModel.isShow ? width * 0.09 : width * 0.06,
+            validate: (value) => viewModel.validatePassword(value),
+            onPressed: () {
+              viewModel.iconToggle();
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -224,6 +187,7 @@ class _NoHaveAccount extends ViewModelWidget<LoginViewModel> {
   final double width, height;
   const _NoHaveAccount({required this.width, required this.height});
 
+  // Variables
   final String forgotPasswordText = "Forgot Password?";
   final String title = "Don't have an account? ";
   final String signUpText = "Sign up";
@@ -273,7 +237,7 @@ class _NoHaveAccount extends ViewModelWidget<LoginViewModel> {
             ),
             // Login Text
             InkWell(
-              onTap: () => viewModel.navigationService.navigateToSignUpView(),
+              onTap: () => viewModel.navigationService.replaceWithSignUpView(),
               child: Text(
                 signUpText,
                 style: TextStyle(
@@ -292,12 +256,11 @@ class _NoHaveAccount extends ViewModelWidget<LoginViewModel> {
 
 class _OtherAuthMethods extends StatelessWidget {
   final double width, height;
-  _OtherAuthMethods({required this.width, required this.height});
+  final void Function() googleAuth;
+  const _OtherAuthMethods(
+      {required this.width, required this.height, required this.googleAuth});
 
-  final List<String> icons = [
-    IconsPath.google,
-    IconsPath.facebook,
-  ];
+  // Variables
   final String title = "or continue with";
 
   @override
@@ -342,31 +305,44 @@ class _OtherAuthMethods extends StatelessWidget {
         SizedBox(
           height: height * 0.05,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(
-            icons.length,
-            (index) {
-              // Border of Icons
-              return Container(
-                width: width * 0.4,
-                height: height * 0.06,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColors.primaryBlack,
-                    width: width * 0.001,
-                  ),
-                  borderRadius: BorderRadius.circular(width),
-                ),
-                // Icon
-                child: UnconstrainedBox(
-                  child: SvgPicture.asset(
-                    icons[index],
+        InkWell(
+          onTap: () => googleAuth(),
+          borderRadius: BorderRadius.circular(width),
+          child: Container(
+            width: width * 0.9,
+            height: height * 0.065,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.primaryBlack,
+                width: width * 0.001,
+              ),
+              borderRadius: BorderRadius.circular(width),
+            ),
+            // Icon
+            child: UnconstrainedBox(
+              child: Row(
+                children: [
+                  // Icon
+                  SvgPicture.asset(
+                    IconsPath.google,
                     width: width * 0.07,
                   ),
-                ),
-              );
-            },
+                  // For Spacing
+                  SizedBox(
+                    width: width * 0.03,
+                  ),
+                  // Google Text
+                  Text(
+                    "Continue with Google",
+                    style: TextStyle(
+                      color: AppColors.primaryBlack,
+                      fontSize: width * 0.05,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ],

@@ -13,6 +13,7 @@ class ChooseAuthView extends StackedView<ChooseAuthViewModel> {
   @override
   Widget builder(
       BuildContext context, ChooseAuthViewModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -42,6 +43,7 @@ class ChooseAuthView extends StackedView<ChooseAuthViewModel> {
           _OtherAuthMethods(
             width: width,
             height: height,
+            googleAuth: () => viewModel.authService.googleAuth(),
           ),
         ],
       ),
@@ -57,6 +59,7 @@ class _AuthMethods extends ViewModelWidget<ChooseAuthViewModel> {
   final double width, height;
   const _AuthMethods({required this.width, required this.height});
 
+  // Variables
   final String title = "Welcome to";
   final String appName = "Chatty AI 👋";
   final String login = "Log in";
@@ -128,6 +131,7 @@ class _Dividing extends StatelessWidget {
   final double width, height;
   const _Dividing({required this.width, required this.height});
 
+  // Variables
   final String title = "or continue with";
 
   @override
@@ -174,40 +178,50 @@ class _Dividing extends StatelessWidget {
 
 class _OtherAuthMethods extends StatelessWidget {
   final double width, height;
-  _OtherAuthMethods({required this.width, required this.height});
-
-  final List<String> icons = [
-    IconsPath.google,
-    IconsPath.facebook,
-  ];
+  final void Function() googleAuth;
+  const _OtherAuthMethods(
+      {required this.width, required this.height, required this.googleAuth});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(
-        icons.length,
-        (index) {
-          // Border of Icons
-          return Container(
-            width: width * 0.4,
-            height: height * 0.06,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.primaryBlack,
-                width: width * 0.001,
-              ),
-              borderRadius: BorderRadius.circular(width),
-            ),
-            // Icon
-            child: UnconstrainedBox(
-              child: SvgPicture.asset(
-                icons[index],
+    return InkWell(
+      onTap: () => googleAuth(),
+      borderRadius: BorderRadius.circular(width),
+      child: Container(
+        width: width * 0.9,
+        height: height * 0.065,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: AppColors.primaryBlack,
+            width: width * 0.001,
+          ),
+          borderRadius: BorderRadius.circular(width),
+        ),
+        // Icon
+        child: UnconstrainedBox(
+          child: Row(
+            children: [
+              // Icon
+              SvgPicture.asset(
+                IconsPath.google,
                 width: width * 0.07,
               ),
-            ),
-          );
-        },
+              // For Spacing
+              SizedBox(
+                width: width * 0.03,
+              ),
+              // Google Text
+              Text(
+                "Continue with Google",
+                style: TextStyle(
+                  color: AppColors.primaryBlack,
+                  fontSize: width * 0.05,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

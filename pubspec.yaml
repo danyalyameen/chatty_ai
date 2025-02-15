@@ -20,6 +20,14 @@ dependencies:
   firebase_core: ^3.11.0
   shimmer: ^3.0.0
   animated_text_kit: ^4.2.3
+  firebase_auth: ^5.4.2
+  cloud_firestore: ^5.6.3
+  shared_preferences: ^2.5.2
+  google_sign_in: ^6.2.2
+  fluttertoast: ^8.2.12
+  supabase_flutter: ^2.8.3
+  image_picker: ^1.1.2
+  storage_client: ^2.3.0
 
 # Dev Dependencies
 dev_dependencies:
@@ -36,7 +44,6 @@ flutter:
     - assets/App Logo/
     - assets/Arrows/
     - assets/Bottom Navigation/Chat/
-    - assets/Bottom Navigation/AI Assistants/
     - assets/Bottom Navigation/History/
     - assets/Bottom Navigation/Account/
     - assets/Others/

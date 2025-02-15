@@ -7,13 +7,13 @@ class CustomDropDown extends StatelessWidget {
   final double width, height;
   final String title, hintText;
   final List<String> items;
-  final TextEditingController controller;
+  final void Function(String? value)? selectedValue;
   const CustomDropDown(
       {super.key,
       required this.hintText,
       required this.width,
       required this.height,
-      required this.controller,
+      required this.selectedValue,
       required this.title,
       required this.items});
 
@@ -22,6 +22,7 @@ class CustomDropDown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Title
         Text(
           title,
           style: TextStyle(
@@ -30,8 +31,8 @@ class CustomDropDown extends StatelessWidget {
             fontWeight: FontWeight.w800,
           ),
         ),
+        // Drop Down Menu
         DropdownMenu<String>(
-          controller: controller,
           hintText: hintText,
           width: width * 0.9,
           textStyle: TextStyle(
@@ -91,7 +92,7 @@ class CustomDropDown extends StatelessWidget {
               );
             },
           ).toList(),
-          onSelected: (value) {},
+          onSelected: (value) => selectedValue!(value!),
         ),
       ],
     );

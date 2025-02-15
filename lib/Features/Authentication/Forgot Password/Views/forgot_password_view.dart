@@ -11,11 +11,19 @@ class ForgotPasswordView extends StackedView<ForgotPasswordViewModel> {
   final String title;
   const ForgotPasswordView({required this.title, super.key});
 
+  // Variables
   final String buttonText = "Continue";
+
+  @override
+  void onDispose(ForgotPasswordViewModel viewModel) {
+    viewModel.emailController.dispose();
+    super.onDispose(viewModel);
+  }
 
   @override
   Widget builder(
       BuildContext context, ForgotPasswordViewModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -57,7 +65,7 @@ class ForgotPasswordView extends StackedView<ForgotPasswordViewModel> {
               text: buttonText,
               height: height,
               elevation: true,
-              onPressed: () => viewModel.navigationService.back(),
+              onPressed: () => viewModel.continueButtonFunction(width: width),
             ),
           ],
         ),
@@ -74,6 +82,7 @@ class _ForgotPasswordTexts extends StatelessWidget {
   final double width, height;
   const _ForgotPasswordTexts({required this.width, required this.height});
 
+  // Variables
   final String title = "Reset Your Password 🔑";
   final String description =
       "Please enter your email and we will send an link to your email to reset your password.";
@@ -114,17 +123,23 @@ class _AuthFields extends ViewModelWidget<ForgotPasswordViewModel> {
   final double width;
   const _AuthFields({required this.width});
 
+  // Variables
   final String emailText = "Email";
 
   @override
   Widget build(BuildContext context, ForgotPasswordViewModel viewModel) {
-    return CustomTextFormField(
-      title: emailText,
-      hintText: emailText,
-      icon: IconsPath.email,
-      iconSize: width * 0.06,
-      showIcon: true,
-      onPressed: () {},
+    return Form(
+      key: viewModel.formKey,
+      child: CustomTextFormField(
+        controller: viewModel.emailController,
+        title: emailText,
+        hintText: emailText,
+        icon: IconsPath.email,
+        iconSize: width * 0.06,
+        showIcon: true,
+        validate: (value) => viewModel.validateEmail(value),
+        onPressed: () {},
+      ),
     );
   }
 }

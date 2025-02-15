@@ -50,19 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCdbxqnMd2cidyKSEI4H6YjYdpP_l4Ba2o',
-    appId: '1:546286719009:android:11be2442558a1ac05dd360',
-    messagingSenderId: '546286719009',
-    projectId: 'chatty-ai-96fd9',
-    storageBucket: 'chatty-ai-96fd9.firebasestorage.app',
+    apiKey: 'AIzaSyBSDfVgga3D0bXurAc824brHUen6GzBnZ0',
+    appId: '1:817786522278:android:6ba0a77ec0ac80295ec267',
+    messagingSenderId: '817786522278',
+    projectId: 'chatty-ai-6a27c',
+    storageBucket: 'chatty-ai-6a27c.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB-Fj2HDvSAYOKs9ZxEldrfgySwLKPLTyQ',
-    appId: '1:546286719009:ios:91177862accfc1995dd360',
-    messagingSenderId: '546286719009',
-    projectId: 'chatty-ai-96fd9',
-    storageBucket: 'chatty-ai-96fd9.firebasestorage.app',
+    apiKey: 'AIzaSyDAyHSQzyA-YeSOHNtlVUHOgYyeDMKQaug',
+    appId: '1:817786522278:ios:9ab3f1f337af8ab75ec267',
+    messagingSenderId: '817786522278',
+    projectId: 'chatty-ai-6a27c',
+    storageBucket: 'chatty-ai-6a27c.firebasestorage.app',
+    iosClientId:
+        '817786522278-ledrj5o7lgo5caaljbc0h5jisj2sunv9.apps.googleusercontent.com',
     iosBundleId: 'com.example.chattyAi',
   );
 }

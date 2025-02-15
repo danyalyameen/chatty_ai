@@ -1,5 +1,6 @@
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final double width, height;
@@ -8,6 +9,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final bool elevation;
+  final bool? isLoading;
   const CustomElevatedButton(
       {super.key,
       required this.width,
@@ -16,7 +18,8 @@ class CustomElevatedButton extends StatelessWidget {
       required this.height,
       this.backgroundColor,
       required this.elevation,
-      this.textColor});
+      this.textColor,
+      this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,9 @@ class CustomElevatedButton extends StatelessWidget {
         onPressed: onPressed,
         style: ButtonStyle(
           backgroundColor: WidgetStatePropertyAll(
-            backgroundColor ?? AppColors.primary,
+            isLoading ?? false
+                ? backgroundColor ?? AppColors.primary60
+                : backgroundColor ?? AppColors.primary,
           ),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
@@ -41,14 +46,21 @@ class CustomElevatedButton extends StatelessWidget {
             AppColors.primary.withValues(alpha: 0.5),
           ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor ?? AppColors.primaryLight,
-            fontSize: width * 0.05,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        child: isLoading ?? false
+            ? Center(
+                child: SpinKitThreeBounce(
+                  color: AppColors.primary,
+                  size: width * 0.06,
+                ),
+              )
+            : Text(
+                text,
+                style: TextStyle(
+                  color: textColor ?? AppColors.primaryLight,
+                  fontSize: width * 0.05,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
   }

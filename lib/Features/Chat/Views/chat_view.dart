@@ -16,6 +16,7 @@ class ChatView extends StackedView<ChatViewModel> {
 
   @override
   Widget builder(BuildContext context, ChatViewModel viewModel, Widget? child) {
+    // Screen Width and Height
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(

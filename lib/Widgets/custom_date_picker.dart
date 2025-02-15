@@ -6,11 +6,13 @@ import 'package:flutter_svg/svg.dart';
 class CustomDatePicker extends StatefulWidget {
   final double width, height;
   final String title;
+  final Function(DateTime? date) onChange;
   const CustomDatePicker({
     super.key,
     required this.width,
     required this.height,
     required this.title,
+    required this.onChange,
   });
 
   @override
@@ -18,6 +20,7 @@ class CustomDatePicker extends StatefulWidget {
 }
 
 class _CustomDatePickerState extends State<CustomDatePicker> {
+  // Variables
   DateTime? date;
 
   @override
@@ -25,6 +28,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Title
         Text(
           widget.title,
           style: TextStyle(
@@ -33,16 +37,20 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
             fontWeight: FontWeight.w800,
           ),
         ),
+        // For Spacing
         SizedBox(
           height: widget.height * 0.01,
         ),
+        // Custom Date Picker UI
         InkWell(
           onTap: () async {
+            // Show Date Picker Dialog
             date = await showDatePicker(
               context: context,
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
             );
+            widget.onChange(date);
             setState(() {});
           },
           child: SizedBox(
@@ -52,6 +60,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Hint Text
                     Text(
                       "${date?.month ?? "MM"}/${date?.day ?? "DD"}/${date?.year ?? "YYYY"} ",
                       style: TextStyle(
@@ -65,12 +74,15 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                             date != null ? FontWeight.w800 : FontWeight.w700,
                       ),
                     ),
+                    // Down Arrow
                     SvgPicture.asset(IconsPath.downArrow),
                   ],
                 ),
+                // For Spacing
                 SizedBox(
                   height: widget.height * 0.01,
                 ),
+                // Bottom Line
                 Container(
                   decoration: BoxDecoration(
                     border: Border(

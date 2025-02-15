@@ -25,15 +25,18 @@ class CustomSwitchTile extends StatelessWidget {
         ? Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              // Icon
               Center(
                 child: SvgPicture.asset(
                   icon ?? IconsPath.darkMode,
                   width: width * 0.086,
                 ),
               ),
+              // For Spacing
               SizedBox(
                 width: width * 0.03,
               ),
+              // Title
               Text(
                 title,
                 style: TextStyle(
@@ -42,7 +45,9 @@ class CustomSwitchTile extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              // For Spacing
               Spacer(),
+              // Switch
               SizedBox(
                 width: width * 0.14,
                 child: Switch(
@@ -59,6 +64,7 @@ class CustomSwitchTile extends StatelessWidget {
           )
         : Row(
             children: [
+              // Title
               Text(
                 title,
                 style: TextStyle(
@@ -67,7 +73,9 @@ class CustomSwitchTile extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              // For Spacing
               Spacer(),
+              // Switch
               SizedBox(
                 width: width * 0.14,
                 child: Switch(

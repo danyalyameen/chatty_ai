@@ -34,6 +34,7 @@ class CustomTextFormField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Title
           Text(
             title,
             style: TextStyle(
@@ -42,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
               fontWeight: FontWeight.w800,
             ),
           ),
+          // Text Form Field
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: controller,

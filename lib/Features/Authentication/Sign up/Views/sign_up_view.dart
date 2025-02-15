@@ -12,19 +12,30 @@ import 'package:stacked/stacked.dart';
 class SignUpView extends StackedView<SignUpViewModel> {
   const SignUpView({super.key});
 
+  // Variables
   final String title = "Sign up";
   final String buttonText = "Continue";
+
+  // Disposing Controllers
+  @override
+  void onDispose(SignUpViewModel viewModel) {
+    viewModel.emailController.dispose();
+    viewModel.passwordController.dispose();
+    super.onDispose(viewModel);
+  }
 
   @override
   Widget builder(
       BuildContext context, SignUpViewModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
       appBar: whiteAppBar(
-        backArrow: true,
+        backArrow: false,
+        showLogo: false,
         title: title,
         width: width,
         navigationService: viewModel.navigationService,
@@ -42,7 +53,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
             ),
             // For Spacing
             SizedBox(
-              height: height * 0.04,
+              height: height * 0.02,
             ),
             // Authentication Text Form Fields
             _AuthFields(
@@ -51,7 +62,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
             ),
             // For Spacing
             SizedBox(
-              height: height * 0.02,
+              height: height * 0.015,
             ),
             // Privacy Policies
             _PrivacyPolicy(
@@ -60,7 +71,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
             ),
             // For Spacing
             SizedBox(
-              height: height * 0.04,
+              height: height * 0.02,
             ),
             // Log in Navigation
             _AlreadyAccount(
@@ -69,12 +80,13 @@ class SignUpView extends StackedView<SignUpViewModel> {
             ),
             // For Spacing
             SizedBox(
-              height: height * 0.04,
+              height: height * 0.02,
             ),
             // Other Authentication Methods like Google
             _OtherAuthMethods(
               width: width,
               height: height,
+              googleAuth: () => viewModel.authService.googleAuth(),
             ),
             // For Spacing
             SizedBox(
@@ -83,11 +95,11 @@ class SignUpView extends StackedView<SignUpViewModel> {
             // Continue Button
             CustomElevatedButton(
               width: width,
-              text: buttonText,
               height: height,
+              text: buttonText,
+              isLoading: viewModel.showLoading,
               elevation: true,
-              onPressed: () =>
-                  viewModel.navigationService.replaceWithCompleteProfileView(),
+              onPressed: () => viewModel.continueButtonFunction(),
             ),
           ],
         ),
@@ -103,6 +115,7 @@ class _SignUPTexts extends StatelessWidget {
   final double width, height;
   const _SignUPTexts({required this.width, required this.height});
 
+  // Variables
   final String title = "Hello there 👋";
   final String description =
       "Please enter your email & password to create an account";
@@ -143,39 +156,47 @@ class _AuthFields extends ViewModelWidget<SignUpViewModel> {
   final double width, height;
   const _AuthFields({required this.width, required this.height});
 
+  // Variables
   final String emailText = "Email";
   final String passwordText = "Password";
 
   @override
   Widget build(BuildContext context, SignUpViewModel viewModel) {
-    return Column(
-      children: [
-        // Email
-        CustomTextFormField(
-          title: emailText,
-          hintText: emailText,
-          icon: IconsPath.email,
-          iconSize: width * 0.06,
-          showIcon: true,
-          onPressed: () {},
-        ),
-        // For Spacing
-        SizedBox(
-          height: height * 0.03,
-        ),
-        // Password
-        CustomTextFormField(
-          title: passwordText,
-          hintText: passwordText,
-          obscureText: !viewModel.isShow,
-          showIcon: true,
-          icon: viewModel.isShow ? IconsPath.darkMode : IconsPath.unshow,
-          iconSize: viewModel.isShow ? width * 0.09 : width * 0.06,
-          onPressed: () {
-            viewModel.iconToggle();
-          },
-        ),
-      ],
+    return Form(
+      key: viewModel.formKey,
+      child: Column(
+        children: [
+          // Email
+          CustomTextFormField(
+            controller: viewModel.emailController,
+            title: emailText,
+            hintText: emailText,
+            icon: IconsPath.email,
+            iconSize: width * 0.06,
+            showIcon: true,
+            validate: (value) => viewModel.validateEmail(value),
+            onPressed: () {},
+          ),
+          // For Spacing
+          SizedBox(
+            height: height * 0.03,
+          ),
+          // Password
+          CustomTextFormField(
+            controller: viewModel.passwordController,
+            title: passwordText,
+            hintText: passwordText,
+            obscureText: !viewModel.isShow,
+            showIcon: true,
+            icon: viewModel.isShow ? IconsPath.darkMode : IconsPath.unshow,
+            iconSize: viewModel.isShow ? width * 0.09 : width * 0.06,
+            validate: (value) => viewModel.validatePassword(value),
+            onPressed: () {
+              viewModel.iconToggle();
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -184,6 +205,7 @@ class _PrivacyPolicy extends ViewModelWidget<SignUpViewModel> {
   final double width, height;
   const _PrivacyPolicy({required this.width, required this.height});
 
+  // Variables
   final String title = "I agree to Chatty AI ";
   final String policiesText = "Public Agreement, Terms, & Privacy Policies";
 
@@ -200,7 +222,9 @@ class _PrivacyPolicy extends ViewModelWidget<SignUpViewModel> {
             onChanged: (value) => viewModel.checkToggle(value),
             activeColor: AppColors.primary,
             side: BorderSide(
-              color: AppColors.primary,
+              color: viewModel.isErrorOnCheck
+                  ? AppColors.primaryRed
+                  : AppColors.primary,
               width: width * 0.004,
             ),
             shape: RoundedRectangleBorder(
@@ -244,6 +268,7 @@ class _AlreadyAccount extends ViewModelWidget<SignUpViewModel> {
   final double width, height;
   const _AlreadyAccount({required this.width, required this.height});
 
+  // Variables
   final String title = "Already have an account? ";
   final String loginText = "Log in";
 
@@ -276,7 +301,7 @@ class _AlreadyAccount extends ViewModelWidget<SignUpViewModel> {
             ),
             // Login Text
             InkWell(
-              onTap: () => viewModel.navigationService.navigateToLoginView(),
+              onTap: () => viewModel.navigationService.replaceWithLoginView(),
               child: Text(
                 loginText,
                 style: TextStyle(
@@ -295,12 +320,11 @@ class _AlreadyAccount extends ViewModelWidget<SignUpViewModel> {
 
 class _OtherAuthMethods extends StatelessWidget {
   final double width, height;
-  _OtherAuthMethods({required this.width, required this.height});
+  final void Function() googleAuth;
+  const _OtherAuthMethods(
+      {required this.width, required this.height, required this.googleAuth});
 
-  final List<String> icons = [
-    IconsPath.google,
-    IconsPath.facebook,
-  ];
+  // Variables
   final String title = "or continue with";
 
   @override
@@ -345,31 +369,44 @@ class _OtherAuthMethods extends StatelessWidget {
         SizedBox(
           height: height * 0.05,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(
-            icons.length,
-            (index) {
-              // Border of Icons
-              return Container(
-                width: width * 0.4,
-                height: height * 0.06,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColors.primaryBlack,
-                    width: width * 0.001,
-                  ),
-                  borderRadius: BorderRadius.circular(width),
-                ),
-                // Icon
-                child: UnconstrainedBox(
-                  child: SvgPicture.asset(
-                    icons[index],
+        // Google Auth
+        InkWell(
+          onTap: () => googleAuth(),
+          borderRadius: BorderRadius.circular(width),
+          child: Container(
+            width: width * 0.9,
+            height: height * 0.065,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.primaryBlack,
+                width: width * 0.001,
+              ),
+              borderRadius: BorderRadius.circular(width),
+            ),
+            child: UnconstrainedBox(
+              child: Row(
+                children: [
+                  // Icon
+                  SvgPicture.asset(
+                    IconsPath.google,
                     width: width * 0.07,
                   ),
-                ),
-              );
-            },
+                  // For Spacing
+                  SizedBox(
+                    width: width * 0.03,
+                  ),
+                  // Google Text
+                  Text(
+                    "Continue with Google",
+                    style: TextStyle(
+                      color: AppColors.primaryBlack,
+                      fontSize: width * 0.05,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ],

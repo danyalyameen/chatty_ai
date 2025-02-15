@@ -1,6 +1,4 @@
-import 'package:chatty_ai/Features/AI%20Assistants/Views/ai_assistants_view.dart';
 import 'package:chatty_ai/Features/Account/Attach%20Views/Profile%20Info/Views/profile_info.dart';
-import 'package:chatty_ai/Features/Account/Attach%20Views/Security/Views/security_view.dart';
 import 'package:chatty_ai/Features/Account/View/account_view.dart';
 import 'package:chatty_ai/Features/Authentication/Choose%20Auth/Views/choose_auth_view.dart';
 import 'package:chatty_ai/Features/Authentication/Complete%20Profile/complete_profile_view.dart';
@@ -13,29 +11,70 @@ import 'package:chatty_ai/Features/Chat/Views/chat_view.dart';
 import 'package:chatty_ai/Features/History/Attach%20Views/Search/Views/search_view.dart';
 import 'package:chatty_ai/Features/History/Views/history_view.dart';
 import 'package:chatty_ai/Services/API%20Service/api_service.dart';
+import 'package:chatty_ai/Services/Firebase%20Authentication/auth_service.dart';
+import 'package:chatty_ai/Services/Firebase%20Firestore/firestore_service.dart';
+import 'package:chatty_ai/Services/Image%20Service/image_service.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 @StackedApp(
   routes: [
-    MaterialRoute(page: SplashView),
-    MaterialRoute(page: ChooseAuthView),
-    MaterialRoute(page: LoginView),
-    MaterialRoute(page: ForgotPasswordView),
-    MaterialRoute(page: SignUpView),
-    MaterialRoute(page: CompleteProfileView),
-    MaterialRoute(page: ChatView),
-    MaterialRoute(page: CustomChatView),
-    MaterialRoute(page: AIAssistantsView),
-    MaterialRoute(page: HistoryView),
-    MaterialRoute(page: SearchView),
-    MaterialRoute(page: AccountView),
-    MaterialRoute(page: SecurityView),
-    MaterialRoute(page: ProfileInfo),
+    CustomRoute(
+      page: SplashView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: ChooseAuthView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: LoginView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: ForgotPasswordView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: SignUpView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: CompleteProfileView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: ChatView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: CustomChatView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: HistoryView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: SearchView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: AccountView,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
+    CustomRoute(
+      page: ProfileInfo,
+      transitionsBuilder: TransitionsBuilders.moveInLeft,
+    ),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: ApiService),
+    LazySingleton(classType: AuthService),
+    LazySingleton(classType: FirestoreService),
+    LazySingleton(classType: ImageService),
   ],
 )
 class App {}

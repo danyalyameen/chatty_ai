@@ -2,7 +2,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view_model.dart';
-import 'package:chatty_ai/Models/message_model.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -55,10 +54,12 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
                                 ? _Prompt(
                                     width: width,
                                     height: height,
+                                    index: index,
                                   )
                                 : _Answer(
                                     width: width,
                                     height: height,
+                                    index: index,
                                   );
                           },
                         ),
@@ -93,14 +94,16 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
 
 class _Prompt extends ViewModelWidget<CustomChatViewModel> {
   final double width, height;
-  const _Prompt({required this.width, required this.height});
+  final int index;
+  const _Prompt(
+      {required this.index, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context, CustomChatViewModel viewModel) {
     return Align(
       alignment: Alignment.topRight,
       child: Container(
-        width: width * viewModel.prompt.length * 0.028,
+        width: width * viewModel.messages[index].text!.length * 0.028,
         decoration: BoxDecoration(
           color: AppColors.primary,
           borderRadius: BorderRadius.circular(width * 0.04),
@@ -109,7 +112,7 @@ class _Prompt extends ViewModelWidget<CustomChatViewModel> {
         padding: EdgeInsets.all(width * 0.04),
         child: Center(
           child: Text(
-            viewModel.prompt,
+            viewModel.messages[index].text!,
             style: TextStyle(
               color: AppColors.primaryLight,
               fontWeight: FontWeight.w600,
@@ -124,83 +127,79 @@ class _Prompt extends ViewModelWidget<CustomChatViewModel> {
 
 class _Answer extends ViewModelWidget<CustomChatViewModel> {
   final double width, height;
-  const _Answer({required this.width, required this.height});
+  final int index;
+  const _Answer(
+      {required this.index, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context, CustomChatViewModel viewModel) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: FutureBuilder(
-        future: viewModel.aiAnswer(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Padding(
-              padding: EdgeInsets.only(left: width * 0.04),
-              child: Column(
-                children: [
-                  // Shimmer Effect or Loading
-                  Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: width * 0.8,
-                      height: height * 0.04,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(width * 0.04),
-                        color: AppColors.primary,
-                      ),
+    return viewModel.isLoading
+        ? Padding(
+            padding: EdgeInsets.only(left: width * 0.04, top: height * 0.02),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Shimmer Effect or Loading
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: width * 0.8,
+                    height: height * 0.04,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                      color: AppColors.primary,
                     ),
                   ),
-                  // For Spacing
-                  SizedBox(
-                    height: height * 0.008,
-                  ),
-                  // Shimmer Effect or Loading
-                  Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: width * 0.8,
-                      height: height * 0.04,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(width * 0.04),
-                        color: AppColors.primary,
-                      ),
+                ),
+                // For Spacing
+                SizedBox(
+                  height: height * 0.008,
+                ),
+                // Shimmer Effect or Loading
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: width * 0.8,
+                    height: height * 0.04,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                      color: AppColors.primary,
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-          final message = snapshot.data;
-          return Container(
-            width: width * message!.length * 0.1,
-            decoration: BoxDecoration(
-              color: AppColors.grey60,
-              borderRadius: BorderRadius.circular(width * 0.04),
-            ),
-            margin: EdgeInsets.only(left: width * 0.04, right: width * 0.18),
-            padding: EdgeInsets.all(width * 0.04),
-            child: AnimatedTextKit(
-              isRepeatingAnimation: false,
-              repeatForever: false,
-              totalRepeatCount: 1,
-              animatedTexts: [
-                TyperAnimatedText(
-                  message,
-                  speed: const Duration(milliseconds: 10),
-                  textStyle: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontWeight: FontWeight.w500,
-                    fontSize: width * 0.04,
                   ),
                 ),
               ],
             ),
+          )
+        : Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              width: width * viewModel.messages[index].text!.length * 0.1,
+              decoration: BoxDecoration(
+                color: AppColors.grey60,
+                borderRadius: BorderRadius.circular(width * 0.04),
+              ),
+              margin: EdgeInsets.only(left: width * 0.04, right: width * 0.18),
+              padding: EdgeInsets.all(width * 0.04),
+              child: AnimatedTextKit(
+                isRepeatingAnimation: false,
+                repeatForever: false,
+                totalRepeatCount: 1,
+                animatedTexts: [
+                  TyperAnimatedText(
+                    viewModel.messages[index].text!,
+                    speed: const Duration(milliseconds: 10),
+                    textStyle: TextStyle(
+                      color: AppColors.primaryBlack,
+                      fontWeight: FontWeight.w500,
+                      fontSize: width * 0.04,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
-        },
-      ),
-    );
   }
 }
 

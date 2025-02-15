@@ -154,7 +154,7 @@ class _InputFields extends ViewModelWidget<ProfileInfoModel> {
           height: height,
           title: dropDownText,
           hintText: dropDownText,
-          controller: viewModel.genderController,
+          selectedValue: (value) {},
           items: items,
         ),
         // For Spacing
@@ -166,6 +166,7 @@ class _InputFields extends ViewModelWidget<ProfileInfoModel> {
           width: width,
           height: height,
           title: datePickerTitle,
+          onChange: (date) {},
         ),
       ],
     );

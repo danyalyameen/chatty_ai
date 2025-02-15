@@ -7,11 +7,13 @@ import 'package:stacked_services/stacked_services.dart';
 PreferredSizeWidget whiteAppBar({
   List<Widget>? actions,
   required bool backArrow,
+  bool? showLogo,
   required String title,
   required double width,
   NavigationService? navigationService,
 }) {
   return AppBar(
+    // Title
     title: Text(
       title,
       style: TextStyle(
@@ -23,6 +25,7 @@ PreferredSizeWidget whiteAppBar({
     actions: actions,
     centerTitle: true,
     backgroundColor: AppColors.primaryLight,
+    // back arrow
     leading: backArrow
         ? InkWell(
             borderRadius: BorderRadius.circular(width),
@@ -37,15 +40,17 @@ PreferredSizeWidget whiteAppBar({
               ),
             ),
           )
-        : Padding(
-            padding: EdgeInsets.only(left: width * 0.03),
-            child: Center(
-              child: SvgPicture.asset(
-                IconsPath.appLogo,
-                width: width * 0.09,
-                height: width * 0.09,
-              ),
-            ),
-          ),
+        : showLogo == true
+            ? Padding(
+                padding: EdgeInsets.only(left: width * 0.03),
+                child: Center(
+                  child: SvgPicture.asset(
+                    IconsPath.appLogo,
+                    width: width * 0.09,
+                    height: width * 0.09,
+                  ),
+                ),
+              )
+            : const SizedBox(),
   );
 }

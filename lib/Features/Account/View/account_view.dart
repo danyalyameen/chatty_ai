@@ -2,8 +2,6 @@ import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Constants/images_path.dart';
-import 'package:chatty_ai/Features/Account/Attach%20Views/Profile%20Info/Views/profile_info.dart';
-import 'package:chatty_ai/Features/Account/Attach%20Views/Security/Views/security_view.dart';
 import 'package:chatty_ai/Features/Account/View/account_view_model.dart';
 import 'package:chatty_ai/Widgets/custom_bottom_sheet.dart';
 import 'package:chatty_ai/Widgets/custom_switch_tile.dart';
@@ -150,18 +148,9 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
 
 class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
   final double width, height;
-  _GeneralOptions({required this.width, required this.height});
+  const _GeneralOptions({required this.width, required this.height});
 
   final String generalTitle = "General";
-  final List<String> icons = [
-    IconsPath.accountOutline,
-    IconsPath.security,
-  ];
-  final List navigationViews = [
-    ProfileInfo(),
-    SecurityView(),
-  ];
-  final List<String> titles = ["Personal Info", "Security"];
   final String logoutTitle = "Logout";
   final String bottomSheetTitle = "Logout";
   final String bottomSheetDescription = "Are you sure you want to log out?";
@@ -200,45 +189,36 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
             height: height * 0.01,
           ),
           // General Options
-          SizedBox(
-            height: height * 0.1,
-            child: ListView.builder(
-              itemCount: icons.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () => viewModel.navigationService
-                      .navigateToView(navigationViews[index]),
-                  child: Padding(
-                    padding: EdgeInsets.all(width * 0.02),
-                    child: Row(
-                      children: [
-                        // Icon
-                        Center(
-                          child: SvgPicture.asset(icons[index],
-                              width: width * 0.06),
-                        ),
-                        // For Spacing
-                        SizedBox(
-                          width: width * 0.05,
-                        ),
-                        // Title
-                        Text(
-                          titles[index],
-                          style: TextStyle(
-                            color: AppColors.primaryBlack,
-                            fontSize: width * 0.045,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        // For Spacing
-                        const Spacer(),
-                        // Right Arrow
-                        SvgPicture.asset(IconsPath.rightArrow),
-                      ],
+          InkWell(
+            onTap: () => viewModel.navigationService.navigateToProfileInfo(),
+            child: Padding(
+              padding: EdgeInsets.all(width * 0.02),
+              child: Row(
+                children: [
+                  // Icon
+                  Center(
+                    child: SvgPicture.asset(IconsPath.accountOutline,
+                        width: width * 0.06),
+                  ),
+                  // For Spacing
+                  SizedBox(
+                    width: width * 0.05,
+                  ),
+                  // Title
+                  Text(
+                    "Profile Infor",
+                    style: TextStyle(
+                      color: AppColors.primaryBlack,
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                );
-              },
+                  // For Spacing
+                  const Spacer(),
+                  // Right Arrow
+                  SvgPicture.asset(IconsPath.rightArrow),
+                ],
+              ),
             ),
           ),
           // Custom Dark Mode Switch

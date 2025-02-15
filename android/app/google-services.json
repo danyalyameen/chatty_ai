@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "546286719009",
-    "project_id": "chatty-ai-96fd9",
-    "storage_bucket": "chatty-ai-96fd9.firebasestorage.app"
+    "project_number": "817786522278",
+    "project_id": "chatty-ai-6a27c",
+    "storage_bucket": "chatty-ai-6a27c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:546286719009:android:11be2442558a1ac05dd360",
+        "mobilesdk_app_id": "1:817786522278:android:6ba0a77ec0ac80295ec267",
         "android_client_info": {
           "package_name": "com.example.chatty_ai"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "817786522278-upkhrvb92mi69tjs8m71dci6skkso6ec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCdbxqnMd2cidyKSEI4H6YjYdpP_l4Ba2o"
+          "current_key": "AIzaSyBSDfVgga3D0bXurAc824brHUen6GzBnZ0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817786522278-8n00k5cdribpvvkler3folrekljq92a9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
