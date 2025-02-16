@@ -25,6 +25,8 @@ PreferredSizeWidget whiteAppBar({
     actions: actions,
     centerTitle: true,
     backgroundColor: AppColors.primaryLight,
+    foregroundColor: AppColors.primaryLight,
+    scrolledUnderElevation: 0,
     // back arrow
     leading: backArrow
         ? InkWell(

@@ -1,5 +1,4 @@
 import 'package:chatty_ai/Constants/app_colors.dart';
-import 'package:chatty_ai/Constants/images_path.dart';
 import 'package:chatty_ai/Features/Account/Attach%20Views/Profile%20Info/Views/profile_info_model.dart';
 import 'package:chatty_ai/Widgets/custom_date_picker.dart';
 import 'package:chatty_ai/Widgets/custom_drop_down.dart';
@@ -8,17 +7,20 @@ import 'package:chatty_ai/Widgets/custom_image_picker.dart';
 import 'package:chatty_ai/Widgets/custom_text_form_field.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
 class ProfileInfo extends StackedView<ProfileInfoModel> {
   const ProfileInfo({super.key});
 
+  // Variables
   final String title = "Profile Info";
   final String continueText = "Continue";
 
   @override
   Widget builder(
       BuildContext context, ProfileInfoModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.sizeOf(context).width;
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
@@ -92,12 +94,53 @@ class _UserImage extends ViewModelWidget<ProfileInfoModel> {
           height: width * 0.35,
           child: Stack(
             children: [
-              // Circle Background
-              Center(
-                child: CircleAvatar(
-                  radius: width * 0.18,
-                  child: ClipOval(child: Image.asset(ImagesPath.userImage)),
-                ),
+              FutureBuilder(
+                future: precacheImage(
+                    NetworkImage(viewModel.imageService.getUserImage()),
+                    context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: width * 0.35,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    );
+                  }
+                  return ValueListenableBuilder(
+                    valueListenable: viewModel.imageError,
+                    builder: (context, value, child) {
+                      return CircleAvatar(
+                        radius: width * 0.2,
+                        backgroundImage: NetworkImage(
+                          viewModel.imageService.getUserImage(),
+                        ),
+                        backgroundColor:
+                            value ? AppColors.grey60 : Colors.transparent,
+                        onBackgroundImageError: (exception, stackTrace) {
+                          viewModel.imageError.value = true;
+                        },
+                        child: value
+                            ? Padding(
+                                padding: EdgeInsets.only(top: height * 0.026),
+                                child: ClipOval(
+                                  child: Icon(
+                                    Icons.person,
+                                    size: width * 0.35,
+                                    color: AppColors.grey80,
+                                  ),
+                                ),
+                              )
+                            : null,
+                      );
+                    },
+                  );
+                },
               ),
               // Edit Icon
               Positioned(

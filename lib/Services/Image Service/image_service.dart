@@ -45,7 +45,7 @@ class ImageService {
     await storage.from('Users').upload(path, image);
   }
 
-  String getUserImage({required File image}) {
+  String getUserImage() {
     // User Folder Name
     final userUid = AuthService().getUser()!.uid;
     // Folder Name

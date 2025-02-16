@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
@@ -8,7 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
-class CustomChatView extends StackedView<CustomChatViewModel> {
+class CustomChatView extends StatefulWidget {
   final String title, capabilitiesTitle;
   final List<Map<String, String>> capabilites;
   final bool showLogo;
@@ -21,75 +23,89 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
   });
 
   @override
-  Widget builder(
-      BuildContext context, CustomChatViewModel viewModel, Widget? child) {
+  State<CustomChatView> createState() => _CustomChatViewState();
+}
+
+class _CustomChatViewState extends State<CustomChatView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
     // Get Screen Size of Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.sizeOf(context).height;
-    return Scaffold(
-      backgroundColor: AppColors.primaryLight,
-      appBar: whiteAppBar(
-        width: width,
-        backArrow: true,
-        title: title,
-        navigationService: viewModel.navigationService,
-      ),
-      body: SafeArea(
-        child: SizedBox(
-          width: width,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              viewModel.askPrompt
-                  ? SizedBox(
-                      width: width,
-                      height: height * 0.9,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            bottom: height * 0.12, top: height * 0.04),
-                        child: ListView.builder(
-                          itemCount: viewModel.messages.length,
-                          itemBuilder: (context, index) {
-                            return viewModel.messages[index].isUser!
-                                ? _Prompt(
-                                    width: width,
-                                    height: height,
-                                    index: index,
-                                  )
-                                : _Answer(
-                                    width: width,
-                                    height: height,
-                                    index: index,
-                                  );
-                          },
+    return ViewModelBuilder.reactive(
+      viewModelBuilder: () => CustomChatViewModel(),
+      onViewModelReady: (viewModel) {
+        viewModel.addListener(
+          () {
+            viewModel.scrollToBottom();
+          },
+        );
+      },
+      builder:
+          (BuildContext context, CustomChatViewModel viewModel, Widget? child) {
+        return Scaffold(
+          backgroundColor: AppColors.primaryLight,
+          appBar: whiteAppBar(
+            width: width,
+            backArrow: true,
+            title: widget.title,
+            navigationService: viewModel.navigationService,
+          ),
+          body: SafeArea(
+            child: SizedBox(
+              width: width,
+              child: ListView(
+                children: [
+                  viewModel.askPrompt
+                      ? SizedBox(
+                          width: width,
+                          height: height * 0.75,
+                          child: ListView.builder(
+                            controller: viewModel.listViewController,
+                            itemCount: viewModel.messages.length,
+                            itemBuilder: (context, index) {
+                              return viewModel.messages[index].isUser!
+                                  ? _Prompt(
+                                      width: width,
+                                      height: height,
+                                      index: index,
+                                    )
+                                  : _Answer(
+                                      width: width,
+                                      height: height,
+                                      index: index,
+                                    );
+                            },
+                          ),
+                        )
+                      : _Capabilities(
+                          width: width,
+                          height: height,
+                          capabilitiesTitle: widget.capabilitiesTitle,
+                          capabilities: widget.capabilites,
+                          showLogo: widget.showLogo,
                         ),
-                      ),
-                    )
-                  : _Capabilities(
+                  // Chat Input Field
+                  Positioned(
+                    bottom: 0,
+                    child: _InputField(
                       width: width,
                       height: height,
-                      capabilitiesTitle: capabilitiesTitle,
-                      capabilities: capabilites,
-                      showLogo: showLogo,
                     ),
-              // Chat Input Field
-              Positioned(
-                bottom: 0,
-                child: _InputField(
-                  width: width,
-                  height: height,
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
-
-  @override
-  CustomChatViewModel viewModelBuilder(BuildContext context) =>
-      CustomChatViewModel();
 }
 
 class _Prompt extends ViewModelWidget<CustomChatViewModel> {
@@ -100,23 +116,26 @@ class _Prompt extends ViewModelWidget<CustomChatViewModel> {
 
   @override
   Widget build(BuildContext context, CustomChatViewModel viewModel) {
-    return Align(
-      alignment: Alignment.topRight,
-      child: Container(
-        width: width * viewModel.messages[index].text!.length * 0.028,
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          borderRadius: BorderRadius.circular(width * 0.04),
-        ),
-        margin: EdgeInsets.only(right: width * 0.06, left: width * 0.18),
-        padding: EdgeInsets.all(width * 0.04),
-        child: Center(
-          child: Text(
-            viewModel.messages[index].text!,
-            style: TextStyle(
-              color: AppColors.primaryLight,
-              fontWeight: FontWeight.w600,
-              fontSize: width * 0.042,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: height * 0.02),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Container(
+          width: width * viewModel.messages[index].text!.length * 0.028,
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(width * 0.04),
+          ),
+          margin: EdgeInsets.only(right: width * 0.06, left: width * 0.18),
+          padding: EdgeInsets.all(width * 0.04),
+          child: Center(
+            child: Text(
+              viewModel.messages[index].text!,
+              style: TextStyle(
+                color: AppColors.primaryLight,
+                fontWeight: FontWeight.w600,
+                fontSize: width * 0.042,
+              ),
             ),
           ),
         ),
@@ -133,45 +152,82 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
 
   @override
   Widget build(BuildContext context, CustomChatViewModel viewModel) {
-    return viewModel.isLoading
-        ? Padding(
-            padding: EdgeInsets.only(left: width * 0.04, top: height * 0.02),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Shimmer Effect or Loading
-                Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade100,
-                  child: Container(
-                    width: width * 0.8,
-                    height: height * 0.04,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(width * 0.04),
-                      color: AppColors.primary,
+    return index == viewModel.messages.length - 1 &&
+            viewModel.messages[index].responseGenerated != true
+        ? viewModel.isLoading
+            ? Padding(
+                padding: EdgeInsets.only(left: width * 0.04),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Shimmer Effect or Loading
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: width * 0.8,
+                        height: height * 0.04,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(width * 0.04),
+                          color: AppColors.primary,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                // For Spacing
-                SizedBox(
-                  height: height * 0.008,
-                ),
-                // Shimmer Effect or Loading
-                Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade100,
-                  child: Container(
-                    width: width * 0.8,
-                    height: height * 0.04,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(width * 0.04),
-                      color: AppColors.primary,
+                    // For Spacing
+                    SizedBox(
+                      height: height * 0.008,
                     ),
-                  ),
+                    // Shimmer Effect or Loading
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: width * 0.8,
+                        height: height * 0.04,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(width * 0.04),
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
+              )
+            : Builder(
+                builder: (context) {
+                  viewModel.messages[index].responseGenerated = true;
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      width:
+                          width * viewModel.messages[index].text!.length * 0.1,
+                      decoration: BoxDecoration(
+                        color: AppColors.grey60,
+                        borderRadius: BorderRadius.circular(width * 0.04),
+                      ),
+                      margin: EdgeInsets.only(
+                          left: width * 0.04, right: width * 0.18),
+                      padding: EdgeInsets.all(width * 0.04),
+                      child: AnimatedTextKit(
+                        isRepeatingAnimation: false,
+                        repeatForever: false,
+                        totalRepeatCount: 1,
+                        animatedTexts: [
+                          TyperAnimatedText(
+                            viewModel.messages[index].text!,
+                            speed: const Duration(milliseconds: 10),
+                            textStyle: TextStyle(
+                              color: AppColors.primaryBlack,
+                              fontWeight: FontWeight.w500,
+                              fontSize: width * 0.04,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              )
         : Align(
             alignment: Alignment.topLeft,
             child: Container(
@@ -182,21 +238,13 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
               ),
               margin: EdgeInsets.only(left: width * 0.04, right: width * 0.18),
               padding: EdgeInsets.all(width * 0.04),
-              child: AnimatedTextKit(
-                isRepeatingAnimation: false,
-                repeatForever: false,
-                totalRepeatCount: 1,
-                animatedTexts: [
-                  TyperAnimatedText(
-                    viewModel.messages[index].text!,
-                    speed: const Duration(milliseconds: 10),
-                    textStyle: TextStyle(
-                      color: AppColors.primaryBlack,
-                      fontWeight: FontWeight.w500,
-                      fontSize: width * 0.04,
-                    ),
-                  ),
-                ],
+              child: Text(
+                viewModel.messages[index].text!,
+                style: TextStyle(
+                  color: AppColors.primaryBlack,
+                  fontWeight: FontWeight.w500,
+                  fontSize: width * 0.04,
+                ),
               ),
             ),
           );
@@ -301,43 +349,6 @@ class _Capabilities extends StatelessWidget {
   }
 }
 
-// class _Chat extends ViewModelWidget<CustomChatViewModel> {
-//   final double width, height;
-//   const _Chat({required this.width, required this.height});
-
-//   @override
-//   Widget build(BuildContext context, CustomChatViewModel viewModel) {
-//     return SizedBox(
-//       width: width,
-//       height: height * 0.9,
-//       child: ListView.builder(
-//         itemCount: viewModel.messages.length,
-//         itemBuilder: (context, index) {
-//           return Padding(
-//             padding: EdgeInsets.only(top: height * 0.04, bottom: height * 0.4),
-//             child: Container(
-//               width: width,
-//               height: height * 0.84,
-//               color: Colors.yellow,
-//               child: ListView(
-//                 children: [
-//                   // User Prompt
-
-//                   // For Spacing
-//                   SizedBox(
-//                     height: height * 0.02,
-//                   ),
-//                   // AI Answer
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
 class _InputField extends ViewModelWidget<CustomChatViewModel> {
   final double width, height;
   _InputField({required this.width, required this.height});
@@ -360,37 +371,39 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
           // Text Field for chat
           SizedBox(
             width: width * 0.72,
-            child: TextFormField(
-              controller: viewModel.chatController.value,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              focusNode: inputFieldFocusNode,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: inputFieldFocusNode.hasFocus
-                    ? AppColors.primary40
-                    : AppColors.grey,
-                hintText: inputFieldHintText,
-                hintStyle: TextStyle(
-                  color: AppColors.grey80,
-                  fontWeight: FontWeight.w500,
-                  fontSize: width * 0.04,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(width * 0.03),
-                  borderSide: BorderSide(
-                    color: AppColors.grey,
+            child: Form(
+              child: TextFormField(
+                controller: viewModel.chatController.value,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: inputFieldFocusNode.hasFocus
+                      ? AppColors.primary40
+                      : AppColors.grey,
+                  hintText: inputFieldHintText,
+                  hintStyle: TextStyle(
+                    color: AppColors.grey80,
+                    fontWeight: FontWeight.w500,
+                    fontSize: width * 0.04,
                   ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(width * 0.03),
-                  borderSide: BorderSide(
-                    color: AppColors.primary,
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(width * 0.03),
-                  borderSide: BorderSide(
-                    color: AppColors.primary,
+                  enabledBorder: inputFieldFocusNode.hasFocus
+                      ? OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(width * 0.03),
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                          ),
+                        )
+                      : OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(width * 0.03),
+                          borderSide: BorderSide(
+                            color: AppColors.grey,
+                          ),
+                        ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(width * 0.03),
+                    borderSide: BorderSide(
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
               ),

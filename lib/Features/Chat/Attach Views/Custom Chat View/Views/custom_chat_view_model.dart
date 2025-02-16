@@ -6,16 +6,32 @@ import 'package:flutter/material.dart';
 
 class CustomChatViewModel extends ViewModel {
   // Final Fields
-  ValueNotifier<TextEditingController> chatController =
+  final ValueNotifier<TextEditingController> chatController =
       ValueNotifier(TextEditingController());
+  final ScrollController _listViewController = ScrollController();
+  // Get Final Feilds
+  ScrollController get listViewController => _listViewController;
   // Non Final Fields
   List<MessageModel> messages = [];
   List<Chat> chat = [];
   bool askPrompt = false;
   String prompt = "";
   bool _isLoading = false;
+  bool stopGenerating = false;
   // Get Non Final Fields
   bool get isLoading => _isLoading;
+
+  void scrollToBottom() {
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (_listViewController.hasClients) {
+        _listViewController.animateTo(
+          _listViewController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
 
   void startChat() async {
     if (chatController.value.text.isNotEmpty) {
