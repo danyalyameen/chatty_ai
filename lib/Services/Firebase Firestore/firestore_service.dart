@@ -20,7 +20,7 @@ class FirestoreService {
         gender: gender,
         dob: dob,
         profileCompleted: profileCompleted,
-      ).recieve(),
+      ).receive(),
     );
   }
 
@@ -37,12 +37,12 @@ class FirestoreService {
     // Initializa Chat if null
     userModel.chats ??= [];
     // Add Chat
-    userModel.chats!.add(chats);
+    userModel.chats!.add(Chats(title: chats[0].prompt, chat: chats));
     // Update on the Database
     await user.update(
       UserModel(
         chats: userModel.chats,
-      ).recieve(),
+      ).receive(),
     );
   }
 
@@ -58,7 +58,7 @@ class FirestoreService {
     return userInfo;
   }
 
-  Future<List<List<Chat>>> getChat() async {
+  Future<List<Chats>> getChat() async {
     // User Path
     DocumentReference user = FirebaseFirestore.instance
         .collection('users')

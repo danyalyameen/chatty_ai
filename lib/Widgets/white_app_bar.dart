@@ -7,6 +7,7 @@ import 'package:stacked_services/stacked_services.dart';
 PreferredSizeWidget whiteAppBar({
   List<Widget>? actions,
   required bool backArrow,
+  GestureTapCallback? onPressed,
   bool? showLogo,
   required String title,
   required double width,
@@ -31,9 +32,10 @@ PreferredSizeWidget whiteAppBar({
     leading: backArrow
         ? InkWell(
             borderRadius: BorderRadius.circular(width),
-            onTap: () {
-              navigationService?.back();
-            },
+            onTap: onPressed ??
+                () {
+                  navigationService?.back();
+                },
             child: Center(
               child: SvgPicture.asset(
                 IconsPath.backArrow,

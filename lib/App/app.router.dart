@@ -26,10 +26,11 @@ import 'package:chatty_ai/Features/Chat/Views/chat_view.dart' as _i8;
 import 'package:chatty_ai/Features/History/Attach%20Views/Search/Views/search_view.dart'
     as _i11;
 import 'package:chatty_ai/Features/History/Views/history_view.dart' as _i10;
+import 'package:chatty_ai/Models/user_model.dart' as _i15;
 import 'package:flutter/material.dart' as _i14;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i15;
+import 'package:stacked_services/stacked_services.dart' as _i16;
 
 class Routes {
   static const splashView = '/splash-view';
@@ -190,15 +191,12 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i9.CustomChatView: (data) {
-      final args = data.getArgs<CustomChatViewArguments>(nullOk: false);
+      final args = data.getArgs<CustomChatViewArguments>(
+        orElse: () => const CustomChatViewArguments(),
+      );
       return _i14.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            _i9.CustomChatView(
-                key: args.key,
-                title: args.title,
-                capabilitiesTitle: args.capabilitiesTitle,
-                capabilites: args.capabilites,
-                showLogo: args.showLogo),
+            _i9.CustomChatView(messages: args.messages, key: args.key),
         settings: data,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.moveInLeft,
@@ -278,49 +276,32 @@ class ForgotPasswordViewArguments {
 
 class CustomChatViewArguments {
   const CustomChatViewArguments({
+    this.messages,
     this.key,
-    required this.title,
-    required this.capabilitiesTitle,
-    required this.capabilites,
-    required this.showLogo,
   });
+
+  final List<_i15.Chats?>? messages;
 
   final _i14.Key? key;
 
-  final String title;
-
-  final String capabilitiesTitle;
-
-  final List<Map<String, String>> capabilites;
-
-  final bool showLogo;
-
   @override
   String toString() {
-    return '{"key": "$key", "title": "$title", "capabilitiesTitle": "$capabilitiesTitle", "capabilites": "$capabilites", "showLogo": "$showLogo"}';
+    return '{"messages": "$messages", "key": "$key"}';
   }
 
   @override
   bool operator ==(covariant CustomChatViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key &&
-        other.title == title &&
-        other.capabilitiesTitle == capabilitiesTitle &&
-        other.capabilites == capabilites &&
-        other.showLogo == showLogo;
+    return other.messages == messages && other.key == key;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^
-        title.hashCode ^
-        capabilitiesTitle.hashCode ^
-        capabilites.hashCode ^
-        showLogo.hashCode;
+    return messages.hashCode ^ key.hashCode;
   }
 }
 
-extension NavigatorStateExtension on _i15.NavigationService {
+extension NavigatorStateExtension on _i16.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -423,11 +404,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> navigateToCustomChatView({
+    List<_i15.Chats?>? messages,
     _i14.Key? key,
-    required String title,
-    required String capabilitiesTitle,
-    required List<Map<String, String>> capabilites,
-    required bool showLogo,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -435,12 +413,7 @@ extension NavigatorStateExtension on _i15.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.customChatView,
-        arguments: CustomChatViewArguments(
-            key: key,
-            title: title,
-            capabilitiesTitle: capabilitiesTitle,
-            capabilites: capabilites,
-            showLogo: showLogo),
+        arguments: CustomChatViewArguments(messages: messages, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -605,11 +578,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> replaceWithCustomChatView({
+    List<_i15.Chats?>? messages,
     _i14.Key? key,
-    required String title,
-    required String capabilitiesTitle,
-    required List<Map<String, String>> capabilites,
-    required bool showLogo,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -617,12 +587,7 @@ extension NavigatorStateExtension on _i15.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.customChatView,
-        arguments: CustomChatViewArguments(
-            key: key,
-            title: title,
-            capabilitiesTitle: capabilitiesTitle,
-            capabilites: capabilites,
-            showLogo: showLogo),
+        arguments: CustomChatViewArguments(messages: messages, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

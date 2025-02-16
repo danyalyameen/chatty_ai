@@ -1,6 +1,5 @@
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
-import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view.dart';
 import 'package:chatty_ai/Features/Chat/Views/chat_view_model.dart';
 import 'package:chatty_ai/Widgets/custom_elevated_button.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
@@ -46,25 +45,10 @@ class ChatUI extends ViewModelWidget<ChatViewModel> {
   final String subTitle1 = 'Start chatting with ChattyAI Now.';
   final String subTitle2 = 'You can ask me anything.';
   final String buttonText = 'Start Chat';
-  final String chatViewTitle = "Chatty AI";
-  final String capabilitesTitle = "Capabilites";
-  final List<Map<String, String>> capabilites = [
-    {
-      "sentence_first": "Asnwer all your questions.",
-      "sentence_second": "Just ask me anything you like!",
-    },
-    {
-      "sentence_first": "Generate all the text you want.",
-      "sentence_second": "(essays, articles, reports, stories, & more)",
-    },
-    {
-      "sentence_first": "Conversational AI.",
-      "sentence_second": "(I can talk to you like a natural human)",
-    },
-  ];
 
   @override
   Widget build(BuildContext context, ChatViewModel viewModel) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -135,19 +119,7 @@ class ChatUI extends ViewModelWidget<ChatViewModel> {
             height: height,
             text: buttonText,
             elevation: true,
-            onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustomChatView(
-                    title: title,
-                    showLogo: true,
-                    capabilites: capabilites,
-                    capabilitiesTitle: capabilitesTitle,
-                  ),
-                ),
-              );
-            },
+            onPressed: () {},
           ),
         ],
       ),

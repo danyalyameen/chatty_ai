@@ -1,113 +1,128 @@
-import 'dart:developer';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view_model.dart';
+import 'package:chatty_ai/Models/user_model.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
-class CustomChatView extends StatefulWidget {
-  final String title, capabilitiesTitle;
-  final List<Map<String, String>> capabilites;
-  final bool showLogo;
-  const CustomChatView({
+class CustomChatView extends StackedView<CustomChatViewModel> {
+  final List<Chats?>? messages;
+  CustomChatView({
+    this.messages,
     super.key,
-    required this.title,
-    required this.capabilitiesTitle,
-    required this.capabilites,
-    required this.showLogo,
   });
 
-  @override
-  State<CustomChatView> createState() => _CustomChatViewState();
-}
+  // Variables
+  final String chatViewTitle = "Chatty AI";
+  final String capabilitesTitle = "Capabilites";
+  final List<Map<String, String>> capabilites = [
+    {
+      "sentence_first": "Asnwer all your questions.",
+      "sentence_second": "Just ask me anything you like!",
+    },
+    {
+      "sentence_first": "Generate all the text you want.",
+      "sentence_second": "(essays, articles, reports, stories, & more)",
+    },
+    {
+      "sentence_first": "Conversational AI.",
+      "sentence_second": "(I can talk to you like a natural human)",
+    },
+  ];
 
-class _CustomChatViewState extends State<CustomChatView>
-    with AutomaticKeepAliveClientMixin {
+  // Dispose Controllers
   @override
-  bool get wantKeepAlive => true;
+  void onDispose(CustomChatViewModel viewModel) {
+    viewModel.chatController.value.dispose();
+    viewModel.listViewController.dispose();
+    viewModel.scrollTimer?.cancel();
+    super.onDispose(viewModel);
+  }
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context);
+  Widget builder(
+      BuildContext context, CustomChatViewModel viewModel, Widget? child) {
+    viewModel.shouldAutoScroll ? viewModel.startAutoScroll() : null;
     // Get Screen Size of Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.sizeOf(context).height;
-    return ViewModelBuilder.reactive(
-      viewModelBuilder: () => CustomChatViewModel(),
-      onViewModelReady: (viewModel) {
-        viewModel.addListener(
-          () {
-            viewModel.scrollToBottom();
-          },
-        );
-      },
-      builder:
-          (BuildContext context, CustomChatViewModel viewModel, Widget? child) {
-        return Scaffold(
-          backgroundColor: AppColors.primaryLight,
-          appBar: whiteAppBar(
-            width: width,
-            backArrow: true,
-            title: widget.title,
-            navigationService: viewModel.navigationService,
-          ),
-          body: SafeArea(
-            child: SizedBox(
-              width: width,
-              child: ListView(
-                children: [
-                  viewModel.askPrompt
-                      ? SizedBox(
-                          width: width,
-                          height: height * 0.75,
-                          child: ListView.builder(
-                            controller: viewModel.listViewController,
-                            itemCount: viewModel.messages.length,
-                            itemBuilder: (context, index) {
-                              return viewModel.messages[index].isUser!
-                                  ? _Prompt(
-                                      width: width,
-                                      height: height,
-                                      index: index,
-                                    )
-                                  : _Answer(
-                                      width: width,
-                                      height: height,
-                                      index: index,
-                                    );
-                            },
-                          ),
-                        )
-                      : _Capabilities(
-                          width: width,
-                          height: height,
-                          capabilitiesTitle: widget.capabilitiesTitle,
-                          capabilities: widget.capabilites,
-                          showLogo: widget.showLogo,
+    return Scaffold(
+      backgroundColor: AppColors.primaryLight,
+      appBar: whiteAppBar(
+        width: width,
+        backArrow: true,
+        title: chatViewTitle,
+        navigationService: viewModel.navigationService,
+        onPressed: () {
+          viewModel.navigationService.back();
+          viewModel.onBackButton();
+        },
+      ),
+      body: SafeArea(
+        child: SizedBox(
+          width: width,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Chats
+              viewModel.askPrompt
+                  ? Positioned(
+                      bottom: height * 0.1,
+                      top: height * 0.0001,
+                      child: SizedBox(
+                        width: width,
+                        height: height * 0.75,
+                        child: ListView.builder(
+                          controller: viewModel.listViewController,
+                          itemCount: viewModel.messages.length,
+                          itemBuilder: (context, index) {
+                            return viewModel.messages[index].isUser!
+                                ? _Prompt(
+                                    width: width,
+                                    height: height,
+                                    index: index,
+                                  )
+                                : _Answer(
+                                    width: width,
+                                    height: height,
+                                    index: index,
+                                  );
+                          },
                         ),
-                  // Chat Input Field
-                  Positioned(
-                    bottom: 0,
-                    child: _InputField(
+                      ),
+                    )
+                  : _Capabilities(
                       width: width,
                       height: height,
+                      capabilitiesTitle: capabilitesTitle,
+                      capabilities: capabilites,
+                      showLogo: true,
                     ),
-                  ),
-                ],
+              // Chat Input Field
+              Positioned(
+                bottom: 0,
+                child: _InputField(
+                  width: width,
+                  height: height,
+                ),
               ),
-            ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
+
+  @override
+  CustomChatViewModel viewModelBuilder(BuildContext context) =>
+      CustomChatViewModel();
 }
 
+// Prompt UI
 class _Prompt extends ViewModelWidget<CustomChatViewModel> {
   final double width, height;
   final int index;
@@ -144,6 +159,7 @@ class _Prompt extends ViewModelWidget<CustomChatViewModel> {
   }
 }
 
+// AI Answer UI
 class _Answer extends ViewModelWidget<CustomChatViewModel> {
   final double width, height;
   final int index;
@@ -361,7 +377,9 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
   Widget build(BuildContext context, CustomChatViewModel viewModel) {
     return Container(
       width: width,
-      height: height * 0.1,
+      height: viewModel.chatController.value.text.length > 29
+          ? height * 0.12
+          : height * 0.1,
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
       ),
@@ -369,41 +387,44 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Text Field for chat
-          SizedBox(
+          Container(
             width: width * 0.72,
-            child: Form(
-              child: TextFormField(
-                controller: viewModel.chatController.value,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: inputFieldFocusNode.hasFocus
-                      ? AppColors.primary40
-                      : AppColors.grey,
-                  hintText: inputFieldHintText,
-                  hintStyle: TextStyle(
-                    color: AppColors.grey80,
-                    fontWeight: FontWeight.w500,
-                    fontSize: width * 0.04,
-                  ),
-                  enabledBorder: inputFieldFocusNode.hasFocus
-                      ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(width * 0.03),
-                          borderSide: BorderSide(
-                            color: AppColors.primary,
-                          ),
-                        )
-                      : OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(width * 0.03),
-                          borderSide: BorderSide(
-                            color: AppColors.grey,
-                          ),
+            margin: EdgeInsets.symmetric(vertical: height * 0.01),
+            height: viewModel.chatController.value.text.length > 29
+                ? height * 0.18
+                : null,
+            child: TextFormField(
+              controller: viewModel.chatController.value,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              maxLines: null,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: inputFieldFocusNode.hasFocus
+                    ? AppColors.primary40
+                    : AppColors.grey,
+                hintText: inputFieldHintText,
+                hintStyle: TextStyle(
+                  color: AppColors.grey80,
+                  fontWeight: FontWeight.w500,
+                  fontSize: width * 0.04,
+                ),
+                enabledBorder: inputFieldFocusNode.hasFocus
+                    ? OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(width * 0.03),
+                        borderSide: BorderSide(
+                          color: AppColors.primary,
                         ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width * 0.03),
-                    borderSide: BorderSide(
-                      color: AppColors.primary,
-                    ),
+                      )
+                    : OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(width * 0.03),
+                        borderSide: BorderSide(
+                          color: AppColors.grey,
+                        ),
+                      ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(width * 0.03),
+                  borderSide: BorderSide(
+                    color: AppColors.primary,
                   ),
                 ),
               ),
@@ -418,6 +439,8 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
                 height: width * 0.15,
                 child: ElevatedButton(
                   onPressed: () {
+                    viewModel.shouldAutoScroll = true;
+                    viewModel.notifyListeners();
                     viewModel.startChat();
                   },
                   style: ButtonStyle(
