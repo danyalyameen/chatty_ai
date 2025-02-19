@@ -30,7 +30,7 @@ class ShowBottomSheetForImportImages {
     String titleKey = "Title";
     ImageService imageService = locator<ImageService>();
     File? image;
-    Completer<File> completer = Completer<File>();
+    Completer<File?> completer = Completer<File>();
     // Show Bottom Sheet
     showModalBottomSheet(
       context: context,
@@ -58,7 +58,7 @@ class ShowBottomSheetForImportImages {
                       onTap: () async {
                         image = await imageService.pickImage(
                             imageFromCamera: index == 0 ? true : false);
-                        completer.complete(image);
+                        image != null ? completer.complete(image) : null;
                         NavigationService().back();
                       },
                       borderRadius: BorderRadius.circular(

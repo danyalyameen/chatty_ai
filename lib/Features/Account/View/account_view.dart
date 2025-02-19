@@ -37,6 +37,9 @@ class AccountView extends StackedView<AccountViewModel> {
           _GeneralOptions(
             width: width,
             height: height,
+            dob: viewModel.dob,
+            gender: viewModel.gender,
+            name: viewModel.name,
           ),
         ],
       ),
@@ -77,8 +80,15 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
             );
           }
           final userInfo = snapshot.data![1] as UserModel;
+          viewModel.name = userInfo.name!;
+          viewModel.gender = userInfo.gender!;
+          viewModel.dob = userInfo.dob!.toDate();
           return InkWell(
-            onTap: () => viewModel.navigationService.navigateToProfileInfo(),
+            onTap: () => viewModel.navigationService.navigateToProfileInfo(
+              dob: userInfo.dob!.toDate(),
+              gender: userInfo.gender!,
+              name: userInfo.name!,
+            ),
             child: Container(
               width: width * 0.9,
               height: height * 0.12,
@@ -198,7 +208,14 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
 
 class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
   final double width, height;
-  const _GeneralOptions({required this.width, required this.height});
+  final String name, gender;
+  final DateTime dob;
+  const _GeneralOptions(
+      {required this.width,
+      required this.height,
+      required this.name,
+      required this.gender,
+      required this.dob});
 
   // Variables
   final String generalTitle = "General";
@@ -241,7 +258,11 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
           ),
           // General Options
           InkWell(
-            onTap: () => viewModel.navigationService.navigateToProfileInfo(),
+            onTap: () => viewModel.navigationService.navigateToProfileInfo(
+              name: name,
+              gender: gender,
+              dob: dob,
+            ),
             child: Padding(
               padding: EdgeInsets.all(width * 0.02),
               child: Row(
@@ -257,7 +278,7 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
                   ),
                   // Title
                   Text(
-                    "Profile Infor",
+                    "Profile Info",
                     style: TextStyle(
                       color: AppColors.primaryBlack,
                       fontSize: width * 0.045,
@@ -276,13 +297,17 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
           Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: width * 0.01, vertical: width * 0.02),
-            child: CustomSwitchTile(
-              title: 'Dark Mode',
-              width: width,
-              isIcon: true,
-              value: viewModel.isDarkMode,
-              onChanged: (value) => viewModel.toggleDarkMode(value),
-            ),
+            child: ValueListenableBuilder(
+                valueListenable: viewModel.isDarkMode,
+                builder: (context, value, child) {
+                  return CustomSwitchTile(
+                    title: 'Dark Mode',
+                    width: width,
+                    isIcon: true,
+                    value: viewModel.isDarkMode.value,
+                    onChanged: (value) => viewModel.toggleDarkMode(value),
+                  );
+                }),
           ),
           // Logout
           InkWell(

@@ -79,7 +79,7 @@ class LoginView extends StackedView<LoginViewModel> {
             CustomElevatedButton(
               width: width,
               text: buttonText,
-              isLoading: viewModel.showLoading,
+              showLoading: viewModel.showLoading,
               height: height,
               elevation: true,
               onPressed: () => viewModel.continueButtonFunction(),

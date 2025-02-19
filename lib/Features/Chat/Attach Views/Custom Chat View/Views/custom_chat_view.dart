@@ -167,7 +167,7 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
   Widget build(BuildContext context, CustomChatViewModel viewModel) {
     return index == viewModel.messages.length - 1 &&
             viewModel.messages[index].responseGenerated != true
-        ? viewModel.isLoading
+        ? viewModel.showLoading
             ? Padding(
                 padding: EdgeInsets.only(left: width * 0.04),
                 child: Column(

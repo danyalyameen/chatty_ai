@@ -7,12 +7,14 @@ class CustomDatePicker extends StatefulWidget {
   final double width, height;
   final String title;
   final Function(DateTime? date) onChange;
+  final DateTime? initialDate;
   const CustomDatePicker({
     super.key,
     required this.width,
     required this.height,
     required this.title,
     required this.onChange,
+    this.initialDate,
   });
 
   @override
@@ -62,9 +64,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   children: [
                     // Hint Text
                     Text(
-                      "${date?.month ?? "MM"}/${date?.day ?? "DD"}/${date?.year ?? "YYYY"} ",
+                      widget.initialDate != null
+                          ? "${widget.initialDate?.month ?? "MM"}/${widget.initialDate?.day ?? "DD"}/${widget.initialDate?.year ?? "YYYY"} "
+                          : "${date?.month ?? "MM"}/${date?.day ?? "DD"}/${date?.year ?? "YYYY"} ",
                       style: TextStyle(
-                        color: date != null
+                        color: widget.initialDate != null || date != null
                             ? AppColors.primaryBlack
                             : AppColors.black60,
                         fontSize: date != null

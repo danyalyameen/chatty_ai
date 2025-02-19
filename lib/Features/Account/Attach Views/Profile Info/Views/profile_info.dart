@@ -11,11 +11,22 @@ import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
 class ProfileInfo extends StackedView<ProfileInfoModel> {
-  const ProfileInfo({super.key});
+  final String name, gender;
+  final DateTime dob;
+  const ProfileInfo(
+      {required this.name, required this.gender, required this.dob, super.key});
 
   // Variables
   final String title = "Profile Info";
   final String continueText = "Continue";
+
+  @override
+  void onViewModelReady(ProfileInfoModel viewModel) async {
+    viewModel.nameController.text = name;
+    viewModel.genderController.text = gender;
+    viewModel.initialDate = dob;
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   Widget builder(
@@ -60,8 +71,9 @@ class ProfileInfo extends StackedView<ProfileInfoModel> {
               width: width * 0.94,
               height: height,
               elevation: true,
+              showLoading: viewModel.showLoading,
               text: continueText,
-              onPressed: () => viewModel.navigationService.back(),
+              onPressed: () => viewModel.updateProfile(),
             ),
           ],
         ),
@@ -76,18 +88,21 @@ class ProfileInfo extends StackedView<ProfileInfoModel> {
 class _UserImage extends ViewModelWidget<ProfileInfoModel> {
   final double width, height;
   const _UserImage({required this.width, required this.height});
+
   @override
   Widget build(BuildContext context, ProfileInfoModel viewModel) {
     return UnconstrainedBox(
       child: InkWell(
         borderRadius: BorderRadius.circular(width),
-        onTap: () {
+        onTap: () async {
           // Show Bottom Sheet for pick Image
-          ShowBottomSheetForImportImages.bottomSheet(
+          viewModel.image = await ShowBottomSheetForImportImages.bottomSheet(
             context: context,
             width: width,
             height: height,
           );
+          viewModel.imageError.value = false;
+          viewModel.notifyListeners();
         },
         child: SizedBox(
           width: width * 0.35,
@@ -117,9 +132,11 @@ class _UserImage extends ViewModelWidget<ProfileInfoModel> {
                     builder: (context, value, child) {
                       return CircleAvatar(
                         radius: width * 0.2,
-                        backgroundImage: NetworkImage(
-                          viewModel.imageService.getUserImage(),
-                        ),
+                        backgroundImage: viewModel.image == null
+                            ? NetworkImage(
+                                viewModel.imageService.getUserImage(),
+                              )
+                            : FileImage(viewModel.image!),
                         backgroundColor:
                             value ? AppColors.grey60 : Colors.transparent,
                         onBackgroundImageError: (exception, stackTrace) {
@@ -172,6 +189,7 @@ class _InputFields extends ViewModelWidget<ProfileInfoModel> {
   final double width, height;
   _InputFields({required this.width, required this.height});
 
+  // Variables
   final String textFieldText = "Full Name";
   final String dropDownText = "Gender";
   final String datePickerTitle = "Date of Birth";
@@ -185,6 +203,7 @@ class _InputFields extends ViewModelWidget<ProfileInfoModel> {
         CustomTextFormField(
           showIcon: false,
           title: textFieldText,
+          controller: viewModel.nameController,
           hintText: textFieldText,
         ),
         // For Spacing
@@ -197,6 +216,7 @@ class _InputFields extends ViewModelWidget<ProfileInfoModel> {
           height: height,
           title: dropDownText,
           hintText: dropDownText,
+          controller: viewModel.genderController,
           selectedValue: (value) {},
           items: items,
         ),
@@ -209,7 +229,11 @@ class _InputFields extends ViewModelWidget<ProfileInfoModel> {
           width: width,
           height: height,
           title: datePickerTitle,
-          onChange: (date) {},
+          initialDate: viewModel.initialDate,
+          onChange: (date) {
+            date != null ? viewModel.initialDate = date : null;
+            viewModel.notifyListeners();
+          },
         ),
       ],
     );

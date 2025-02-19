@@ -97,7 +97,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
               width: width,
               height: height,
               text: buttonText,
-              isLoading: viewModel.showLoading,
+              showLoading: viewModel.showLoading,
               elevation: true,
               onPressed: () => viewModel.continueButtonFunction(),
             ),

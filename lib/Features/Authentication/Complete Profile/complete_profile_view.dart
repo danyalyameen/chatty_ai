@@ -61,7 +61,7 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
             height: height,
             elevation: true,
             text: continueText,
-            isLoading: viewModel.showLoading,
+            showLoading: viewModel.showLoading,
             onPressed: () {
               viewModel.formKey.currentState!.validate()
                   ? viewModel.validateUserImage(

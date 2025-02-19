@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class AccountViewModel extends ViewModel {
   // Non Final Fields
-  bool _isDarkMode = false;
+  ValueNotifier<bool> isDarkMode = ValueNotifier(false);
   ValueNotifier<bool> imageError = ValueNotifier(false);
-  // Get Non Final Feilds
-  bool get isDarkMode => _isDarkMode;
+  String name = "";
+  String gender = "";
+  DateTime dob = DateTime.now();
 
   // Toggle Dark Mode
   void toggleDarkMode(bool value) {
-    _isDarkMode = value;
-    notifyListeners();
+    isDarkMode.value = value;
   }
 }

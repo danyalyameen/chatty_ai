@@ -45,6 +45,15 @@ class ImageService {
     await storage.from('Users').upload(path, image);
   }
 
+  Future<void> deleteImage() async {
+    String bucketName = "Users";
+    String userFolderName = AuthService().getUser()!.uid;
+    String imageFolderName = "User Image";
+    String imageName = "user";
+    String imagePath = "$userFolderName/$imageFolderName/$imageName";
+    await storage.from(bucketName).remove([imagePath]);
+  }
+
   String getUserImage() {
     // User Folder Name
     final userUid = AuthService().getUser()!.uid;

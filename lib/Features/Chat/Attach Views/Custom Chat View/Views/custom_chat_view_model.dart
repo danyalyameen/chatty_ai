@@ -19,12 +19,12 @@ class CustomChatViewModel extends ViewModel {
   bool askPrompt = false;
   String prompt = "";
   int? maxLines = 1;
-  bool _isLoading = false;
+  bool _showLoading = false;
   bool showLoadinForFirestore = false;
   bool shouldAutoScroll = true;
   Timer? scrollTimer;
   // Get Non Final Fields
-  bool get isLoading => _isLoading;
+  bool get showLoading => _showLoading;
 
   Future<void> scrollToEnd() async {
     if (!listViewController.hasClients) return;
@@ -56,9 +56,7 @@ class CustomChatViewModel extends ViewModel {
 
   void startAutoScroll() {
     if (scrollTimer != null) return;
-    log(scrollTimer.toString());
     scrollTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      // log("done");
       scrollToEnd();
       scrollListener();
     });
@@ -81,7 +79,7 @@ class CustomChatViewModel extends ViewModel {
           isUser: false,
         ),
       );
-      _isLoading = true;
+      _showLoading = true;
       notifyListeners();
       ApiModel apiModel = await apiService.askQuestion(prompt: prompt);
       messages.removeLast();
@@ -91,7 +89,7 @@ class CustomChatViewModel extends ViewModel {
           isUser: false,
         ),
       );
-      _isLoading = false;
+      _showLoading = false;
       notifyListeners();
       chat.add(
           Chat(prompt: prompt, answer: apiModel.choices![0].message!.content!));

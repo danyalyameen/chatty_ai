@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CustomDropDown extends StatelessWidget {
   final double width, height;
   final String title, hintText;
+  final TextEditingController? controller;
   final List<String> items;
   final void Function(String? value)? selectedValue;
   const CustomDropDown(
@@ -15,7 +16,7 @@ class CustomDropDown extends StatelessWidget {
       required this.height,
       required this.selectedValue,
       required this.title,
-      required this.items});
+      required this.items, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class CustomDropDown extends StatelessWidget {
             fontWeight: FontWeight.w800,
             fontSize: width * 0.045,
           ),
+          controller: controller,
           trailingIcon: SvgPicture.asset(IconsPath.downArrow),
           selectedTrailingIcon: Transform.rotate(
             angle: 3.14,

@@ -110,7 +110,7 @@ class CustomBottomSheet {
                         text: confirmTitle,
                         height: height,
                         elevation: true,
-                        isLoading: showLoading,
+                        showLoading: showLoading,
                         onPressed: () {
                           setState(() {
                             showLoading = true;

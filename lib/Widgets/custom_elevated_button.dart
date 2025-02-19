@@ -9,7 +9,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final bool elevation;
-  final bool? isLoading;
+  final bool? showLoading;
   final double? fontSize;
   const CustomElevatedButton(
       {super.key,
@@ -20,7 +20,7 @@ class CustomElevatedButton extends StatelessWidget {
       this.backgroundColor,
       required this.elevation,
       this.textColor,
-      this.isLoading,
+      this.showLoading,
       this.fontSize});
 
   @override
@@ -32,7 +32,7 @@ class CustomElevatedButton extends StatelessWidget {
         onPressed: onPressed,
         style: ButtonStyle(
           backgroundColor: WidgetStatePropertyAll(
-            isLoading ?? false
+            showLoading ?? false
                 ? backgroundColor ?? AppColors.primary60
                 : backgroundColor ?? AppColors.primary,
           ),
@@ -48,7 +48,7 @@ class CustomElevatedButton extends StatelessWidget {
             AppColors.primary.withValues(alpha: 0.5),
           ),
         ),
-        child: isLoading ?? false
+        child: showLoading ?? false
             ? Center(
                 child: SpinKitThreeBounce(
                   color: AppColors.primary,

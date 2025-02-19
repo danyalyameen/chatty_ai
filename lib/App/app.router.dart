@@ -249,9 +249,14 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i14.ProfileInfo: (data) {
+      final args = data.getArgs<ProfileInfoArguments>(nullOk: false);
       return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i14.ProfileInfo(),
+            _i14.ProfileInfo(
+                name: args.name,
+                gender: args.gender,
+                dob: args.dob,
+                key: args.key),
         settings: data,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.moveInLeft,
@@ -339,6 +344,42 @@ class PreviousChatViewArguments {
   @override
   int get hashCode {
     return messages.hashCode ^ key.hashCode;
+  }
+}
+
+class ProfileInfoArguments {
+  const ProfileInfoArguments({
+    required this.name,
+    required this.gender,
+    required this.dob,
+    this.key,
+  });
+
+  final String name;
+
+  final String gender;
+
+  final DateTime dob;
+
+  final _i15.Key? key;
+
+  @override
+  String toString() {
+    return '{"name": "$name", "gender": "$gender", "dob": "$dob", "key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant ProfileInfoArguments other) {
+    if (identical(this, other)) return true;
+    return other.name == name &&
+        other.gender == gender &&
+        other.dob == dob &&
+        other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode ^ gender.hashCode ^ dob.hashCode ^ key.hashCode;
   }
 }
 
@@ -519,14 +560,20 @@ extension NavigatorStateExtension on _i17.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToProfileInfo([
+  Future<dynamic> navigateToProfileInfo({
+    required String name,
+    required String gender,
+    required DateTime dob,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.profileInfo,
+        arguments: ProfileInfoArguments(
+            name: name, gender: gender, dob: dob, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -709,14 +756,20 @@ extension NavigatorStateExtension on _i17.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithProfileInfo([
+  Future<dynamic> replaceWithProfileInfo({
+    required String name,
+    required String gender,
+    required DateTime dob,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.profileInfo,
+        arguments: ProfileInfoArguments(
+            name: name, gender: gender, dob: dob, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
