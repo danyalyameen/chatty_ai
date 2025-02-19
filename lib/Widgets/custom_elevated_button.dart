@@ -10,6 +10,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color? textColor;
   final bool elevation;
   final bool? isLoading;
+  final double? fontSize;
   const CustomElevatedButton(
       {super.key,
       required this.width,
@@ -19,7 +20,8 @@ class CustomElevatedButton extends StatelessWidget {
       this.backgroundColor,
       required this.elevation,
       this.textColor,
-      this.isLoading});
+      this.isLoading,
+      this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class CustomElevatedButton extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color: textColor ?? AppColors.primaryLight,
-                  fontSize: width * 0.05,
+                  fontSize: fontSize ?? width * 0.05,
                   fontWeight: FontWeight.w600,
                 ),
               ),

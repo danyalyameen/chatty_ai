@@ -2,7 +2,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view_model.dart';
-import 'package:chatty_ai/Models/user_model.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,9 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
 class CustomChatView extends StackedView<CustomChatViewModel> {
-  final List<Chats?>? messages;
   CustomChatView({
-    this.messages,
     super.key,
   });
 

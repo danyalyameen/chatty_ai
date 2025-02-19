@@ -6,8 +6,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:chatty_ai/Features/Account/Attach%20Views/Profile%20Info/Views/profile_info.dart'
-    as _i13;
-import 'package:chatty_ai/Features/Account/View/account_view.dart' as _i12;
+    as _i14;
+import 'package:chatty_ai/Features/Account/View/account_view.dart' as _i13;
 import 'package:chatty_ai/Features/Authentication/Choose%20Auth/Views/choose_auth_view.dart'
     as _i3;
 import 'package:chatty_ai/Features/Authentication/Complete%20Profile/complete_profile_view.dart'
@@ -23,14 +23,16 @@ import 'package:chatty_ai/Features/Authentication/Splash/Views/splash_view.dart'
 import 'package:chatty_ai/Features/Chat/Attach%20Views/Custom%20Chat%20View/Views/custom_chat_view.dart'
     as _i9;
 import 'package:chatty_ai/Features/Chat/Views/chat_view.dart' as _i8;
-import 'package:chatty_ai/Features/History/Attach%20Views/Search/Views/search_view.dart'
+import 'package:chatty_ai/Features/History/Attach%20Views/Preview%20Chat/Views/preview_chat_view.dart'
     as _i11;
+import 'package:chatty_ai/Features/History/Attach%20Views/Search/Views/search_view.dart'
+    as _i12;
 import 'package:chatty_ai/Features/History/Views/history_view.dart' as _i10;
-import 'package:chatty_ai/Models/user_model.dart' as _i15;
-import 'package:flutter/material.dart' as _i14;
+import 'package:chatty_ai/Models/user_model.dart' as _i16;
+import 'package:flutter/material.dart' as _i15;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i16;
+import 'package:stacked_services/stacked_services.dart' as _i17;
 
 class Routes {
   static const splashView = '/splash-view';
@@ -51,6 +53,8 @@ class Routes {
 
   static const historyView = '/history-view';
 
+  static const previousChatView = '/previous-chat-view';
+
   static const searchView = '/search-view';
 
   static const accountView = '/account-view';
@@ -67,6 +71,7 @@ class Routes {
     chatView,
     customChatView,
     historyView,
+    previousChatView,
     searchView,
     accountView,
     profileInfo,
@@ -112,22 +117,26 @@ class StackedRouter extends _i1.RouterBase {
       page: _i10.HistoryView,
     ),
     _i1.RouteDef(
+      Routes.previousChatView,
+      page: _i11.PreviousChatView,
+    ),
+    _i1.RouteDef(
       Routes.searchView,
-      page: _i11.SearchView,
+      page: _i12.SearchView,
     ),
     _i1.RouteDef(
       Routes.accountView,
-      page: _i12.AccountView,
+      page: _i13.AccountView,
     ),
     _i1.RouteDef(
       Routes.profileInfo,
-      page: _i13.ProfileInfo,
+      page: _i14.ProfileInfo,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.SplashView(),
         settings: data,
@@ -136,7 +145,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.ChooseAuthView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.ChooseAuthView(),
         settings: data,
@@ -145,7 +154,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.LoginView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.LoginView(),
         settings: data,
@@ -155,7 +164,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i5.ForgotPasswordView: (data) {
       final args = data.getArgs<ForgotPasswordViewArguments>(nullOk: false);
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i5.ForgotPasswordView(title: args.title, key: args.key),
         settings: data,
@@ -164,7 +173,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i6.SignUpView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i6.SignUpView(),
         settings: data,
@@ -173,7 +182,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i7.CompleteProfileView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i7.CompleteProfileView(),
         settings: data,
@@ -182,7 +191,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i8.ChatView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i8.ChatView(),
         settings: data,
@@ -194,16 +203,16 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CustomChatViewArguments>(
         orElse: () => const CustomChatViewArguments(),
       );
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            _i9.CustomChatView(messages: args.messages, key: args.key),
+            _i9.CustomChatView(key: args.key),
         settings: data,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.moveInLeft,
       );
     },
     _i10.HistoryView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i10.HistoryView(),
         settings: data,
@@ -211,28 +220,38 @@ class StackedRouter extends _i1.RouterBase {
             data.transition ?? _i1.TransitionsBuilders.moveInLeft,
       );
     },
-    _i11.SearchView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+    _i11.PreviousChatView: (data) {
+      final args = data.getArgs<PreviousChatViewArguments>(nullOk: false);
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i11.SearchView(),
+            _i11.PreviousChatView(messages: args.messages, key: args.key),
         settings: data,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.moveInLeft,
       );
     },
-    _i12.AccountView: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+    _i12.SearchView: (data) {
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i12.AccountView(),
+            const _i12.SearchView(),
         settings: data,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.moveInLeft,
       );
     },
-    _i13.ProfileInfo: (data) {
-      return _i14.PageRouteBuilder<dynamic>(
+    _i13.AccountView: (data) {
+      return _i15.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i13.ProfileInfo(),
+            const _i13.AccountView(),
+        settings: data,
+        transitionsBuilder:
+            data.transition ?? _i1.TransitionsBuilders.moveInLeft,
+      );
+    },
+    _i14.ProfileInfo: (data) {
+      return _i15.PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const _i14.ProfileInfo(),
         settings: data,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.moveInLeft,
@@ -255,7 +274,7 @@ class ForgotPasswordViewArguments {
 
   final String title;
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -275,14 +294,36 @@ class ForgotPasswordViewArguments {
 }
 
 class CustomChatViewArguments {
-  const CustomChatViewArguments({
-    this.messages,
+  const CustomChatViewArguments({this.key});
+
+  final _i15.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant CustomChatViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class PreviousChatViewArguments {
+  const PreviousChatViewArguments({
+    required this.messages,
     this.key,
   });
 
-  final List<_i15.Chats?>? messages;
+  final List<_i16.Chat> messages;
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -290,7 +331,7 @@ class CustomChatViewArguments {
   }
 
   @override
-  bool operator ==(covariant CustomChatViewArguments other) {
+  bool operator ==(covariant PreviousChatViewArguments other) {
     if (identical(this, other)) return true;
     return other.messages == messages && other.key == key;
   }
@@ -301,7 +342,7 @@ class CustomChatViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i16.NavigationService {
+extension NavigatorStateExtension on _i17.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -346,7 +387,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
 
   Future<dynamic> navigateToForgotPasswordView({
     required String title,
-    _i14.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -404,8 +445,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
   }
 
   Future<dynamic> navigateToCustomChatView({
-    List<_i15.Chats?>? messages,
-    _i14.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -413,7 +453,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.customChatView,
-        arguments: CustomChatViewArguments(messages: messages, key: key),
+        arguments: CustomChatViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -428,6 +468,23 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.historyView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToPreviousChatView({
+    required List<_i16.Chat> messages,
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.previousChatView,
+        arguments: PreviousChatViewArguments(messages: messages, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -520,7 +577,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
 
   Future<dynamic> replaceWithForgotPasswordView({
     required String title,
-    _i14.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -578,8 +635,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
   }
 
   Future<dynamic> replaceWithCustomChatView({
-    List<_i15.Chats?>? messages,
-    _i14.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -587,7 +643,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.customChatView,
-        arguments: CustomChatViewArguments(messages: messages, key: key),
+        arguments: CustomChatViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -602,6 +658,23 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.historyView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithPreviousChatView({
+    required List<_i16.Chat> messages,
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.previousChatView,
+        arguments: PreviousChatViewArguments(messages: messages, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

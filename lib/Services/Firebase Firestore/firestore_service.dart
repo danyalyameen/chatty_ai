@@ -1,6 +1,8 @@
+import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Models/user_model.dart';
 import 'package:chatty_ai/Services/Firebase%20Authentication/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FirestoreService {
   // Add User Details
@@ -37,11 +39,92 @@ class FirestoreService {
     // Initializa Chat if null
     userModel.chats ??= [];
     // Add Chat
-    userModel.chats!.add(Chats(title: chats[0].prompt, chat: chats));
+    userModel.chats!.add(
+        Chats(title: chats[0].prompt, chat: chats, timestamp: Timestamp.now()));
     // Update on the Database
     await user.update(
       UserModel(
         chats: userModel.chats,
+      ).receive(),
+    );
+  }
+
+  // Add Chat to Firestore
+  Future<void> updateChat({required List<Chat> chats}) async {
+    // User Path
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
+    // Get User Data
+    var data = await user.get();
+    // Store it to Model
+    UserModel userModel = UserModel.store(data.data() as Map<String, dynamic>);
+    // Initializa Chat if null
+    userModel.chats ??= [];
+    // Find Index
+    int index = userModel.chats!
+        .indexWhere((element) => element.title == chats[0].prompt);
+    // Add Chat
+    userModel.chats!.removeAt(index);
+    // Update LIst
+    userModel.chats!.insert(index,
+        Chats(chat: chats, timestamp: Timestamp.now(), title: chats[0].prompt));
+    // Update Database
+    await user.update(
+      UserModel(
+        chats: userModel.chats,
+      ).receive(),
+    );
+  }
+
+  Future<List<Chats>> getChat() async {
+    // User Path
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
+    // Fetch Data
+    var data = await user.get();
+    // Store into Model
+    var userModel = UserModel.store(data.data() as Map<String, dynamic>);
+    return userModel.chats ?? [];
+  }
+
+  Future<void> deleteChat({required int index}) async {
+    // User Path
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
+    // Fetch Data
+    var data = await user.get();
+    // Store into Model
+    var userModel = UserModel.store(data.data() as Map<String, dynamic>);
+    if (userModel.chats!.isNotEmpty) {
+      // delete Chat from list
+      userModel.chats!.removeAt(index);
+      await user.update(
+        UserModel(
+          chats: userModel.chats,
+        ).receive(),
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "There are no chats",
+        backgroundColor: AppColors.primaryRed,
+        gravity: ToastGravity.BOTTOM,
+        textColor: AppColors.primaryLight,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
+
+  Future<void> deleteAllChats() async {
+    // User Path
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
+    await user.update(
+      UserModel(
+        chats: [],
       ).receive(),
     );
   }
@@ -56,17 +139,5 @@ class FirestoreService {
     // User information
     var userInfo = UserModel.store(data.data() as Map<String, dynamic>);
     return userInfo;
-  }
-
-  Future<List<Chats>> getChat() async {
-    // User Path
-    DocumentReference user = FirebaseFirestore.instance
-        .collection('users')
-        .doc(AuthService().getUser()!.uid);
-    // Fetch Data
-    var data = await user.get();
-    // Store into Model
-    var userModel = UserModel.store(data.data() as Map<String, dynamic>);
-    return userModel.chats ?? [];
   }
 }

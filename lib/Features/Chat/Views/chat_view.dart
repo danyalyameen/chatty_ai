@@ -1,3 +1,4 @@
+import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Chat/Views/chat_view_model.dart';
@@ -37,7 +38,7 @@ class ChatView extends StackedView<ChatViewModel> {
 }
 
 class ChatUI extends ViewModelWidget<ChatViewModel> {
-  ChatUI({super.key});
+  const ChatUI({super.key});
 
   // Const Texts
   final String title = 'Welcome to';
@@ -119,7 +120,9 @@ class ChatUI extends ViewModelWidget<ChatViewModel> {
             height: height,
             text: buttonText,
             elevation: true,
-            onPressed: () {},
+            onPressed: () {
+              viewModel.navigationService.navigateToCustomChatView();
+            },
           ),
         ],
       ),

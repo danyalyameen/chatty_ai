@@ -41,11 +41,13 @@ class UserModel {
 class Chats {
   String? title;
   List<Chat>? chat;
+  Timestamp? timestamp;
 
-  Chats({this.title, this.chat});
+  Chats({this.title, this.chat, this.timestamp});
 
   Chats.store(Map<String, dynamic> json) {
     title = json['title'];
+    timestamp = json['timestamp'];
     if (json['chat'] != null) {
       chat = <Chat>[];
       json['chat'].forEach((v) {
@@ -57,6 +59,7 @@ class Chats {
   Map<String, dynamic> receive() {
     final Map<String, dynamic> data = {};
     data['title'] = title;
+    data['timestamp'] = timestamp;
     if (chat != null) {
       data['chat'] = chat!.map((v) => v.receive()).toList();
     }
