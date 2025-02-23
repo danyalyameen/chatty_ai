@@ -37,7 +37,7 @@ class CompleteProfileViewModel extends ViewModel {
             title: Text(
               "No Image Selected",
               style: TextStyle(
-                color: AppColors.textColor,
+                color: AppColors.primaryBlack,
                 fontWeight: FontWeight.w600,
                 fontSize: width * 0.045,
               ),
@@ -46,7 +46,7 @@ class CompleteProfileViewModel extends ViewModel {
             content: Text(
               "Are you sure you want to continue?",
               style: TextStyle(
-                color: AppColors.textColor,
+                color: AppColors.primaryBlack,
                 fontWeight: FontWeight.w400,
                 fontSize: width * 0.04,
               ),
@@ -94,7 +94,7 @@ class CompleteProfileViewModel extends ViewModel {
         backgroundColor: AppColors.primaryRed,
         gravity: ToastGravity.BOTTOM,
         toastLength: Toast.LENGTH_LONG,
-        textColor: AppColors.backgroundColor,
+        textColor: AppColors.primaryLight,
       );
     }
   }
@@ -107,7 +107,7 @@ class CompleteProfileViewModel extends ViewModel {
         backgroundColor: AppColors.primaryRed,
         gravity: ToastGravity.BOTTOM,
         toastLength: Toast.LENGTH_LONG,
-        textColor: AppColors.backgroundColor,
+        textColor: AppColors.primaryLight,
       );
     }
   }

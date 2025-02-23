@@ -17,7 +17,7 @@ class ChooseAuthView extends StackedView<ChooseAuthViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -74,17 +74,15 @@ class _AuthMethods extends ViewModelWidget<ChooseAuthViewModel> {
         Center(
           child: SvgPicture.asset(
             IconsPath.appLogo,
-            width: width * 0.4,
-            height: width * 0.4,
+            width: width * 0.66,
+            height: width * 0.66,
           ),
         ),
-        // For Spacing
-        SizedBox(height: height * 0.06),
         // Title
         Text(
           title,
           style: TextStyle(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             fontSize: width * 0.11,
             fontWeight: FontWeight.w700,
           ),
@@ -99,7 +97,7 @@ class _AuthMethods extends ViewModelWidget<ChooseAuthViewModel> {
           ),
         ),
         // For Spacing
-        SizedBox(height: height * 0.06),
+        SizedBox(height: height * 0.04),
         // Login
         CustomElevatedButton(
           width: width * 0.9,
@@ -192,7 +190,7 @@ class _OtherAuthMethods extends StatelessWidget {
         height: height * 0.065,
         decoration: BoxDecoration(
           border: Border.all(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             width: width * 0.001,
           ),
           borderRadius: BorderRadius.circular(width),
@@ -214,7 +212,7 @@ class _OtherAuthMethods extends StatelessWidget {
               Text(
                 "Continue with Google",
                 style: TextStyle(
-                  color: AppColors.textColor,
+                  color: AppColors.primaryBlack,
                   fontSize: width * 0.05,
                   fontWeight: FontWeight.w500,
                 ),

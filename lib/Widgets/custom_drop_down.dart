@@ -28,7 +28,7 @@ class CustomDropDown extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             fontSize: width * 0.04,
             fontWeight: FontWeight.w800,
           ),
@@ -38,7 +38,7 @@ class CustomDropDown extends StatelessWidget {
           hintText: hintText,
           width: width * 0.9,
           textStyle: TextStyle(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             fontWeight: FontWeight.w800,
             fontSize: width * 0.045,
           ),
@@ -49,7 +49,7 @@ class CustomDropDown extends StatelessWidget {
             child: SvgPicture.asset(IconsPath.downArrow),
           ),
           menuStyle: MenuStyle(
-            backgroundColor: WidgetStatePropertyAll(AppColors.backgroundColor),
+            backgroundColor: WidgetStatePropertyAll(AppColors.primaryLight),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -86,7 +86,7 @@ class CustomDropDown extends StatelessWidget {
                 style: ButtonStyle(
                   textStyle: WidgetStatePropertyAll(
                     TextStyle(
-                      color: AppColors.textColor,
+                      color: AppColors.primaryBlack,
                       fontWeight: FontWeight.w600,
                       fontSize: width * 0.04,
                     ),

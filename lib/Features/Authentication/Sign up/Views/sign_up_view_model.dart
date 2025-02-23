@@ -85,12 +85,12 @@ class SignUpViewModel extends ViewModel {
     validateCheck();
     if (formKey.currentState!.validate() && isCheck) {
       try {
-        // Initialize Shared Preferences
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
         // Show Loading
         _showLoading = true;
         notifyListeners();
+        // Initialize Shared Preferences
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
         // Sign UP User
         await authService.signUp(
           email: emailController.text,

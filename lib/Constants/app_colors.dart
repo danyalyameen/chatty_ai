@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:chatty_ai/Constants/constants.dart';
-
 class AppColors {
   // Primary Color of App
   static const Color primary = Color(0xFF17CE92);
@@ -9,11 +7,9 @@ class AppColors {
   static const Color primary40 = Color(0xFFEEFBF7);
   static const Color primary20 = Color(0xFFE7FAF4);
   // White Color
-  static Color backgroundColor =
-      Constants.isDark ? Color(0xFF181A20) : Color(0xFFFFFFFF);
+  static const Color primaryLight = Color(0xFFFFFFFF);
   // Black Colors
-  static Color textColor =
-      Constants.isDark ? Color(0xFFEFEFEF) : Color(0xFF212121);
+  static const Color primaryBlack = Color(0xFF212121);
   static const Color black80 = Color(0xFF606060);
   static const Color black60 = Color(0xFF9F9F9F);
   static const Color black40 = Color(0xFFFAFAFA);

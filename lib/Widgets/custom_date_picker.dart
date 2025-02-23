@@ -34,7 +34,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         Text(
           widget.title,
           style: TextStyle(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             fontSize: widget.width * 0.04,
             fontWeight: FontWeight.w800,
           ),
@@ -69,7 +69,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                           : "${date?.month ?? "MM"}/${date?.day ?? "DD"}/${date?.year ?? "YYYY"} ",
                       style: TextStyle(
                         color: widget.initialDate != null || date != null
-                            ? AppColors.textColor
+                            ? AppColors.primaryBlack
                             : AppColors.black60,
                         fontSize: date != null
                             ? widget.width * 0.04

@@ -17,6 +17,7 @@ class ProfileInfoModel extends ViewModel {
   ValueNotifier<DateTime> initialDate = ValueNotifier(DateTime.now());
   ValueNotifier showLoading = ValueNotifier(false);
 
+  // Update Profile
   void updateProfile() async {
     showLoading.value = true;
     await firestoreService.updateUser(

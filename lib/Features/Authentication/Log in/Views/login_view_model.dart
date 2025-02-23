@@ -67,13 +67,13 @@ class LoginViewModel extends ViewModel {
   void continueButtonFunction() async {
     if (formKey.currentState!.validate()) {
       try {
-        // Initialize Shared Preferences
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
         // Show Loading
         _showLoading = true;
         notifyListeners();
-        // Sign UP User
+        // Initialize Shared Preferences
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        // Login User
         await authService.login(
           email: emailController.text,
           password: passwordController.text,

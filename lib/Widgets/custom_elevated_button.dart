@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CustomElevatedButton extends StatelessWidget {
+  // Variables Required
   final double width, height;
   final String text;
   final VoidCallback? onPressed;
@@ -29,25 +30,32 @@ class CustomElevatedButton extends StatelessWidget {
       width: width,
       height: height * 0.07,
       child: ElevatedButton(
+        // Call Back
         onPressed: onPressed,
+        // Button Style
         style: ButtonStyle(
+          // Background Color
           backgroundColor: WidgetStatePropertyAll(
             showLoading ?? false
                 ? backgroundColor ?? AppColors.primary60
                 : backgroundColor ?? AppColors.primary,
           ),
+          // Border Radius
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(width),
             ),
           ),
+          // Elevation
           elevation: WidgetStatePropertyAll(
             elevation ? 10 : 0,
           ),
+          // Shadow
           shadowColor: WidgetStatePropertyAll(
             AppColors.primary.withValues(alpha: 0.5),
           ),
         ),
+        // Child
         child: showLoading ?? false
             ? Center(
                 child: SpinKitThreeBounce(
@@ -58,7 +66,7 @@ class CustomElevatedButton extends StatelessWidget {
             : Text(
                 text,
                 style: TextStyle(
-                  color: textColor ?? AppColors.backgroundColor,
+                  color: textColor ?? AppColors.primaryLight,
                   fontSize: fontSize ?? width * 0.05,
                   fontWeight: FontWeight.w600,
                 ),

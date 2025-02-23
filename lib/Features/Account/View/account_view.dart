@@ -3,7 +3,6 @@ import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Account/View/account_view_model.dart';
 import 'package:chatty_ai/Widgets/custom_bottom_sheet.dart';
-import 'package:chatty_ai/Widgets/custom_switch_tile.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,7 +22,7 @@ class AccountView extends StackedView<AccountViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       appBar: whiteAppBar(backArrow: false, title: title, width: width),
       body: Column(
         children: [
@@ -60,6 +59,7 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
       child: FutureBuilder(
         future: viewModel.firestoreService.getUserInfo(),
         builder: (context, snapshot) {
+          // Loading State
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Shimmer.fromColors(
               baseColor: Colors.grey.shade300,
@@ -109,7 +109,7 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
                           width: width * 0.21,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColors.backgroundColor,
+                            color: AppColors.primaryLight,
                           ),
                         ),
                         // Make Outline Transparent
@@ -139,7 +139,7 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
                                       child: Text(
                                         userInfo.name!.substring(0, 1),
                                         style: TextStyle(
-                                          color: AppColors.backgroundColor,
+                                          color: AppColors.primaryLight,
                                           fontWeight: FontWeight.bold,
                                           fontSize: width * 0.09,
                                         ),
@@ -175,7 +175,9 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
                         ),
                         // User Email
                         Text(
-                          viewModel.authService.getUser()!.email!,
+                          viewModel.authService.getUser()!.email!.length > 14
+                              ? "${viewModel.authService.getUser()!.email!.substring(0, 14)}..."
+                              : viewModel.authService.getUser()!.email!,
                           style: TextStyle(
                             color: AppColors.grey,
                             fontSize: width * 0.04,
@@ -185,14 +187,17 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
                       ],
                     ),
                   ),
+                  // For Spacing
+                  const Spacer(),
                   // Right Arrow
                   SvgPicture.asset(
                     IconsPath.rightArrow,
                     colorFilter: ColorFilter.mode(
-                        AppColors.backgroundColor, BlendMode.srcIn),
+                        AppColors.primaryLight, BlendMode.srcIn),
                   ),
+                  // For Spacing
                   SizedBox(
-                    width: width * 0.02,
+                    width: width * 0.04,
                   ),
                 ],
               ),
@@ -278,7 +283,7 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
                   Text(
                     "Profile Info",
                     style: TextStyle(
-                      color: AppColors.textColor,
+                      color: AppColors.primaryBlack,
                       fontSize: width * 0.045,
                       fontWeight: FontWeight.w700,
                     ),
@@ -289,24 +294,6 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
                   SvgPicture.asset(IconsPath.rightArrow),
                 ],
               ),
-            ),
-          ),
-          // Custom Dark Mode Switch
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: width * 0.01, vertical: width * 0.02),
-            child: ValueListenableBuilder(
-              valueListenable: viewModel.isDarkMode,
-              builder: (context, value, child) {
-                return CustomSwitchTile(
-                  title: 'Dark Mode',
-                  width: width,
-                  isIcon: true,
-                  value: viewModel.isDarkMode.value,
-                  onChanged: (value) =>
-                      viewModel.toggleDarkMode(context: context, value: value),
-                );
-              },
             ),
           ),
           // Logout

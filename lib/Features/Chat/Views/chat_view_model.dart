@@ -6,6 +6,7 @@ import 'package:chatty_ai/Features/History/Views/history_view.dart';
 import 'package:flutter/material.dart';
 
 class ChatViewModel extends ViewModel {
+  // Non Final Fields
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
   // List of Bottom Navigation Outline Icons

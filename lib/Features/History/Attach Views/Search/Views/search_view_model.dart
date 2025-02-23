@@ -12,6 +12,7 @@ class SearchViewModel extends ViewModel {
   List<Chats> searchResults = [];
   List<Chats> allChats = [];
 
+  // Get Search Results
   void getSearchResults() async {
     searchResults = [];
     if (allChats.isNotEmpty && _searchController.text.isNotEmpty) {
@@ -27,6 +28,7 @@ class SearchViewModel extends ViewModel {
     notifyListeners();
   }
 
+  // Get All the Chats
   void getChats() async {
     allChats = await firestoreService.getChat();
   }

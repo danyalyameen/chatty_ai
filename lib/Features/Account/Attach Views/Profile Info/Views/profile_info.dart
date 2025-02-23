@@ -20,6 +20,7 @@ class ProfileInfo extends StackedView<ProfileInfoModel> {
   final String title = "Profile Info";
   final String continueText = "Continue";
 
+  // Disposing Controllers
   @override
   void onViewModelReady(ProfileInfoModel viewModel) async {
     viewModel.nameController.text = name;
@@ -36,7 +37,7 @@ class ProfileInfo extends StackedView<ProfileInfoModel> {
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       appBar: whiteAppBar(
         backArrow: true,
         title: title,
@@ -119,6 +120,7 @@ class _UserImage extends ViewModelWidget<ProfileInfoModel> {
                     NetworkImage(viewModel.imageService.getUserImage()),
                     context),
                 builder: (context, snapshot) {
+                  // Loading State
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Shimmer.fromColors(
                       baseColor: Colors.grey.shade300,
@@ -178,7 +180,7 @@ class _UserImage extends ViewModelWidget<ProfileInfoModel> {
                   child: Icon(
                     Icons.edit,
                     size: width * 0.05,
-                    color: AppColors.backgroundColor,
+                    color: AppColors.primaryLight,
                   ),
                 ),
               ),

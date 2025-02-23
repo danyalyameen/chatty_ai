@@ -22,7 +22,7 @@ class PreviousChatView extends StackedView<PreviousChatViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       appBar: whiteAppBar(
         width: width,
         backArrow: true,
@@ -98,7 +98,7 @@ class _Prompt extends ViewModelWidget<PreviousChatViewModel> {
             child: Text(
               messages[index].prompt!,
               style: TextStyle(
-                color: AppColors.backgroundColor,
+                color: AppColors.primaryLight,
                 fontWeight: FontWeight.w600,
                 fontSize: width * 0.042,
               ),
@@ -136,7 +136,7 @@ class _Answer extends ViewModelWidget<PreviousChatViewModel> {
         child: Text(
           messages[index].answer!,
           style: TextStyle(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             fontWeight: FontWeight.w500,
             fontSize: width * 0.04,
           ),

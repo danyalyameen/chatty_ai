@@ -23,7 +23,7 @@ class LoginView extends StackedView<LoginViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
       appBar: whiteAppBar(
         backArrow: false,
@@ -111,7 +111,7 @@ class _LoginTexts extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             fontWeight: FontWeight.w700,
             fontSize: width * 0.08,
           ),
@@ -124,7 +124,7 @@ class _LoginTexts extends StatelessWidget {
         Text(
           description,
           style: TextStyle(
-            color: AppColors.textColor,
+            color: AppColors.primaryBlack,
             fontWeight: FontWeight.w300,
             fontSize: width * 0.042,
           ),
@@ -206,6 +206,7 @@ class _NoHaveAccount extends ViewModelWidget<LoginViewModel> {
         SizedBox(
           height: height * 0.02,
         ),
+        // Forgot Password
         InkWell(
           onTap: () => viewModel.navigationService
               .navigateToForgotPasswordView(title: "Forgot Password"),
@@ -230,7 +231,7 @@ class _NoHaveAccount extends ViewModelWidget<LoginViewModel> {
             Text(
               title,
               style: TextStyle(
-                color: AppColors.textColor,
+                color: AppColors.primaryBlack,
                 fontSize: width * 0.045,
                 fontWeight: FontWeight.w500,
               ),
@@ -305,6 +306,7 @@ class _OtherAuthMethods extends StatelessWidget {
         SizedBox(
           height: height * 0.05,
         ),
+        // Google Auth
         InkWell(
           onTap: () => googleAuth(),
           borderRadius: BorderRadius.circular(width),
@@ -313,7 +315,7 @@ class _OtherAuthMethods extends StatelessWidget {
             height: height * 0.065,
             decoration: BoxDecoration(
               border: Border.all(
-                color: AppColors.textColor,
+                color: AppColors.primaryBlack,
                 width: width * 0.001,
               ),
               borderRadius: BorderRadius.circular(width),
@@ -335,7 +337,7 @@ class _OtherAuthMethods extends StatelessWidget {
                   Text(
                     "Continue with Google",
                     style: TextStyle(
-                      color: AppColors.textColor,
+                      color: AppColors.primaryBlack,
                       fontSize: width * 0.05,
                       fontWeight: FontWeight.w500,
                     ),

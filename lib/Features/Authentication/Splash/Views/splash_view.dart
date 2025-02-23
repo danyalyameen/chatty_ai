@@ -16,10 +16,6 @@ class SplashView extends StackedView<SplashViewModel> {
 
   @override
   void onViewModelReady(SplashViewModel viewModel) async {
-    // Changing Notification Bar Colors
-    Constants.isDark
-        ? viewModel.notificationBarService.darkNotificationBar()
-        : viewModel.notificationBarService.whiteNotificationBar();
     super.onViewModelReady(viewModel);
     // Delay for 3 Seconds
     await Future.delayed(const Duration(seconds: 3));
@@ -40,7 +36,7 @@ class SplashView extends StackedView<SplashViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

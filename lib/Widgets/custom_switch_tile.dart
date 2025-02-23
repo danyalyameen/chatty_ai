@@ -40,7 +40,7 @@ class CustomSwitchTile extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  color: AppColors.textColor,
+                  color: AppColors.primaryBlack,
                   fontSize: width * 0.045,
                   fontWeight: FontWeight.w700,
                 ),
@@ -53,10 +53,10 @@ class CustomSwitchTile extends StatelessWidget {
                 child: Switch(
                   value: value,
                   onChanged: onChanged,
-                  activeColor: AppColors.backgroundColor,
+                  activeColor: AppColors.primaryLight,
                   activeTrackColor: AppColors.primary,
                   inactiveTrackColor: AppColors.grey60,
-                  inactiveThumbColor: AppColors.backgroundColor,
+                  inactiveThumbColor: AppColors.primaryLight,
                   trackOutlineColor: WidgetStatePropertyAll(AppColors.grey60),
                 ),
               ),
@@ -68,7 +68,7 @@ class CustomSwitchTile extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  color: AppColors.textColor,
+                  color: AppColors.primaryBlack,
                   fontSize: width * 0.045,
                   fontWeight: FontWeight.w700,
                 ),
@@ -81,10 +81,10 @@ class CustomSwitchTile extends StatelessWidget {
                 child: Switch(
                   value: value,
                   onChanged: onChanged,
-                  activeColor: AppColors.backgroundColor,
+                  activeColor: AppColors.primaryLight,
                   activeTrackColor: AppColors.primary,
                   inactiveTrackColor: AppColors.grey60,
-                  inactiveThumbColor: AppColors.backgroundColor,
+                  inactiveThumbColor: AppColors.primaryLight,
                   trackOutlineColor: WidgetStatePropertyAll(AppColors.grey60),
                 ),
               ),

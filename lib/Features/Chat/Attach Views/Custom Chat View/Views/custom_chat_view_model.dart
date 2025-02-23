@@ -26,6 +26,7 @@ class CustomChatViewModel extends ViewModel {
   // Get Non Final Fields
   bool get showLoading => _showLoading;
 
+  // Scroll to End
   Future<void> scrollToEnd() async {
     if (!listViewController.hasClients) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -39,11 +40,12 @@ class CustomChatViewModel extends ViewModel {
     });
   }
 
+  // Scroll Listener
   void scrollListener() {
     if (listViewController.hasClients) {
       var currentScroll = listViewController.position.pixels;
       var maxScroll = listViewController.position.maxScrollExtent;
-      // Check if user scrolled up (with 5px tolerance)
+      // Check if user scrolled up (with 80px tolerance)
       if ((maxScroll - currentScroll) > 80) {
         currentScroll = maxScroll;
         shouldAutoScroll = false;
@@ -54,6 +56,7 @@ class CustomChatViewModel extends ViewModel {
     }
   }
 
+  // Auto Scroll
   void startAutoScroll() {
     if (scrollTimer != null) return;
     scrollTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
@@ -62,9 +65,12 @@ class CustomChatViewModel extends ViewModel {
     });
   }
 
+  // Start Chat
   void startChat() async {
     if (chatController.value.text.isNotEmpty) {
+      // Prompt Storing
       prompt = chatController.value.text;
+      // Message Adding
       askPrompt = true;
       chatController.value.clear();
       messages.add(
@@ -79,9 +85,12 @@ class CustomChatViewModel extends ViewModel {
           isUser: false,
         ),
       );
+      // Show Loading
       _showLoading = true;
       notifyListeners();
+      // Fetch Response
       ApiModel apiModel = await apiService.askQuestion(prompt: prompt);
+      // Add Response
       messages.removeLast();
       messages.add(
         MessageModel(
@@ -89,6 +98,7 @@ class CustomChatViewModel extends ViewModel {
           isUser: false,
         ),
       );
+      // Hide Loading
       _showLoading = false;
       notifyListeners();
       chat.add(
@@ -96,6 +106,7 @@ class CustomChatViewModel extends ViewModel {
     }
   }
 
+  // On Back Button Function
   void onBackButton() async {
     if (chat.isNotEmpty) {
       try {

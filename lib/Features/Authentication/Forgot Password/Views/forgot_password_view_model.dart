@@ -29,7 +29,7 @@ class ForgotPasswordViewModel extends ViewModel {
       Fluttertoast.showToast(
         msg: "Password Reset Link Send Successfully",
         backgroundColor: AppColors.grey80,
-        textColor: AppColors.backgroundColor,
+        textColor: AppColors.primaryLight,
         gravity: ToastGravity.BOTTOM,
         toastLength: Toast.LENGTH_LONG,
         fontSize: width * 0.04,

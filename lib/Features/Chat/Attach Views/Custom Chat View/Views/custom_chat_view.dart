@@ -48,7 +48,7 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       appBar: whiteAppBar(
         width: width,
         backArrow: true,
@@ -78,11 +78,13 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
                           itemCount: viewModel.messages.length,
                           itemBuilder: (context, index) {
                             return viewModel.messages[index].isUser!
+                                // Prompt
                                 ? _Prompt(
                                     width: width,
                                     height: height,
                                     index: index,
                                   )
+                                // Answer
                                 : _Answer(
                                     width: width,
                                     height: height,
@@ -92,6 +94,7 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
                         ),
                       ),
                     )
+                  // Capabilities
                   : _Capabilities(
                       width: width,
                       height: height,
@@ -144,7 +147,7 @@ class _Prompt extends ViewModelWidget<CustomChatViewModel> {
             child: Text(
               viewModel.messages[index].text!,
               style: TextStyle(
-                color: AppColors.backgroundColor,
+                color: AppColors.primaryLight,
                 fontWeight: FontWeight.w600,
                 fontSize: width * 0.042,
               ),
@@ -206,6 +209,7 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
                   ],
                 ),
               )
+            // Answer with Animation
             : Builder(
                 builder: (context) {
                   viewModel.messages[index].responseGenerated = true;
@@ -230,7 +234,7 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
                             viewModel.messages[index].text!,
                             speed: const Duration(milliseconds: 10),
                             textStyle: TextStyle(
-                              color: AppColors.textColor,
+                              color: AppColors.primaryBlack,
                               fontWeight: FontWeight.w500,
                               fontSize: width * 0.04,
                             ),
@@ -241,6 +245,7 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
                   );
                 },
               )
+        // Answer without Animation
         : Align(
             alignment: Alignment.topLeft,
             child: Container(
@@ -254,7 +259,7 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
               child: Text(
                 viewModel.messages[index].text!,
                 style: TextStyle(
-                  color: AppColors.textColor,
+                  color: AppColors.primaryBlack,
                   fontWeight: FontWeight.w500,
                   fontSize: width * 0.04,
                 ),
@@ -378,7 +383,7 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
           ? height * 0.12
           : height * 0.1,
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: AppColors.primaryLight,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -460,7 +465,7 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
                           colorFilter: ColorFilter.mode(
                             viewModel.chatController.value.text.isEmpty
                                 ? AppColors.grey80
-                                : AppColors.backgroundColor,
+                                : AppColors.primaryLight,
                             BlendMode.srcIn,
                           ),
                         ),

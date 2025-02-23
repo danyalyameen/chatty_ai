@@ -24,7 +24,7 @@ class ChatView extends StackedView<ChatViewModel> {
       body: viewModel.navigationViews[viewModel.currentIndex],
       // Bottom Navigation Bar
       bottomNavigationBar: BottomAppBar(
-        color: AppColors.backgroundColor,
+        color: AppColors.primaryLight,
         child: _BottomNavigation(
           width: width,
           height: height,
@@ -53,7 +53,7 @@ class ChatUI extends ViewModelWidget<ChatViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       // Custom White App Bar Widget
       appBar: whiteAppBar(
         title: title,
@@ -78,7 +78,7 @@ class ChatUI extends ViewModelWidget<ChatViewModel> {
           Text(
             title,
             style: TextStyle(
-              color: AppColors.textColor,
+              color: AppColors.primaryBlack,
               fontSize: width * 0.11,
               fontWeight: FontWeight.w700,
             ),
@@ -166,10 +166,11 @@ class _BottomNavigation extends ViewModelWidget<ChatViewModel> {
                     ),
                   ),
                 ),
-                // Bottom Navigation Text
+                // For Spacing
                 SizedBox(
                   height: height * 0.005,
                 ),
+                // Bottom Navigation Text
                 Text(
                   viewModel.titles[index],
                   style: TextStyle(

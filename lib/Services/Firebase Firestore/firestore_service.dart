@@ -117,7 +117,7 @@ class FirestoreService {
         msg: "There are no chats",
         backgroundColor: AppColors.primaryRed,
         gravity: ToastGravity.BOTTOM,
-        textColor: AppColors.backgroundColor,
+        textColor: AppColors.primaryLight,
         toastLength: Toast.LENGTH_LONG,
       );
     }

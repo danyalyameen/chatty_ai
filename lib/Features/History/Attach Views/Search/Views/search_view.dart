@@ -10,6 +10,7 @@ import 'package:stacked/stacked.dart';
 class SearchView extends StackedView<SearchViewModel> {
   const SearchView({super.key});
 
+  // Init ViewModel and Initialize Search Results
   @override
   void onViewModelReady(SearchViewModel viewModel) {
     viewModel.getChats();
@@ -24,7 +25,7 @@ class SearchView extends StackedView<SearchViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -89,7 +90,7 @@ class _SearchBar extends ViewModelWidget<SearchViewModel> {
                 controller: viewModel.searchController,
                 autofocus: true,
                 style: TextStyle(
-                  color: AppColors.textColor,
+                  color: AppColors.primaryBlack,
                   fontSize: width * 0.05,
                 ),
                 cursorHeight: height * 0.025,
@@ -135,6 +136,7 @@ class _SearchResults extends ViewModelWidget<SearchViewModel> {
   const _SearchResults({required this.width, required this.height});
   @override
   Widget build(BuildContext context, SearchViewModel viewModel) {
+    // Search Results
     return SizedBox(
       width: width,
       height: height * 0.8,
@@ -143,7 +145,7 @@ class _SearchResults extends ViewModelWidget<SearchViewModel> {
               child: Text(
                 "No Chats Found",
                 style: TextStyle(
-                  color: AppColors.textColor,
+                  color: AppColors.primaryBlack,
                   fontSize: width * 0.05,
                   fontWeight: FontWeight.w600,
                 ),
@@ -195,7 +197,7 @@ class _SearchResults extends ViewModelWidget<SearchViewModel> {
                                 style: TextStyle(
                                   fontSize: width * 0.045,
                                   fontWeight: FontWeight.w800,
-                                  color: AppColors.textColor,
+                                  color: AppColors.primaryBlack,
                                 ),
                               ),
                               // For Spacing
