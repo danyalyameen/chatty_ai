@@ -39,6 +39,17 @@ class AuthService {
     return auth.currentUser;
   }
 
+  // Logout User
+  Future<void> logout() async {
+    // Logout User
+    await auth.signOut();
+    // Save Logged Out
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool(Constants.loggedIn, false);
+    // Navigation
+    navigationService.replaceWithLoginView();
+  }
+
   void googleAuth() async {
     try {
       // Get User Account

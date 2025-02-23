@@ -24,7 +24,7 @@ class ProfileInfo extends StackedView<ProfileInfoModel> {
   void onViewModelReady(ProfileInfoModel viewModel) async {
     viewModel.nameController.text = name;
     viewModel.genderController.text = gender;
-    viewModel.initialDate = dob;
+    viewModel.initialDate.value = dob;
     super.onViewModelReady(viewModel);
   }
 
@@ -36,7 +36,7 @@ class ProfileInfo extends StackedView<ProfileInfoModel> {
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       appBar: whiteAppBar(
         backArrow: true,
         title: title,
@@ -67,13 +67,18 @@ class ProfileInfo extends StackedView<ProfileInfoModel> {
               height: height * 0.04,
             ),
             // Button
-            CustomElevatedButton(
-              width: width * 0.94,
-              height: height,
-              elevation: true,
-              showLoading: viewModel.showLoading,
-              text: continueText,
-              onPressed: () => viewModel.updateProfile(),
+            ValueListenableBuilder(
+              valueListenable: viewModel.showLoading,
+              builder: (context, value, child) {
+                return CustomElevatedButton(
+                  width: width * 0.94,
+                  height: height,
+                  elevation: true,
+                  showLoading: value,
+                  text: continueText,
+                  onPressed: () => viewModel.updateProfile(),
+                );
+              },
             ),
           ],
         ),
@@ -173,7 +178,7 @@ class _UserImage extends ViewModelWidget<ProfileInfoModel> {
                   child: Icon(
                     Icons.edit,
                     size: width * 0.05,
-                    color: AppColors.primaryLight,
+                    color: AppColors.backgroundColor,
                   ),
                 ),
               ),
@@ -225,16 +230,19 @@ class _InputFields extends ViewModelWidget<ProfileInfoModel> {
           height: height * 0.04,
         ),
         // Date Picker for Date of Birth
-        CustomDatePicker(
-          width: width,
-          height: height,
-          title: datePickerTitle,
-          initialDate: viewModel.initialDate,
-          onChange: (date) {
-            date != null ? viewModel.initialDate = date : null;
-            viewModel.notifyListeners();
-          },
-        ),
+        ValueListenableBuilder(
+            valueListenable: viewModel.initialDate,
+            builder: (context, value, child) {
+              return CustomDatePicker(
+                width: width,
+                height: height,
+                title: datePickerTitle,
+                initialDate: value,
+                onChange: (date) {
+                  date != null ? viewModel.initialDate.value = date : null;
+                },
+              );
+            }),
       ],
     );
   }

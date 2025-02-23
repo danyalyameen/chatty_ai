@@ -27,7 +27,7 @@ class ForgotPasswordView extends StackedView<ForgotPasswordViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       appBar: whiteAppBar(
         backArrow: true,
@@ -96,7 +96,7 @@ class _ForgotPasswordTexts extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: AppColors.primaryBlack,
+            color: AppColors.textColor,
             fontWeight: FontWeight.w700,
             fontSize: width * 0.07,
           ),
@@ -109,7 +109,7 @@ class _ForgotPasswordTexts extends StatelessWidget {
         Text(
           description,
           style: TextStyle(
-            color: AppColors.primaryBlack,
+            color: AppColors.textColor,
             fontWeight: FontWeight.w300,
             fontSize: width * 0.042,
           ),

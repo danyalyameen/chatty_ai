@@ -48,7 +48,7 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       appBar: whiteAppBar(
         width: width,
         backArrow: true,
@@ -144,7 +144,7 @@ class _Prompt extends ViewModelWidget<CustomChatViewModel> {
             child: Text(
               viewModel.messages[index].text!,
               style: TextStyle(
-                color: AppColors.primaryLight,
+                color: AppColors.backgroundColor,
                 fontWeight: FontWeight.w600,
                 fontSize: width * 0.042,
               ),
@@ -230,7 +230,7 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
                             viewModel.messages[index].text!,
                             speed: const Duration(milliseconds: 10),
                             textStyle: TextStyle(
-                              color: AppColors.primaryBlack,
+                              color: AppColors.textColor,
                               fontWeight: FontWeight.w500,
                               fontSize: width * 0.04,
                             ),
@@ -254,7 +254,7 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
               child: Text(
                 viewModel.messages[index].text!,
                 style: TextStyle(
-                  color: AppColors.primaryBlack,
+                  color: AppColors.textColor,
                   fontWeight: FontWeight.w500,
                   fontSize: width * 0.04,
                 ),
@@ -378,7 +378,7 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
           ? height * 0.12
           : height * 0.1,
       decoration: BoxDecoration(
-        color: AppColors.primaryLight,
+        color: AppColors.backgroundColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -460,7 +460,7 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
                           colorFilter: ColorFilter.mode(
                             viewModel.chatController.value.text.isEmpty
                                 ? AppColors.grey80
-                                : AppColors.primaryLight,
+                                : AppColors.backgroundColor,
                             BlendMode.srcIn,
                           ),
                         ),

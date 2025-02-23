@@ -14,24 +14,21 @@ class ProfileInfoModel extends ViewModel {
   // Non Final Fields
   ValueNotifier<bool> imageError = ValueNotifier(false);
   File? image;
-  late DateTime initialDate;
-  bool showLoading = false;
+  ValueNotifier<DateTime> initialDate = ValueNotifier(DateTime.now());
+  ValueNotifier showLoading = ValueNotifier(false);
 
   void updateProfile() async {
-    showLoading = true;
-    notifyListeners();
+    showLoading.value = true;
     await firestoreService.updateUser(
       name: nameController.text,
       gender: genderController.text,
-      dob: Timestamp.fromDate(initialDate),
+      dob: Timestamp.fromDate(initialDate.value),
       profileCompleted: true,
     );
     if (image != null) {
-      await imageService.deleteImage();
-      await imageService.uploadImage(image: image!);
+      await imageService.updateImage(image: image!);
     }
-    showLoading = false;
-    notifyListeners();
+    showLoading.value = false;
     Fluttertoast.showToast(
       msg: "Profile Update Successfully!",
       textColor: AppColors.black40,

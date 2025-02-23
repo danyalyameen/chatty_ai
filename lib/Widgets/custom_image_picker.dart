@@ -39,7 +39,7 @@ class ShowBottomSheetForImportImages {
           showDragHandle: true,
           dragHandleColor: AppColors.black60,
           dragHandleSize: Size(width * 0.2, height * 0.005),
-          backgroundColor: AppColors.primaryLight,
+          backgroundColor: AppColors.backgroundColor,
           constraints:
               BoxConstraints(minHeight: height * 0.25, minWidth: width),
           onClosing: () {},
@@ -86,7 +86,8 @@ class ShowBottomSheetForImportImages {
                                   width: width * 0.1,
                                   height: width * 0.1,
                                   colorFilter: ColorFilter.mode(
-                                      AppColors.primaryLight, BlendMode.srcIn),
+                                      AppColors.backgroundColor,
+                                      BlendMode.srcIn),
                                 ),
                               ),
                               // For Spacing
@@ -97,7 +98,7 @@ class ShowBottomSheetForImportImages {
                               Text(
                                 attachmentOptions[index][titleKey],
                                 style: TextStyle(
-                                  color: AppColors.primaryLight,
+                                  color: AppColors.backgroundColor,
                                   fontSize: width * 0.045,
                                   fontWeight: FontWeight.w500,
                                 ),

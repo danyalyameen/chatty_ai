@@ -26,7 +26,7 @@ class FirestoreService {
     );
   }
 
-    // Update User Details
+  // Update User Details
   Future<void> updateUser(
       {required String name,
       required String gender,
@@ -46,7 +46,7 @@ class FirestoreService {
       ).receive(),
     );
   }
-  
+
   // Get User Details
   Future<UserModel> getUserInfo() async {
     // User Path
@@ -117,7 +117,7 @@ class FirestoreService {
         msg: "There are no chats",
         backgroundColor: AppColors.primaryRed,
         gravity: ToastGravity.BOTTOM,
-        textColor: AppColors.primaryLight,
+        textColor: AppColors.backgroundColor,
         toastLength: Toast.LENGTH_LONG,
       );
     }

@@ -16,9 +16,14 @@ class SplashView extends StackedView<SplashViewModel> {
 
   @override
   void onViewModelReady(SplashViewModel viewModel) async {
+    // Changing Notification Bar Colors
+    Constants.isDark
+        ? viewModel.notificationBarService.darkNotificationBar()
+        : viewModel.notificationBarService.whiteNotificationBar();
     super.onViewModelReady(viewModel);
-    // Timer
+    // Delay for 3 Seconds
     await Future.delayed(const Duration(seconds: 3));
+    // Get Shared Preferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Navigation
     if (sharedPreferences.getBool(Constants.loggedIn) == true) {
@@ -31,10 +36,11 @@ class SplashView extends StackedView<SplashViewModel> {
   @override
   Widget builder(
       BuildContext context, SplashViewModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -42,12 +48,12 @@ class SplashView extends StackedView<SplashViewModel> {
           UnconstrainedBox(
             child: SvgPicture.asset(
               IconsPath.appLogo,
-              width: width * 0.6,
+              width: width * 0.8,
             ),
           ),
           // For Spacing
           SizedBox(
-            height: height * 0.1,
+            height: height * 0.06,
           ),
           // Loader
           SpinKitFadingCircle(

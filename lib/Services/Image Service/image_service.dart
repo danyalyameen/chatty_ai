@@ -45,13 +45,20 @@ class ImageService {
     await storage.from('Users').upload(path, image);
   }
 
-  Future<void> deleteImage() async {
-    String bucketName = "Users";
-    String userFolderName = AuthService().getUser()!.uid;
-    String imageFolderName = "User Image";
-    String imageName = "user";
-    String imagePath = "$userFolderName/$imageFolderName/$imageName";
-    await storage.from(bucketName).remove([imagePath]);
+  Future<void> updateImage({required File image}) async {
+    // Create Path For Uploading Image
+    // Create A Folder with Name of User Uid
+    final userUid = AuthService().getUser()!.uid;
+    // Create A Folder of User Image
+    final folderName = "User Image";
+    // Image Name
+    final imageName = "user";
+    // Specify Path
+    final path = "$userUid/$folderName/$imageName";
+    // Deleting Image
+    await storage.from('Users').remove([path]);
+    // Uploading Image
+    await storage.from('Users').upload(path, image);
   }
 
   String getUserImage() {
@@ -63,7 +70,9 @@ class ImageService {
     final imageName = "user";
     // Specify Path
     final path = "$userUid/$folderName/$imageName";
-    // Uploading Image
-    return storage.from('Users').getPublicUrl(path);
+    // Get Image
+    String imageUrl = storage.from('Users').getPublicUrl(path);
+    String strictUrl = "$imageUrl?t=${DateTime.now().millisecondsSinceEpoch}";
+    return strictUrl;
   }
 }

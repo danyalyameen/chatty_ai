@@ -21,7 +21,7 @@ class CustomBottomSheet {
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -44,7 +44,7 @@ class CustomBottomSheet {
                   ),
                   // For Line Between Title and Description
                   Divider(
-                    color: AppColors.primaryBlack,
+                    color: AppColors.textColor,
                     thickness: width * 0.0005,
                     indent: width * 0.05,
                     endIndent: width * 0.05,
@@ -60,6 +60,7 @@ class CustomBottomSheet {
                       description,
                       textAlign: TextAlign.center,
                       style: TextStyle(
+                        color: AppColors.textColor,
                         fontSize: width * 0.044,
                         fontWeight: FontWeight.w500,
                       ),

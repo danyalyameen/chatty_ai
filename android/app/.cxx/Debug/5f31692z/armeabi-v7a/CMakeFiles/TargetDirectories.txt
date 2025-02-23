@@ -1,0 +1,2 @@
+D:/Portfolio/chatty_ai/android/app/.cxx/Debug/5f31692z/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Portfolio/chatty_ai/android/app/.cxx/Debug/5f31692z/armeabi-v7a/CMakeFiles/rebuild_cache.dir

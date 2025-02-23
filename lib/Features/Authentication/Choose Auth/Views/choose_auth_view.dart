@@ -17,7 +17,7 @@ class ChooseAuthView extends StackedView<ChooseAuthViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -84,7 +84,7 @@ class _AuthMethods extends ViewModelWidget<ChooseAuthViewModel> {
         Text(
           title,
           style: TextStyle(
-            color: AppColors.primaryBlack,
+            color: AppColors.textColor,
             fontSize: width * 0.11,
             fontWeight: FontWeight.w700,
           ),
@@ -192,7 +192,7 @@ class _OtherAuthMethods extends StatelessWidget {
         height: height * 0.065,
         decoration: BoxDecoration(
           border: Border.all(
-            color: AppColors.primaryBlack,
+            color: AppColors.textColor,
             width: width * 0.001,
           ),
           borderRadius: BorderRadius.circular(width),
@@ -214,7 +214,7 @@ class _OtherAuthMethods extends StatelessWidget {
               Text(
                 "Continue with Google",
                 style: TextStyle(
-                  color: AppColors.primaryBlack,
+                  color: AppColors.textColor,
                   fontSize: width * 0.05,
                   fontWeight: FontWeight.w500,
                 ),

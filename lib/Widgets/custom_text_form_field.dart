@@ -38,7 +38,7 @@ class CustomTextFormField extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              color: AppColors.primaryBlack,
+              color: AppColors.textColor,
               fontSize: width * 0.04,
               fontWeight: FontWeight.w800,
             ),
@@ -49,7 +49,7 @@ class CustomTextFormField extends StatelessWidget {
             controller: controller,
             cursorColor: AppColors.primary,
             style: TextStyle(
-              color: AppColors.primaryBlack,
+              color: AppColors.textColor,
               fontSize: width * 0.045,
               fontWeight: FontWeight.w800,
             ),

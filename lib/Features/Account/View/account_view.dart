@@ -2,7 +2,6 @@ import 'package:chatty_ai/App/app.router.dart';
 import 'package:chatty_ai/Constants/app_colors.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Account/View/account_view_model.dart';
-import 'package:chatty_ai/Models/user_model.dart';
 import 'package:chatty_ai/Widgets/custom_bottom_sheet.dart';
 import 'package:chatty_ai/Widgets/custom_switch_tile.dart';
 import 'package:chatty_ai/Widgets/white_app_bar.dart';
@@ -24,7 +23,7 @@ class AccountView extends StackedView<AccountViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.backgroundColor,
       appBar: whiteAppBar(backArrow: false, title: title, width: width),
       body: Column(
         children: [
@@ -59,11 +58,7 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
     return Padding(
       padding: EdgeInsets.only(top: height * 0.01),
       child: FutureBuilder(
-        future: Future.wait([
-          precacheImage(
-              NetworkImage(viewModel.imageService.getUserImage()), context),
-          viewModel.firestoreService.getUserInfo(),
-        ]),
+        future: viewModel.firestoreService.getUserInfo(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Shimmer.fromColors(
@@ -79,16 +74,19 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
               ),
             );
           }
-          final userInfo = snapshot.data![1] as UserModel;
+          final userInfo = snapshot.data!;
           viewModel.name = userInfo.name!;
           viewModel.gender = userInfo.gender!;
           viewModel.dob = userInfo.dob!.toDate();
           return InkWell(
-            onTap: () => viewModel.navigationService.navigateToProfileInfo(
-              dob: userInfo.dob!.toDate(),
-              gender: userInfo.gender!,
-              name: userInfo.name!,
-            ),
+            onTap: () async {
+              await viewModel.navigationService.navigateToProfileInfo(
+                dob: userInfo.dob!.toDate(),
+                gender: userInfo.gender!,
+                name: userInfo.name!,
+              );
+              viewModel.notifyListeners();
+            },
             child: Container(
               width: width * 0.9,
               height: height * 0.12,
@@ -111,7 +109,7 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
                           width: width * 0.21,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColors.primaryLight,
+                            color: AppColors.backgroundColor,
                           ),
                         ),
                         // Make Outline Transparent
@@ -141,7 +139,7 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
                                       child: Text(
                                         userInfo.name!.substring(0, 1),
                                         style: TextStyle(
-                                          color: AppColors.primaryLight,
+                                          color: AppColors.backgroundColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: width * 0.09,
                                         ),
@@ -191,7 +189,7 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
                   SvgPicture.asset(
                     IconsPath.rightArrow,
                     colorFilter: ColorFilter.mode(
-                        AppColors.primaryLight, BlendMode.srcIn),
+                        AppColors.backgroundColor, BlendMode.srcIn),
                   ),
                   SizedBox(
                     width: width * 0.02,
@@ -280,7 +278,7 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
                   Text(
                     "Profile Info",
                     style: TextStyle(
-                      color: AppColors.primaryBlack,
+                      color: AppColors.textColor,
                       fontSize: width * 0.045,
                       fontWeight: FontWeight.w700,
                     ),
@@ -298,16 +296,18 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
             padding: EdgeInsets.symmetric(
                 horizontal: width * 0.01, vertical: width * 0.02),
             child: ValueListenableBuilder(
-                valueListenable: viewModel.isDarkMode,
-                builder: (context, value, child) {
-                  return CustomSwitchTile(
-                    title: 'Dark Mode',
-                    width: width,
-                    isIcon: true,
-                    value: viewModel.isDarkMode.value,
-                    onChanged: (value) => viewModel.toggleDarkMode(value),
-                  );
-                }),
+              valueListenable: viewModel.isDarkMode,
+              builder: (context, value, child) {
+                return CustomSwitchTile(
+                  title: 'Dark Mode',
+                  width: width,
+                  isIcon: true,
+                  value: viewModel.isDarkMode.value,
+                  onChanged: (value) =>
+                      viewModel.toggleDarkMode(context: context, value: value),
+                );
+              },
+            ),
           ),
           // Logout
           InkWell(
@@ -325,6 +325,9 @@ class _GeneralOptions extends ViewModelWidget<AccountViewModel> {
                   fontWeight: FontWeight.w700,
                   color: AppColors.primaryRed,
                 ),
+                onPressed: () {
+                  viewModel.authService.logout();
+                },
               );
             },
             child: Padding(

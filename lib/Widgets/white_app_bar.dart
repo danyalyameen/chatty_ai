@@ -18,15 +18,15 @@ PreferredSizeWidget whiteAppBar({
     title: Text(
       title,
       style: TextStyle(
-        color: AppColors.primaryBlack,
+        color: AppColors.textColor,
         fontSize: width * 0.055,
         fontWeight: FontWeight.w600,
       ),
     ),
     actions: actions,
     centerTitle: true,
-    backgroundColor: AppColors.primaryLight,
-    foregroundColor: AppColors.primaryLight,
+    backgroundColor: AppColors.backgroundColor,
+    foregroundColor: AppColors.backgroundColor,
     scrolledUnderElevation: 0,
     // back arrow
     leading: backArrow

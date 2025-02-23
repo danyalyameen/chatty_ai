@@ -31,7 +31,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       appBar: whiteAppBar(
         backArrow: false,
@@ -129,7 +129,7 @@ class _SignUPTexts extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: AppColors.primaryBlack,
+            color: AppColors.textColor,
             fontWeight: FontWeight.w700,
             fontSize: width * 0.08,
           ),
@@ -142,7 +142,7 @@ class _SignUPTexts extends StatelessWidget {
         Text(
           description,
           style: TextStyle(
-            color: AppColors.primaryBlack,
+            color: AppColors.textColor,
             fontWeight: FontWeight.w300,
             fontSize: width * 0.042,
           ),
@@ -241,7 +241,7 @@ class _PrivacyPolicy extends ViewModelWidget<SignUpViewModel> {
                 TextSpan(
                   text: title,
                   style: TextStyle(
-                    color: AppColors.primaryBlack,
+                    color: AppColors.textColor,
                     fontSize: width * 0.04,
                     fontWeight: FontWeight.w600,
                   ),
@@ -294,7 +294,7 @@ class _AlreadyAccount extends ViewModelWidget<SignUpViewModel> {
             Text(
               title,
               style: TextStyle(
-                color: AppColors.primaryBlack,
+                color: AppColors.textColor,
                 fontSize: width * 0.045,
                 fontWeight: FontWeight.w500,
               ),
@@ -378,7 +378,7 @@ class _OtherAuthMethods extends StatelessWidget {
             height: height * 0.065,
             decoration: BoxDecoration(
               border: Border.all(
-                color: AppColors.primaryBlack,
+                color: AppColors.textColor,
                 width: width * 0.001,
               ),
               borderRadius: BorderRadius.circular(width),
@@ -399,7 +399,7 @@ class _OtherAuthMethods extends StatelessWidget {
                   Text(
                     "Continue with Google",
                     style: TextStyle(
-                      color: AppColors.primaryBlack,
+                      color: AppColors.textColor,
                       fontSize: width * 0.05,
                       fontWeight: FontWeight.w500,
                     ),

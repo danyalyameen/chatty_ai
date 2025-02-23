@@ -24,7 +24,7 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       appBar: whiteAppBar(backArrow: true, title: title, width: width),
       body: Column(
         children: [
@@ -102,7 +102,7 @@ class _Titles extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              color: AppColors.primaryBlack,
+              color: AppColors.textColor,
               fontSize: width * 0.072,
               fontWeight: FontWeight.w900,
             ),
@@ -115,7 +115,7 @@ class _Titles extends StatelessWidget {
           Text(
             description,
             style: TextStyle(
-              color: AppColors.primaryBlack,
+              color: AppColors.textColor,
               fontWeight: FontWeight.w400,
               fontSize: width * 0.045,
             ),
@@ -187,7 +187,7 @@ class _UserImage extends ViewModelWidget<CompleteProfileViewModel> {
                   child: Icon(
                     Icons.edit,
                     size: width * 0.05,
-                    color: AppColors.primaryLight,
+                    color: AppColors.backgroundColor,
                   ),
                 ),
               ),

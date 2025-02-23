@@ -29,7 +29,7 @@ class HistoryView extends StackedView<HistoryViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       appBar: whiteAppBar(
         title: title,
         width: width,
@@ -122,7 +122,7 @@ class _HistoryItems extends ViewModelWidget<HistoryViewModel> {
             child: Text(
               "No Chats Found",
               style: TextStyle(
-                color: AppColors.primaryBlack,
+                color: AppColors.textColor,
                 fontSize: width * 0.05,
                 fontWeight: FontWeight.w600,
               ),
@@ -179,7 +179,7 @@ class _HistoryItems extends ViewModelWidget<HistoryViewModel> {
                             style: TextStyle(
                               fontSize: width * 0.045,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.primaryBlack,
+                              color: AppColors.textColor,
                             ),
                           ),
                           // For Spacing

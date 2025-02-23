@@ -24,7 +24,7 @@ class SearchView extends StackedView<SearchViewModel> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -89,7 +89,7 @@ class _SearchBar extends ViewModelWidget<SearchViewModel> {
                 controller: viewModel.searchController,
                 autofocus: true,
                 style: TextStyle(
-                  color: AppColors.primaryBlack,
+                  color: AppColors.textColor,
                   fontSize: width * 0.05,
                 ),
                 cursorHeight: height * 0.025,
@@ -143,7 +143,7 @@ class _SearchResults extends ViewModelWidget<SearchViewModel> {
               child: Text(
                 "No Chats Found",
                 style: TextStyle(
-                  color: AppColors.primaryBlack,
+                  color: AppColors.textColor,
                   fontSize: width * 0.05,
                   fontWeight: FontWeight.w600,
                 ),
@@ -195,7 +195,7 @@ class _SearchResults extends ViewModelWidget<SearchViewModel> {
                                 style: TextStyle(
                                   fontSize: width * 0.045,
                                   fontWeight: FontWeight.w800,
-                                  color: AppColors.primaryBlack,
+                                  color: AppColors.textColor,
                                 ),
                               ),
                               // For Spacing

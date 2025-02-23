@@ -15,6 +15,7 @@ import 'package:chatty_ai/Services/API%20Service/api_service.dart';
 import 'package:chatty_ai/Services/Firebase%20Authentication/auth_service.dart';
 import 'package:chatty_ai/Services/Firebase%20Firestore/firestore_service.dart';
 import 'package:chatty_ai/Services/Image%20Service/image_service.dart';
+import 'package:chatty_ai/Services/Notification%20Bar%20Service/notification_bar_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -80,6 +81,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: AuthService),
     LazySingleton(classType: FirestoreService),
     LazySingleton(classType: ImageService),
+    LazySingleton(classType: NotificationBarService),
   ],
 )
 class App {}
