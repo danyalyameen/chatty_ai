@@ -1,11 +1,8 @@
 import 'package:chatty_ai/App/app.router.dart';
-import 'package:chatty_ai/Constants/constants.dart';
 import 'package:chatty_ai/Constants/custom_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpViewModel extends ViewModel {
   // Final Fields
@@ -88,9 +85,6 @@ class SignUpViewModel extends ViewModel {
         // Show Loading
         _showLoading = true;
         notifyListeners();
-        // Initialize Shared Preferences
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
         // Sign UP User
         await authService.signUp(
           email: emailController.text,
@@ -99,8 +93,6 @@ class SignUpViewModel extends ViewModel {
         // Hide Loading
         _showLoading = false;
         notifyListeners();
-        // Save Logged In
-        sharedPreferences.setBool(Constants.loggedIn, true);
         // Navigation
         navigationService.replaceWithCompleteProfileView();
       } on FirebaseAuthException catch (e) {

@@ -94,7 +94,7 @@ class CustomTextFormField extends StatelessWidget {
                         ),
                       ),
                     )
-                  : const Spacer(),
+                  : const SizedBox(),
             ),
             validator: (value) {
               return validate != null ? validate!(value) : null;

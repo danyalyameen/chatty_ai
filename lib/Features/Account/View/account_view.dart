@@ -74,135 +74,139 @@ class _Profile extends ViewModelWidget<AccountViewModel> {
               ),
             );
           }
-          final userInfo = snapshot.data!;
-          viewModel.name = userInfo.name!;
-          viewModel.gender = userInfo.gender!;
-          viewModel.dob = userInfo.dob!.toDate();
-          return InkWell(
-            onTap: () async {
-              await viewModel.navigationService.navigateToProfileInfo(
-                dob: userInfo.dob!.toDate(),
-                gender: userInfo.gender!,
-                name: userInfo.name!,
-              );
-              viewModel.notifyListeners();
-            },
-            child: Container(
-              width: width * 0.9,
-              height: height * 0.12,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(width * 0.04),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // User Image
-                  Padding(
-                    padding: EdgeInsets.only(left: width * 0.04),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // White Background
-                        Container(
-                          width: width * 0.21,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.primaryLight,
+          if (snapshot.data != null) {
+            final userInfo = snapshot.data!;
+            viewModel.name = userInfo.name!;
+            viewModel.gender = userInfo.gender!;
+            viewModel.dob = userInfo.dob!.toDate();
+            return InkWell(
+              onTap: () async {
+                await viewModel.navigationService.navigateToProfileInfo(
+                  dob: userInfo.dob!.toDate(),
+                  gender: userInfo.gender!,
+                  name: userInfo.name!,
+                );
+                viewModel.notifyListeners();
+              },
+              child: Container(
+                width: width * 0.9,
+                height: height * 0.12,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(width * 0.04),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // User Image
+                    Padding(
+                      padding: EdgeInsets.only(left: width * 0.04),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // White Background
+                          Container(
+                            width: width * 0.21,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.primaryLight,
+                            ),
                           ),
-                        ),
-                        // Make Outline Transparent
-                        Container(
-                          width: width * 0.195,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.primary,
+                          // Make Outline Transparent
+                          Container(
+                            width: width * 0.195,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.primary,
+                            ),
                           ),
-                        ),
-                        // user Image
-                        ValueListenableBuilder(
-                          valueListenable: viewModel.imageError,
-                          builder: (context, value, child) {
-                            return CircleAvatar(
-                              radius: width * 0.09,
-                              backgroundImage: NetworkImage(
-                                viewModel.imageService.getUserImage(),
-                              ),
-                              backgroundColor:
-                                  value ? Colors.teal : Colors.transparent,
-                              onBackgroundImageError: (exception, stackTrace) {
-                                viewModel.imageError.value = true;
-                              },
-                              child: value
-                                  ? Center(
-                                      child: Text(
-                                        userInfo.name!.substring(0, 1),
-                                        style: TextStyle(
-                                          color: AppColors.primaryLight,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: width * 0.09,
+                          // user Image
+                          ValueListenableBuilder(
+                            valueListenable: viewModel.imageError,
+                            builder: (context, value, child) {
+                              return CircleAvatar(
+                                radius: width * 0.09,
+                                backgroundImage: NetworkImage(
+                                  viewModel.imageService.getUserImage(),
+                                ),
+                                backgroundColor:
+                                    value ? Colors.teal : Colors.transparent,
+                                onBackgroundImageError:
+                                    (exception, stackTrace) {
+                                  viewModel.imageError.value = true;
+                                },
+                                child: value
+                                    ? Center(
+                                        child: Text(
+                                          userInfo.name!.substring(0, 1),
+                                          style: TextStyle(
+                                            color: AppColors.primaryLight,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: width * 0.09,
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : null,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  // User Name and Email
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: width * 0.03, right: width * 0.02),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // User Name
-                        Text(
-                          userInfo.name!,
-                          style: TextStyle(
-                            color: AppColors.grey,
-                            fontSize: width * 0.055,
-                            fontWeight: FontWeight.bold,
+                                      )
+                                    : null,
+                              );
+                            },
                           ),
-                        ),
-                        // For Spacing
-                        SizedBox(
-                          height: height * 0.005,
-                        ),
-                        // User Email
-                        Text(
-                          viewModel.authService.getUser()!.email!.length > 14
-                              ? "${viewModel.authService.getUser()!.email!.substring(0, 14)}..."
-                              : viewModel.authService.getUser()!.email!,
-                          style: TextStyle(
-                            color: AppColors.grey,
-                            fontSize: width * 0.04,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  // For Spacing
-                  const Spacer(),
-                  // Right Arrow
-                  SvgPicture.asset(
-                    IconsPath.rightArrow,
-                    colorFilter: ColorFilter.mode(
-                        AppColors.primaryLight, BlendMode.srcIn),
-                  ),
-                  // For Spacing
-                  SizedBox(
-                    width: width * 0.04,
-                  ),
-                ],
+                    // User Name and Email
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: width * 0.03, right: width * 0.02),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // User Name
+                          Text(
+                            userInfo.name!,
+                            style: TextStyle(
+                              color: AppColors.grey,
+                              fontSize: width * 0.055,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // For Spacing
+                          SizedBox(
+                            height: height * 0.005,
+                          ),
+                          // User Email
+                          Text(
+                            viewModel.authService.getUser()!.email!.length > 14
+                                ? "${viewModel.authService.getUser()!.email!.substring(0, 14)}..."
+                                : viewModel.authService.getUser()!.email!,
+                            style: TextStyle(
+                              color: AppColors.grey,
+                              fontSize: width * 0.04,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    // For Spacing
+                    const Spacer(),
+                    // Right Arrow
+                    SvgPicture.asset(
+                      IconsPath.rightArrow,
+                      colorFilter: ColorFilter.mode(
+                          AppColors.primaryLight, BlendMode.srcIn),
+                    ),
+                    // For Spacing
+                    SizedBox(
+                      width: width * 0.04,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          }
+          return Container();
         },
       ),
     );

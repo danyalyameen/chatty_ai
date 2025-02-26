@@ -17,6 +17,18 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
   final String continueText = "Continue";
 
   @override
+  void onViewModelReady(CompleteProfileViewModel viewModel) async {
+    final data = await viewModel.firestoreService.getUserInfo();
+    if (data != null) {
+      viewModel.nameController.text = data.name!;
+      viewModel.genderController.text = data.gender!;
+      viewModel.gender = data.gender!;
+      viewModel.date!.value = data.dob!.toDate();
+    }
+    super.onViewModelReady(viewModel);
+  }
+
+  @override
   Widget builder(
       BuildContext context, CompleteProfileViewModel viewModel, Widget? child) {
     // Get Screen Size of Device
@@ -25,7 +37,8 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.primaryLight,
-      appBar: whiteAppBar(backArrow: true, title: title, width: width),
+      appBar: whiteAppBar(
+          backArrow: false, showLogo: false, title: title, width: width),
       body: Column(
         children: [
           // Main Headings
@@ -63,7 +76,10 @@ class CompleteProfileView extends StackedView<CompleteProfileViewModel> {
             text: continueText,
             showLoading: viewModel.showLoading,
             onPressed: () {
-              viewModel.formKey.currentState!.validate()
+              viewModel.formKey.currentState!.validate() &&
+                      viewModel.image == null &&
+                      viewModel.date!.value.year != DateTime.now().year &&
+                      viewModel.gender != null
                   ? viewModel.validateUserImage(
                       context: context,
                       width: width,
@@ -132,67 +148,65 @@ class _UserImage extends ViewModelWidget<CompleteProfileViewModel> {
 
   @override
   Widget build(BuildContext context, CompleteProfileViewModel viewModel) {
-    return UnconstrainedBox(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(width),
-        onTap: () async {
-          // Show Bottom Sheet for pick Image
-          viewModel.image = await ShowBottomSheetForImportImages.bottomSheet(
-            context: context,
-            width: width,
-            height: height,
-          );
-          viewModel.notifyListeners();
-        },
-        child: SizedBox(
-          width: width * 0.35,
-          height: width * 0.35,
-          child: Stack(
-            children: [
-              // Circle Background
-              Center(
-                child: CircleAvatar(
-                  radius: width * 0.18,
-                  backgroundImage: viewModel.image != null
-                      ? FileImage(viewModel.image!)
-                      : null,
-                  backgroundColor: viewModel.image != null
-                      ? Colors.transparent
-                      : AppColors.grey60,
-                  child: viewModel.image == null
-                      ? Padding(
-                          padding: EdgeInsets.only(top: height * 0.026),
-                          child: ClipOval(
-                            child: Icon(
-                              Icons.person,
-                              size: width * 0.35,
-                              color: AppColors.grey80,
-                            ),
+    return InkWell(
+      borderRadius: BorderRadius.circular(width),
+      onTap: () async {
+        // Show Bottom Sheet for pick Image
+        viewModel.image = await ShowBottomSheetForImportImages.bottomSheet(
+          context: context,
+          width: width,
+          height: height,
+        );
+        viewModel.notifyListeners();
+      },
+      child: SizedBox(
+        width: width * 0.35,
+        height: width * 0.35,
+        child: Stack(
+          children: [
+            // Circle Background
+            Center(
+              child: CircleAvatar(
+                radius: width * 0.18,
+                backgroundImage: viewModel.image != null
+                    ? FileImage(viewModel.image!)
+                    : null,
+                backgroundColor: viewModel.image != null
+                    ? Colors.transparent
+                    : AppColors.grey60,
+                child: viewModel.image == null
+                    ? Padding(
+                        padding: EdgeInsets.only(top: height * 0.026),
+                        child: ClipOval(
+                          child: Icon(
+                            Icons.person,
+                            size: width * 0.35,
+                            color: AppColors.grey80,
                           ),
-                        )
-                      : null,
+                        ),
+                      )
+                    : null,
+              ),
+            ),
+            // Edit Icon
+            Positioned(
+              bottom: height * 0.005,
+              right: width * 0.02,
+              child: Container(
+                width: width * 0.07,
+                height: width * 0.07,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(width * 0.03),
+                  color: AppColors.primary,
+                ),
+                child: Icon(
+                  Icons.edit,
+                  size: width * 0.05,
+                  color: AppColors.primaryLight,
                 ),
               ),
-              // Edit Icon
-              Positioned(
-                bottom: height * 0.005,
-                right: width * 0.02,
-                child: Container(
-                  width: width * 0.07,
-                  height: width * 0.07,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(width * 0.03),
-                    color: AppColors.primary,
-                  ),
-                  child: Icon(
-                    Icons.edit,
-                    size: width * 0.05,
-                    color: AppColors.primaryLight,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -234,6 +248,7 @@ class _InputFields extends ViewModelWidget<CompleteProfileViewModel> {
           height: height,
           title: dropDownText,
           hintText: dropDownText,
+          controller: viewModel.genderController,
           selectedValue: (value) {
             viewModel.gender = value;
             viewModel.notifyListeners();
@@ -245,12 +260,20 @@ class _InputFields extends ViewModelWidget<CompleteProfileViewModel> {
           height: height * 0.02,
         ),
         // Date Picker for Date of Birth
-        CustomDatePicker(
-          width: width,
-          height: height,
-          title: datePickerTitle,
-          onChange: (date) {
-            viewModel.date = date;
+        ValueListenableBuilder(
+          valueListenable: viewModel.date!,
+          builder: (context, value, child) {
+            return CustomDatePicker(
+              width: width,
+              height: height,
+              title: datePickerTitle,
+              initialDate: viewModel.date!.value.year == DateTime.now().year
+                  ? null
+                  : value,
+              onChange: (date) {
+                date != null ? viewModel.date!.value = date : null;
+              },
+            );
           },
         ),
       ],

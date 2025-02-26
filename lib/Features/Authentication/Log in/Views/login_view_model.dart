@@ -79,12 +79,12 @@ class LoginViewModel extends ViewModel {
           password: passwordController.text,
         );
         // Get User Info
-        UserModel userInfo = await firestoreService.getUserInfo();
+        UserModel? userInfo = await firestoreService.getUserInfo();
         // Hide Loading
         _showLoading = false;
         notifyListeners();
         // Navigation
-        if (userInfo.profileCompleted == true) {
+        if (userInfo!.profileCompleted == true) {
           // Save Logged In
           sharedPreferences.setBool(Constants.loggedIn, true);
           navigationService.replaceWithChatView();

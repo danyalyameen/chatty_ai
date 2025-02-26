@@ -13,14 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CompleteProfileViewModel extends ViewModel {
   // Final Fields
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // Get Final Fields
   TextEditingController get nameController => _nameController;
+  TextEditingController get genderController => _genderController;
   GlobalKey<FormState> get formKey => _formKey;
   // Non Final Fields
   File? image;
   String? gender;
-  DateTime? date;
+  ValueNotifier<DateTime>? date = ValueNotifier(DateTime.now());
+
   bool _showLoading = false;
   // Get Non Final Fields
   bool get showLoading => _showLoading;
@@ -56,7 +59,10 @@ class CompleteProfileViewModel extends ViewModel {
               // Cancel Button
               TextButton(
                 onPressed: () => navigationService.back(),
-                child: const Text("Cancel"),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: AppColors.primary),
+                ),
               ),
               // Ok Button
               ElevatedButton(
@@ -69,7 +75,12 @@ class CompleteProfileViewModel extends ViewModel {
                   ),
                 ),
                 onPressed: () => navigationService.replaceWithChatView(),
-                child: const Text("OK"),
+                child: const Text(
+                  "OK",
+                  style: TextStyle(
+                    color: AppColors.primaryLight,
+                  ),
+                ),
               ),
             ],
           );
@@ -101,7 +112,7 @@ class CompleteProfileViewModel extends ViewModel {
 
   // Validate Date
   void validateDate() {
-    if (date == null) {
+    if (date!.value.year == DateTime.now().year) {
       Fluttertoast.showToast(
         msg: "Please Select Date",
         backgroundColor: AppColors.primaryRed,
@@ -116,7 +127,9 @@ class CompleteProfileViewModel extends ViewModel {
   void continueButtonFunction() async {
     validateDropDown();
     validateDate();
-    if (_formKey.currentState!.validate() && gender != null && date != null) {
+    if (_formKey.currentState!.validate() &&
+        gender != null &&
+        date!.value.year != DateTime.now().year) {
       try {
         // Show Loading
         _showLoading = true;
@@ -128,7 +141,7 @@ class CompleteProfileViewModel extends ViewModel {
         await firestoreService.createUser(
           name: nameController.text,
           gender: gender!,
-          dob: Timestamp.fromDate(date!),
+          dob: Timestamp.fromDate(date!.value),
           profileCompleted: image == null ? false : true,
         );
         // Upload Image
@@ -139,7 +152,7 @@ class CompleteProfileViewModel extends ViewModel {
         _showLoading = false;
         notifyListeners();
         // Navigation
-        navigationService.replaceWithChatView();
+        image != null ? navigationService.replaceWithChatView() : null;
       } catch (e) {
         // Hide Loading
         _showLoading = false;

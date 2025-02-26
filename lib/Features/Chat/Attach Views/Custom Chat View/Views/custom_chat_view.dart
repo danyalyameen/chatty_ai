@@ -36,19 +36,18 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
   void onDispose(CustomChatViewModel viewModel) {
     viewModel.chatController.value.dispose();
     viewModel.listViewController.dispose();
-    viewModel.scrollTimer?.cancel();
     super.onDispose(viewModel);
   }
 
   @override
   Widget builder(
       BuildContext context, CustomChatViewModel viewModel, Widget? child) {
-    viewModel.shouldAutoScroll ? viewModel.startAutoScroll() : null;
     // Get Screen Size of Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
+      resizeToAvoidBottomInset: true,
       appBar: whiteAppBar(
         width: width,
         backArrow: true,
@@ -69,7 +68,7 @@ class CustomChatView extends StackedView<CustomChatViewModel> {
               viewModel.askPrompt
                   ? Positioned(
                       bottom: height * 0.1,
-                      top: height * 0.0001,
+                      top: 0,
                       child: SizedBox(
                         width: width,
                         height: height * 0.75,
@@ -172,7 +171,9 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
             viewModel.messages[index].responseGenerated != true
         ? viewModel.showLoading
             ? Padding(
-                padding: EdgeInsets.only(left: width * 0.04),
+                padding: EdgeInsets.only(
+                  left: width * 0.04,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -223,12 +224,15 @@ class _Answer extends ViewModelWidget<CustomChatViewModel> {
                         borderRadius: BorderRadius.circular(width * 0.04),
                       ),
                       margin: EdgeInsets.only(
-                          left: width * 0.04, right: width * 0.18),
+                        left: width * 0.04,
+                        right: width * 0.18,
+                      ),
                       padding: EdgeInsets.all(width * 0.04),
                       child: AnimatedTextKit(
                         isRepeatingAnimation: false,
                         repeatForever: false,
                         totalRepeatCount: 1,
+                        controller: viewModel.animatedTextController,
                         animatedTexts: [
                           TyperAnimatedText(
                             viewModel.messages[index].text!,
@@ -284,17 +288,17 @@ class _Capabilities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.1),
+      padding: EdgeInsets.only(top: height * 0.06),
       child: Column(
         children: [
           // Logo of App
           showLogo
               ? SvgPicture.asset(
                   IconsPath.appLogo,
-                  width: width * 0.38,
+                  width: width * 0.4,
                   colorFilter: ColorFilter.mode(
                     AppColors.grey60,
-                    BlendMode.lighten,
+                    BlendMode.srcIn,
                   ),
                 )
               : const SizedBox(),
@@ -319,46 +323,48 @@ class _Capabilities extends StatelessWidget {
           SizedBox(
             width: width * 0.9,
             height: height * 0.45,
-            child: ListView.builder(
-              itemCount: capabilities.length,
-              itemBuilder: (context, index) {
-                // Background Color
-                return Container(
-                  height: height * 0.1,
-                  margin: EdgeInsets.symmetric(
-                    vertical: height * 0.01,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.04, vertical: height * 0.01),
-                  decoration: BoxDecoration(
-                    color: AppColors.grey,
-                    borderRadius: BorderRadius.circular(width * 0.04),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // First Line or First Sentence
-                      Text(
-                        capabilities[index]["sentence_first"]!,
-                        style: TextStyle(
-                          color: AppColors.grey80,
-                          fontWeight: FontWeight.w400,
-                          fontSize: width * 0.04,
+            child: Column(
+              children: List.generate(
+                capabilities.length,
+                (index) {
+                  return Container(
+                    height: height * 0.1,
+                    width: width * 0.9,
+                    margin: EdgeInsets.symmetric(
+                      vertical: height * 0.01,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.04, vertical: height * 0.01),
+                    decoration: BoxDecoration(
+                      color: AppColors.grey,
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // First Line or First Sentence
+                        Text(
+                          capabilities[index]["sentence_first"]!,
+                          style: TextStyle(
+                            color: AppColors.grey80,
+                            fontWeight: FontWeight.w400,
+                            fontSize: width * 0.04,
+                          ),
                         ),
-                      ),
-                      // Second Line or Second Sentence
-                      Text(
-                        capabilities[index]["sentence_second"]!,
-                        style: TextStyle(
-                          color: AppColors.grey80,
-                          fontWeight: FontWeight.w400,
-                          fontSize: width * 0.04,
+                        // Second Line or Second Sentence
+                        Text(
+                          capabilities[index]["sentence_second"]!,
+                          style: TextStyle(
+                            color: AppColors.grey80,
+                            fontWeight: FontWeight.w400,
+                            fontSize: width * 0.04,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           )
         ],
@@ -441,8 +447,6 @@ class _InputField extends ViewModelWidget<CustomChatViewModel> {
                 height: width * 0.15,
                 child: ElevatedButton(
                   onPressed: () {
-                    viewModel.shouldAutoScroll = true;
-                    viewModel.notifyListeners();
                     viewModel.startChat();
                   },
                   style: ButtonStyle(

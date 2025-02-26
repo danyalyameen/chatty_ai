@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'dart:developer';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatty_ai/Constants/custom_view_model.dart';
 import 'package:chatty_ai/Models/api_model.dart';
 import 'package:chatty_ai/Models/message_model.dart';
@@ -11,6 +11,8 @@ class CustomChatViewModel extends ViewModel {
   final ValueNotifier<TextEditingController> chatController =
       ValueNotifier(TextEditingController());
   final ScrollController _listViewController = ScrollController();
+  final AnimatedTextController animatedTextController =
+      AnimatedTextController();
   // Get Final Feilds
   ScrollController get listViewController => _listViewController;
   // Non Final Fields
@@ -20,50 +22,9 @@ class CustomChatViewModel extends ViewModel {
   String prompt = "";
   int? maxLines = 1;
   bool _showLoading = false;
-  bool showLoadinForFirestore = false;
-  bool shouldAutoScroll = true;
-  Timer? scrollTimer;
+  bool showLoadingForFirestore = false;
   // Get Non Final Fields
   bool get showLoading => _showLoading;
-
-  // Scroll to End
-  Future<void> scrollToEnd() async {
-    if (!listViewController.hasClients) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (listViewController.hasClients) {
-        listViewController.animateTo(
-          listViewController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-  // Scroll Listener
-  void scrollListener() {
-    if (listViewController.hasClients) {
-      var currentScroll = listViewController.position.pixels;
-      var maxScroll = listViewController.position.maxScrollExtent;
-      // Check if user scrolled up (with 80px tolerance)
-      if ((maxScroll - currentScroll) > 80) {
-        currentScroll = maxScroll;
-        shouldAutoScroll = false;
-        notifyListeners();
-        scrollTimer?.cancel();
-        scrollTimer = null;
-      }
-    }
-  }
-
-  // Auto Scroll
-  void startAutoScroll() {
-    if (scrollTimer != null) return;
-    scrollTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      scrollToEnd();
-      scrollListener();
-    });
-  }
 
   // Start Chat
   void startChat() async {
@@ -110,13 +71,13 @@ class CustomChatViewModel extends ViewModel {
   void onBackButton() async {
     if (chat.isNotEmpty) {
       try {
-        showLoadinForFirestore = true;
+        showLoadingForFirestore = true;
         notifyListeners();
         await firestoreService.addChat(chats: chat);
-        showLoadinForFirestore = false;
+        showLoadingForFirestore = false;
         notifyListeners();
       } catch (e) {
-        showLoadinForFirestore = false;
+        showLoadingForFirestore = false;
         notifyListeners();
         log(e.toString());
       }

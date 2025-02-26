@@ -48,15 +48,15 @@ class FirestoreService {
   }
 
   // Get User Details
-  Future<UserModel> getUserInfo() async {
+  Future<UserModel?> getUserInfo() async {
     // User Path
     DocumentReference user = FirebaseFirestore.instance
         .collection('users')
         .doc(AuthService().getUser()!.uid);
     // Fetch Data
-    var data = await user.get();
+    DocumentSnapshot? data = await user.get();
     // User information
-    var userInfo = UserModel.store(data.data() as Map<String, dynamic>);
+    var userInfo = data.data() != null ? UserModel.store(data.data() as Map<String, dynamic>) : null;
     return userInfo;
   }
 

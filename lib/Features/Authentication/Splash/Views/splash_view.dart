@@ -6,6 +6,7 @@ import 'package:chatty_ai/Constants/constants.dart';
 import 'package:chatty_ai/Constants/icons_path.dart';
 import 'package:chatty_ai/Features/Authentication/Splash/Views/splash_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +17,13 @@ class SplashView extends StackedView<SplashViewModel> {
 
   @override
   void onViewModelReady(SplashViewModel viewModel) async {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
     super.onViewModelReady(viewModel);
     // Delay for 3 Seconds
     await Future.delayed(const Duration(seconds: 3));
